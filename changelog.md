@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.1.1
 - fix missing extension in default name
+- fix document not being updated on file change
 
 ## 1.1.0
 - codegen for graphql queries now automatically re-run during develop

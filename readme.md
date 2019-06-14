@@ -22,7 +22,7 @@ tsc --init
 
 In order for this plugin to work right, you'd need to set your compile options like the following:
 
-```json
+```js
   "compilerOptions": {
     "target": "ESNext",                          /* or at least ES2015 */
     "module": "ESNext",                     /* or at least ES2015 */
