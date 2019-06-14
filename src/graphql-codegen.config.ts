@@ -6,15 +6,16 @@ import { printSchema, parse } from 'gatsby/graphql'
 import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
 import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operations'
 
-interface IConfigArgs {
+interface IInitialConfig {
   directory: string;
-  schema: any;
+  fileName: string;
 }
 
-type CreateConfig = (args: IConfigArgs) => Promise<any>
-const createConfig: CreateConfig = async ({ schema, directory }) => {
+type CreateConfigFromSchema = (schema: any) => any
+type CreateConfig = (args: IInitialConfig) => Promise<CreateConfigFromSchema>
+const createConfig: CreateConfig = async ({ directory, fileName }) => {
   // file name & location
-  const filename = path.join(directory, 'src/graphqlTypes.ts')
+  const filename = path.join(directory, fileName)
 
   // documents
   const docPromises = [
@@ -27,7 +28,7 @@ const createConfig: CreateConfig = async ({ schema, directory }) => {
   const results = await Promise.all(docPromises)
   const documents = results.reduce((acc, cur) => acc.concat(cur), [])
 
-  return {
+  return (schema) => ({
     filename,
     schema: parse(printSchema(schema)),
     plugins: [{
@@ -49,16 +50,21 @@ const createConfig: CreateConfig = async ({ schema, directory }) => {
         plugin: operationsPlugin
       }
     }
-  }
+  })
 }
 
-export const generateType = async (options: IConfigArgs) => {
-  const config = await createConfig(options)
-  const output = await codegen(config)
-  return new Promise((resolve, reject) => {
-    fs.writeFile(config.filename, output, (err) => {
-        if (err) reject(err)
-        resolve()
-    });
-  })
+type GenerateFromSchema = (schema: any) => void
+type GenerateWithConfig = (initalOptions: IInitialConfig) => Promise<GenerateFromSchema>
+export const generateWithConfig: GenerateWithConfig = async (initalOptions) => {
+  const createConfigFromSchema = await createConfig(initalOptions)
+  return async (schema) => {
+    const config = createConfigFromSchema(schema)
+    const output = await codegen(config)
+    return new Promise((resolve, reject) => {
+      fs.writeFile(config.filename, output, (err) => {
+          if (err) reject(err)
+          resolve()
+      });
+    })
+  }
 }
