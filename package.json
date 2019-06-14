@@ -12,6 +12,10 @@
     "gatsby-plugin",
     "typescript"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d4rekanguok/gatsby-plugin-ts.git"
+  },
   "author": "Derek Nguyen <derek@penandpillow.com>",
   "license": "MIT",
   "dependencies": {
@@ -32,5 +36,9 @@
     "@types/webpack": "^4.4.32",
     "gatsby": "^2.9.2",
     "typescript": "^3.5.1"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/d4rekanguok/gatsby-plugin-ts/issues"
+  },
+  "homepage": "https://github.com/d4rekanguok/gatsby-plugin-ts#readme"
 }
