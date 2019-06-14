@@ -15,7 +15,7 @@ export interface TsOptions extends PluginOptions {
 const defaultOptions: TsOptions = {
   plugins: [],
   tsLoader: {},
-  fileName: 'graphql-type.ts',
+  fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
 }
