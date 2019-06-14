@@ -32,6 +32,30 @@ In order for this plugin to work right, you'd need to set your compile options l
   }   
 ```
 
+### Options
+
+|key | default | value |
+|---|---|---|
+|options.tsLoader| `{}` | option to be passed into `ts-loader`. `transpileOnly` is always `true`, since typechecking is handled by `fork-ts-checker-webpack-plugin`. [See ts-loader docs](https://github.com/TypeStrong/ts-loader#options) for more | 
+|options.codegen| `true` | enable / disable generating definitions for graphql queries|
+|options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
+|options.codegenDelay| `200` | amount of delay from file change to codegen|
+
+```js
+// gatsby-config.js
+{
+  resolve: `gatsby-plugin-ts`,
+  options: {
+    tsLoader: {
+      logLevel: 'warn',
+    },
+    fileName: `types/graphql-types.ts`,
+    codegen: true,
+    codegenDelay: 250,
+  }
+},
+```
+
 ### Gatsby files
 
 - `gatsby-config` has to be a `.js` file

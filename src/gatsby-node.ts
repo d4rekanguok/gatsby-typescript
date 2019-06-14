@@ -6,7 +6,7 @@ import { generateWithConfig } from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
 
 export interface TsOptions extends PluginOptions {
-  tsLoader: Partial<tsloader.Options>;
+  tsLoader?: Partial<tsloader.Options>;
   fileName?: string;
   codegen?: boolean;
   codegenDelay?: number;
