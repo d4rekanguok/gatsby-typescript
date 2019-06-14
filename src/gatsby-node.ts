@@ -15,7 +15,7 @@ export interface TsOptions extends PluginOptions {
 const defaultOptions: TsOptions = {
   plugins: [],
   tsLoader: {},
-  fileName: 'graphql-type',
+  fileName: 'graphql-type.ts',
   codegen: true,
   codegenDelay: 200,
 }
@@ -67,7 +67,7 @@ export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
 ) => {
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
-  
+
   const fileName = options.fileName as string
   const codegenDelay = options.codegenDelay
 
@@ -80,7 +80,7 @@ export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
   const build = async (schema: any) => {
     try {
       await generateFromSchema(schema) 
-      reporter.info(`[gatsby-plugin-ts] graphql-types.ts has been updated`)
+      reporter.info(`[gatsby-plugin-ts] definition for queries has been updated at ${fileName}`)
     } catch (err) {
       reporter.panic(err)
     }
