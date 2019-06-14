@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce'
 export interface TsOptions extends PluginOptions {
   tsLoader: Partial<tsloader.Options>;
   fileName?: string;
+  codegen?: boolean;
   codegenDelay?: number;
 }
 
@@ -15,6 +16,7 @@ const defaultOptions: TsOptions = {
   plugins: [],
   tsLoader: {},
   fileName: 'graphql-type',
+  codegen: true,
   codegenDelay: 200,
 }
 
@@ -64,6 +66,8 @@ export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
   { store, reporter }, pluginOptions: TsOptions
 ) => {
   const options = getOptions(pluginOptions)
+  if (!options.codegen) return
+  
   const fileName = options.fileName as string
   const codegenDelay = options.codegenDelay
 
