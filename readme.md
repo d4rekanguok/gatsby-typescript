@@ -24,10 +24,10 @@ In order for this plugin to work right, you'd need to set your compile options l
 
 ```js
   "compilerOptions": {
-    "target": "ESNext",                          /* or at least ES2015 */
-    "module": "ESNext",                     /* or at least ES2015 */
+    "target": "ESNext",  /* or at least ES2015 */
+    "module": "ESNext",  /* or at least ES2015 */
     "lib": ["dom"],
-    "jsx": "react",
+    "jsx": "preserve",
     /* other options... */
   }   
 ```
