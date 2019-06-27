@@ -67,7 +67,7 @@ In order for this plugin to work right, you'd need to set your compile options l
 declare const __PATH_PREFIX__: string
 ```
 
-## Code generation [WIP]
+## Code generation
 
 In later version user should be able to config `graphql-codegen` & have smarter build detection. Currently, definition is built to `src/graphqlTypes.ts`, and will be built every `gatsby develop` (:sadface:)
 
