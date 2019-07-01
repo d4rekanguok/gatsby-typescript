@@ -21,7 +21,7 @@ const createConfig: CreateConfig = ({ directory, fileName }) => {
     // documents
     const docPromises = [
       './src/**/*.{ts,tsx}',
-      './node_modules/gatsby-*/*.js'
+      './.cache/fragments/*.js',
     ].map(docGlob => {
       const _docGlob = path.join(directory, docGlob)
       return loadDocuments(_docGlob)
