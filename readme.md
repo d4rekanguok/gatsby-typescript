@@ -69,7 +69,7 @@ declare const __PATH_PREFIX__: string
 
 ## Code generation
 
-In later version user should be able to config `graphql-codegen` & have smarter build detection. Currently, definition is built to `src/graphqlTypes.ts`, and will be built every `gatsby develop` (:sadface:)
+By default, this plugin will build typing for your queries automatically to `graphql-types.d.ts` on every edit. Please note that the definition file **should not** be placed inside `src` since this triggers a never ending loop.
 
 In order to take advantage of the generated code, user needs to name their query:
 
