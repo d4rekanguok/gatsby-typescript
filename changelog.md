@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.2.2
+- codegen: actually, we only need to search for fragments in root directory's `.cache` folder
+
 ## 1.2.1
 - codegen: restrict glob search for fragments in `node_modules`
 
