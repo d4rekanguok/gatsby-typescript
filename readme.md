@@ -9,7 +9,15 @@ An alternative to the official typescript plugin, with [`ts-loader`](https://git
 yarn add typescript gatsby-plugin-ts
 ```
 
-Add this to your gatsby config like any other plugins.
+Add this to your gatsby config like any other plugins:
+```js
+// gatsby-config.js
+module.exports = {
+  plugins: [
+    `gatsby-plugin-ts`,
+  ]
+}
+```
 
 ---
 
@@ -24,12 +32,14 @@ In order for this plugin to work right, you'd need to set your compile options l
 
 ```js
   "compilerOptions": {
-    "target": "ESNext",  /* or at least ES2015 */
-    "module": "ESNext",  /* or at least ES2015 */
-    "lib": ["dom"],
-    "jsx": "preserve",
+    "target": "ESNext",    /* or at least ES2015 */
+    "module": "ESNext",    /* or at least ES2015 */
+    "lib": ["dom"],             /* <-- required! */
+    "jsx": "preserve",          /* <-- required! */
+    "moduleResolution": "node", /* <-- required! */
     /* other options... */
-  }   
+  }
+
 ```
 
 ### Options
@@ -69,7 +79,7 @@ declare const __PATH_PREFIX__: string
 
 ## Code generation
 
-By default, this plugin will build typing for your queries automatically to `graphql-types.d.ts` on every edit. Please note that the definition file **should not** be placed inside `src` since this triggers a never ending loop.
+By default, this plugin will build typing for your queries automatically to `graphql-types.d.ts` on every edit. Please note that the definition file **should not** be placed inside `src` since this triggers a never ending loop during development.
 
 In order to take advantage of the generated code, user needs to name their query:
 
