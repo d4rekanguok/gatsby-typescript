@@ -25,6 +25,7 @@
     "fork-ts-checker-webpack-plugin": "^1.3.6",
     "graphql-toolkit": "^0.2.14",
     "lodash.debounce": "^4.0.8",
+    "react-dom": "^16.8.6",
     "ts-loader": "^6.0.2"
   },
   "peerDependencies": {
