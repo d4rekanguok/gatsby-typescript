@@ -10,6 +10,7 @@ export interface TsOptions extends PluginOptions {
   fileName?: string;
   codegen?: boolean;
   codegenDelay?: number;
+  alwaysCheck?: boolean;
 }
 
 const defaultOptions: TsOptions = {
@@ -18,6 +19,7 @@ const defaultOptions: TsOptions = {
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
+  alwaysCheck: false,
 }
 
 type GetOptions = (options: TsOptions) => TsOptions
@@ -32,14 +34,19 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
   loaders, actions
 }, pluginOptions: TsOptions ) => {
   const options = getOptions(pluginOptions)
+  const { alwaysCheck } = options
   const jsLoader = loaders.js()
   if (!jsLoader) return
   const tsRule = createRule(jsLoader, options)
+
+  const shouldTypeCheck = alwaysCheck || !(process.env.NODE_ENV === 'production')
+  const plugins = shouldTypeCheck ? [ new FTCWebpackPlugin() ] : []
+
   const config: webpack.Configuration = {
     module: {
       rules: [ tsRule ],
     },
-    plugins: [ new FTCWebpackPlugin() ]
+    plugins,
   }
 
   actions.setWebpackConfig(config)
@@ -57,7 +64,7 @@ const createRule: CreateRule = (jsLoader, { tsLoader }) => ({
     options: {
       ...tsLoader,
       // use ForkTsCheckerWebpackPlugin for typecheck
-      transpileOnly: true
+      transpileOnly: true,
     }
   }],
 })
@@ -101,4 +108,14 @@ export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
   // HACKY: might break when gatsby updates
   store.subscribe(watchStore)
   await build(schema)
+}
+
+export const onPreInit: GatsbyNode['onPreInit'] = ({ reporter }, { alwaysCheck }: TsOptions) => {
+  if (process.env.NODE_ENV !== 'production') return
+  if (alwaysCheck) {
+    reporter.warn(`[gatsby-plugin-ts] \`alwaysCheck\` enabled.`)
+  }
+  else reporter.info(`[gatsby-plugin-ts] Typecheck is disabled during build by default.
+  To enable typecheck during build, set \`alwaysCheck\` to \`true\`.
+  `)
 }

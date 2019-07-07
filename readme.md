@@ -50,6 +50,9 @@ In order for this plugin to work right, you'd need to set your compile options l
 |options.codegen| `true` | enable / disable generating definitions for graphql queries|
 |options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
+|options.alwaysCheck | `false` | enable type checking during production build|
+
+An example with all available settings:
 
 ```js
 // gatsby-config.js
@@ -62,6 +65,7 @@ In order for this plugin to work right, you'd need to set your compile options l
     fileName: `types/graphql-types.ts`,
     codegen: true,
     codegenDelay: 250,
+    alwaysCheck: false,
   }
 },
 ```
