@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.1
+- fix: #13, check if directory exists before writing file
+
 ## 1.3.0
 - typecheck: Disable typecheck in production by default. Users can now pass in an `alwaysCheck` to enable typecheck during production (in `gatsby build`).
 
