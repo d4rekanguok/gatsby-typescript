@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import * as fs from 'fs-extra'
 import * as path from 'path'
 import { loadDocuments } from 'graphql-toolkit'
 import { codegen } from '@graphql-codegen/core'
@@ -12,10 +12,12 @@ interface IInitialConfig {
 }
 
 type CreateConfigFromSchema = (schema: any) => Promise<any>
-type CreateConfig = (args: IInitialConfig) => CreateConfigFromSchema
-const createConfig: CreateConfig = ({ directory, fileName }) => {
+type CreateConfig = (args: IInitialConfig) => Promise<CreateConfigFromSchema>
+const createConfig: CreateConfig = async ({ directory, fileName }) => {
   // file name & location
-  const filename = path.join(directory, fileName)
+  const pathToFile = path.join(directory, fileName)
+  const { dir } = path.parse(pathToFile)
+  await fs.ensureDir(dir)
 
   return async (schema) => {
     // documents
@@ -30,7 +32,7 @@ const createConfig: CreateConfig = ({ directory, fileName }) => {
     const documents = results.reduce((acc, cur) => acc.concat(cur), [])
 
     return {
-      filename,
+      filename: pathToFile,
       schema: parse(printSchema(schema)),
       plugins: [{
         typescript: {
@@ -58,15 +60,10 @@ const createConfig: CreateConfig = ({ directory, fileName }) => {
 type GenerateFromSchema = (schema: any) => Promise<void>
 type GenerateWithConfig = (initalOptions: IInitialConfig) => Promise<GenerateFromSchema>
 export const generateWithConfig: GenerateWithConfig = async (initalOptions) => {
-  const createConfigFromSchema = createConfig(initalOptions)
+  const createConfigFromSchema = await createConfig(initalOptions)
   return async (schema) => {
     const config = await createConfigFromSchema(schema)
     const output = await codegen(config)
-    return new Promise((resolve, reject) => {
-      fs.writeFile(config.filename, output, (err) => {
-          if (err) reject(err)
-          resolve()
-      });
-    })
+    return fs.writeFile(config.filename, output)
   }
 }
