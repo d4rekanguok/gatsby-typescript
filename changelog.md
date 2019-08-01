@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.3
+- fix #15 where empty documents break build; display warning instead of throwing error
+- more greenkeeping
+- add `graphql-tag-pluck` as a dependency since it no longer comes with `graphql-toolkit`
+- use `graphql` directly instead of going thru `gatsby/graphql`
+
 ## 1.3.2
 - greenkeeping
 
