@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
-import { loadDocuments } from 'graphql-toolkit'
+import { Reporter } from 'gatsby'
+import { loadDocuments, DocumentFile } from 'graphql-toolkit'
 import { codegen } from '@graphql-codegen/core'
 import { printSchema, parse } from 'gatsby/graphql'
 import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
@@ -9,11 +10,12 @@ import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operatio
 interface IInitialConfig {
   directory: string;
   fileName: string;
+  reporter: Reporter;
 }
 
 type CreateConfigFromSchema = (schema: any) => Promise<any>
 type CreateConfig = (args: IInitialConfig) => Promise<CreateConfigFromSchema>
-const createConfig: CreateConfig = async ({ directory, fileName }) => {
+const createConfig: CreateConfig = async ({ directory, fileName, reporter }) => {
   // file name & location
   const pathToFile = path.join(directory, fileName)
   const { dir } = path.parse(pathToFile)
@@ -24,12 +26,17 @@ const createConfig: CreateConfig = async ({ directory, fileName }) => {
     const docPromises = [
       './src/**/*.{ts,tsx}',
       './.cache/fragments/*.js',
-    ].map(docGlob => {
+    ].map(async docGlob => {
       const _docGlob = path.join(directory, docGlob)
-      return loadDocuments(_docGlob)
+      return loadDocuments(_docGlob).catch(err => {
+        reporter.warn('[gatsby-plugin-ts] ' + err.message)
+      })
     })
     const results = await Promise.all(docPromises)
-    const documents = results.reduce((acc, cur) => acc.concat(cur), [])
+    const documents = results.reduce((acc, cur) => {
+      if (!cur) return acc
+      return (acc as DocumentFile[]).concat(cur)
+    }, [])
 
     return {
       filename: pathToFile,

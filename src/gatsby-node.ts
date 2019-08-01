@@ -81,7 +81,7 @@ export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
   const { schema, program } = store.getState()
   const { directory } = program
   const generateFromSchema = await generateWithConfig({
-    directory, fileName
+    directory, fileName, reporter
   })
 
   const build = async (schema: any) => {
