@@ -24,12 +24,19 @@ const createConfig: CreateConfig = async ({ directory, fileName }) => {
     const docPromises = [
       './src/**/*.{ts,tsx}',
       './.cache/fragments/*.js',
-    ].map(docGlob => {
+    ].map(async docGlob => {
       const _docGlob = path.join(directory, docGlob)
-      return loadDocuments(_docGlob)
+      return loadDocuments(_docGlob).catch(err => {
+        console.log('catched')
+        console.log(err)
+      })
     })
     const results = await Promise.all(docPromises)
-    const documents = results.reduce((acc, cur) => acc.concat(cur), [])
+    const documents = results.reduce((acc, cur) => {
+      if (!cur) return acc
+      // @ts-ignore
+      return acc.concat(cur)
+    }, [])
 
     return {
       filename: pathToFile,
