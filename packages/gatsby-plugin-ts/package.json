@@ -1,0 +1,51 @@
+{
+  "name": "gatsby-plugin-ts",
+  "version": "2.0.0",
+  "description": "Typescript support via ts-loader & fork-ts-checker-webpack-plugin + automate codegen",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p ./",
+    "prepublishOnly": "tsc -p ./"
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d4rekanguok/gatsby-plugin-ts.git"
+  },
+  "author": "Derek Nguyen <derek@penandpillow.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@graphql-codegen/core": "^1.4.0",
+    "@graphql-codegen/typescript": "^1.4.0",
+    "@graphql-codegen/typescript-operations": "^1.4.0",
+    "fork-ts-checker-webpack-plugin": "^1.4.3",
+    "fs-extra": "^7.0.1",
+    "graphql": "^14.1.1",
+    "graphql-tag-pluck": "^0.8.3",
+    "graphql-toolkit": "^0.5.0",
+    "lerna": "^3.16.4",
+    "lodash.debounce": "^4.0.8",
+    "ts-loader": "^6.0.4"
+  },
+  "peerDependencies": {
+    "gatsby": "^2.9.2",
+    "typescript": "^3.5.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^7.0.0",
+    "@types/graphql": "^14.2.3",
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/node": "^12.0.8",
+    "@types/webpack": "^4.4.32",
+    "gatsby": "^2.9.2",
+    "typescript": "^3.5.1"
+  },
+  "bugs": {
+    "url": "https://github.com/d4rekanguok/gatsby-plugin-ts/issues"
+  },
+  "homepage": "https://github.com/d4rekanguok/gatsby-plugin-ts#readme"
+}

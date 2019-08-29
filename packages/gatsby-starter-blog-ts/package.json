@@ -1,0 +1,66 @@
+{
+  "name": "gatsby-starter-blog-ts",
+  "private": true,
+  "description": "A starter for a blog powered by Gatsby, Markdown & Typescript",
+  "version": "0.1.0",
+  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/d4rekanguok/gatsby-starter-blog-ts/issues"
+  },
+  "dependencies": {
+    "@types/node": "^12.7.2",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@types/typography": "^0.16.2",
+    "gatsby": "^2.9.2",
+    "gatsby-image": "^2.1.4",
+    "gatsby-plugin-feed": "^2.2.3",
+    "gatsby-plugin-google-analytics": "^2.0.21",
+    "gatsby-plugin-manifest": "^2.1.1",
+    "gatsby-plugin-offline": "^2.1.3",
+    "gatsby-plugin-react-helmet": "^3.0.12",
+    "gatsby-plugin-sharp": "^2.1.5",
+    "gatsby-plugin-ts": "^2.0.0",
+    "gatsby-plugin-graphql-codegen": "^2.0.0",
+    "gatsby-plugin-typography": "^2.2.13",
+    "gatsby-remark-copy-linked-files": "^2.0.13",
+    "gatsby-remark-images": "^3.0.14",
+    "gatsby-remark-prismjs": "^3.2.11",
+    "gatsby-remark-responsive-iframe": "^2.1.1",
+    "gatsby-remark-smartypants": "^2.0.9",
+    "gatsby-source-filesystem": "^2.0.39",
+    "gatsby-transformer-remark": "^2.3.12",
+    "gatsby-transformer-sharp": "^2.1.21",
+    "prismjs": "^1.16.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1",
+    "react-typography": "^0.16.19",
+    "typeface-merriweather": "0.0.72",
+    "typeface-montserrat": "0.0.54",
+    "typescript": "^3.5.1",
+    "typography": "^0.16.19",
+    "typography-theme-wordpress-2016": "^0.16.19"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  },
+  "homepage": "https://github.com/d4rekanguok/gatsby-starter-blog-ts#readme",
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
+  "main": "n/a",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d4rekanguok/gatsby-starter-blog-ts.git"
+  },
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write src/**/*.{js,jsx}",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+  }
+}
