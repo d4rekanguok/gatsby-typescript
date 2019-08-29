@@ -37,6 +37,10 @@ In order for this plugin to work right, you'd need to set your compile options l
     "lib": ["dom"],             /* <-- required! */
     "jsx": "preserve",          /* <-- required! */
     "moduleResolution": "node", /* <-- required! */
+
+    /* for mixed ts/js codebase */
+    "allowJS": true,
+    "outDir": "./build"    /* this won't be used by ts-loader */
     /* other options... */
   }
 
@@ -50,7 +54,9 @@ In order for this plugin to work right, you'd need to set your compile options l
 |options.codegen| `true` | enable / disable generating definitions for graphql queries|
 |options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
-|options.alwaysCheck | `false` | enable type checking during production build|
+|options.alwaysCheck | `false` | (⚠️deprecated, see this note) By default type checking is disabled in production mode (during `gatsby build`). Set this to `true` to enable type checking in production as well |
+|options.typeCheck | `true` | Enable / disable type checking with `fork-ts-checker-webpack-plugin`. |
+|options.forkTsCheckerPlugin | `{}` | Options that'll be passed to `fork-ts-checker-webpack-plugin`. For all options, please see [their docs](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options)
 
 An example with all available settings:
 
@@ -61,6 +67,9 @@ An example with all available settings:
   options: {
     tsLoader: {
       logLevel: 'warn',
+    },
+    forkTsCheckerPlugin: {
+      eslint: true,
     },
     fileName: `types/graphql-types.ts`,
     codegen: true,
@@ -115,5 +124,19 @@ interface IBlogIndexProps {
 
 const BlogIndex: React.FC<IBlogIndexProps> = ({ data, location }) => {
   ...
+}
+```
+
+## Disable type checking in production
+
+Previously this plugin disable type checking in production by default, which can be changed by setting `alwaysCheck` to `true`. Since 2.0.0 it no longer does this. If you want to preseve the previous behavior, please set the `typeCheck` option like below:
+
+```js
+{
+  resolve: 'gatsby-plugin-ts',
+  options: {
+    // Disable type checking in production
+    typeCheck: process.env.NODE_ENV !== 'production',
+  }
 }
 ```
