@@ -54,6 +54,8 @@ module.exports = {
         fileName: `gen/graphql-types.ts`,
       }
     },
+    // `gatsby-plugin-typescript`,
+    // `gatsby-plugin-graphql-codegen`,
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
