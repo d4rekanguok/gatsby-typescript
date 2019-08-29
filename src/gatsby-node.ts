@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce'
 export interface TsOptions extends PluginOptions {
   tsLoader?: Partial<tsloader.Options>;
   typeCheck?: boolean;
+  alwaysCheck?: boolean;
   forkTsCheckerPlugin?: Partial<FTCWebpackPlugin.Options>;
   fileName?: string;
   codegen?: boolean;
@@ -18,6 +19,7 @@ const defaultOptions: TsOptions = {
   plugins: [],
   tsLoader: {},
   typeCheck: true,
+  alwaysCheck: false,
   forkTsCheckerPlugin: {},
   fileName: 'graphql-types.ts',
   codegen: true,
@@ -115,6 +117,10 @@ export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
 }
 
 export const onPreInit: GatsbyNode['onPreInit'] = ({ reporter }, options: TsOptions) => {
+  const { alwaysCheck } = options
   const { typeCheck } = getOptions(options)
+  if (typeof alwaysCheck !== 'undefined') {
+    reporter.warn(`[gatsby-plugin-ts] \`alwaysCheck\` has been deprecated. Please set \`typeCheck\` instead.`)
+  }
   reporter.info(`[gatsby-plugin-ts] Typecheck is ${typeCheck ? 'enabled' : 'disabled'}.`)
 }

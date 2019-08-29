@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.0
+- typecheck: allow user to pass in options for [`fork-ts-checker-webpack-plugin`](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options)
+- typecheck: #22: remove `alwaysCheck`, allow user to simply set `typeCheck` to enable / disable type checking completely. Previous behavior can be preserved by setting the following options in `gatsby-config.js`:
+
+```js
+{
+  resolve: 'gatsby-plugin-ts',
+  options: {
+    // Disable type checking in production
+    typeCheck: process.env.NODE_ENV !== 'production',
+  }
+}
+```
+
 ## 1.3.3
 - fix #15 where empty documents break build; display warning instead of throwing error
 - more greenkeeping
