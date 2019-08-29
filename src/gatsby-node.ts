@@ -7,19 +7,21 @@ import debounce from 'lodash.debounce'
 
 export interface TsOptions extends PluginOptions {
   tsLoader?: Partial<tsloader.Options>;
+  typeCheck?: boolean;
+  forkTsCheckerPlugin?: Partial<FTCWebpackPlugin.Options>;
   fileName?: string;
   codegen?: boolean;
   codegenDelay?: number;
-  alwaysCheck?: boolean;
 }
 
 const defaultOptions: TsOptions = {
   plugins: [],
   tsLoader: {},
+  typeCheck: true,
+  forkTsCheckerPlugin: {},
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
-  alwaysCheck: false,
 }
 
 type GetOptions = (options: TsOptions) => TsOptions
@@ -34,13 +36,15 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
   loaders, actions
 }, pluginOptions: TsOptions ) => {
   const options = getOptions(pluginOptions)
-  const { alwaysCheck } = options
+  const { typeCheck, forkTsCheckerPlugin } = options
   const jsLoader = loaders.js()
   if (!jsLoader) return
   const tsRule = createRule(jsLoader, options)
 
-  const shouldTypeCheck = alwaysCheck || !(process.env.NODE_ENV === 'production')
-  const plugins = shouldTypeCheck ? [ new FTCWebpackPlugin() ] : []
+  const plugins: webpack.Plugin[] = []
+  if (typeCheck) {
+    plugins.push(new FTCWebpackPlugin(forkTsCheckerPlugin))
+  }
 
   const config: webpack.Configuration = {
     module: {
@@ -110,12 +114,7 @@ export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
   await build(schema)
 }
 
-export const onPreInit: GatsbyNode['onPreInit'] = ({ reporter }, { alwaysCheck }: TsOptions) => {
-  if (process.env.NODE_ENV !== 'production') return
-  if (alwaysCheck) {
-    reporter.warn(`[gatsby-plugin-ts] \`alwaysCheck\` enabled.`)
-  }
-  else reporter.info(`[gatsby-plugin-ts] Typecheck is disabled during build by default.
-  To enable typecheck during build, set \`alwaysCheck\` to \`true\`.
-  `)
+export const onPreInit: GatsbyNode['onPreInit'] = ({ reporter }, options: TsOptions) => {
+  const { typeCheck } = getOptions(options)
+  reporter.info(`[gatsby-plugin-ts] Typecheck is ${typeCheck ? 'enabled' : 'disabled'}.`)
 }
