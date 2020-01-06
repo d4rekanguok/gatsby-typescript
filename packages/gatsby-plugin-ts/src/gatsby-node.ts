@@ -3,7 +3,6 @@ import * as webpack from 'webpack'
 import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { onPostBootstrap as onPostBootstrapCodegen } from 'gatsby-plugin-graphql-codegen/gatsby-node'
-import debounce from 'lodash.debounce'
 
 export interface TsOptions extends PluginOptions {
   tsLoader?: Partial<tsloader.Options>;
