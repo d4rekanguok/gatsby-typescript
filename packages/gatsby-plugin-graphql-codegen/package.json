@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/d4rekanguok/gatsby-plugin-ts.git"
+    "url": "git+https://github.com/d4rekanguok/gatsby-typescript.git"
   },
   "author": "Derek Nguyen <derek@penandpillow.com>",
   "license": "MIT",
@@ -43,7 +43,7 @@
     "typescript": "^3.5.1"
   },
   "bugs": {
-    "url": "https://github.com/d4rekanguok/gatsby-plugin-ts/issues"
+    "url": "https://github.com/d4rekanguok/gatsby-typescript/issues"
   },
-  "homepage": "https://github.com/d4rekanguok/gatsby-plugin-ts#readme"
+  "homepage": "https://github.com/d4rekanguok/gatsby-typescript#readme"
 }
