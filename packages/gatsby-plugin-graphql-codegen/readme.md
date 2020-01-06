@@ -24,10 +24,11 @@ module.exports = {
 |key | default | value |
 |---|---|---|
 |options.codegen| `true` | enable / disable generating definitions for graphql queries|
+|options.documentPaths| <pre>['./src/&ast;&ast;/&ast;.{ts,tsx}',<br/>'./.cache/fragments/&ast;.js', <br/>'./node_modules/gatsby-&ast;/&ast;&ast;/&ast;.js']</pre> | The paths to files containing graphql queries. <br/><small>⚠️ The default paths will be overwritten by the `documentPaths` you pass in, so please make sure to include *all* necessary paths ⚠️</small>
 |options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
 
-An example with all available settings:
+An example setup:
 
 ```js
 // gatsby-config.js
@@ -35,8 +36,11 @@ An example with all available settings:
   resolve: `gatsby-plugin-graphql-codegen`,
   options: {
     fileName: `types/graphql-types.ts`,
-    codegen: true,
-    codegenDelay: 250,
+    documentPaths: [
+      './src/**/*.{ts,tsx}',
+      './node_modules/gatsby-*/**/*.js',
+    ],
+    codegenDelay: 200,
   }
 },
 ```

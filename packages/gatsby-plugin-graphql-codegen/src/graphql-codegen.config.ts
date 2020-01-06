@@ -8,6 +8,7 @@ import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
 import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operations'
 
 interface IInitialConfig {
+  documentPaths: string[];
   directory: string;
   fileName: string;
   reporter: Reporter;
@@ -15,7 +16,12 @@ interface IInitialConfig {
 
 type CreateConfigFromSchema = (schema: GraphQLSchema) => Promise<any>
 type CreateConfig = (args: IInitialConfig) => Promise<CreateConfigFromSchema>
-const createConfig: CreateConfig = async ({ directory, fileName, reporter }) => {
+const createConfig: CreateConfig = async ({
+  documentPaths,
+  directory, 
+  fileName, 
+  reporter
+}) => {
   // file name & location
   const pathToFile = path.join(directory, fileName)
   const { dir } = path.parse(pathToFile)
@@ -23,10 +29,7 @@ const createConfig: CreateConfig = async ({ directory, fileName, reporter }) => 
 
   return async (schema) => {
     // documents
-    const docPromises = [
-      './src/**/*.{ts,tsx}',
-      './node_modules/gatsby-*/**/*.js',
-    ].map(async docGlob => {
+    const docPromises = documentPaths.map(async docGlob => {
       const _docGlob = path.join(directory, docGlob)
       return loadDocuments(_docGlob).catch(err => {
         reporter.warn('[gatsby-plugin-graphql-codegen] ' + err.message)
