@@ -50,15 +50,18 @@ In order for this plugin to work right, you'd need to set your compile options l
 
 |key | default | value |
 |---|---|---|
+|**typecheck options**|||
 |options.tsLoader| `{}` | option to be passed into `ts-loader`. `transpileOnly` is always `true`, since typechecking is handled by `fork-ts-checker-webpack-plugin`. [See ts-loader docs](https://github.com/TypeStrong/ts-loader#options) for more | 
-|options.codegen| `true` | enable / disable generating definitions for graphql queries|
-|options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
-|options.codegenDelay| `200` | amount of delay from file change to codegen|
-|options.alwaysCheck | `false` | (⚠️deprecated, see this note) By default type checking is disabled in production mode (during `gatsby build`). Set this to `true` to enable type checking in production as well |
+|options.alwaysCheck | `false` | <small>⚠️deprecated </small><br/> By default type checking is disabled in production mode (during `gatsby build`). Set this to `true` to enable type checking in production as well |
 |options.typeCheck | `true` | Enable / disable type checking with `fork-ts-checker-webpack-plugin`. |
 |options.forkTsCheckerPlugin | `{}` | Options that'll be passed to `fork-ts-checker-webpack-plugin`. For all options, please see [their docs](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options)
+|**codegen options**|||
+|options.codegen| `true` | enable / disable generating definitions for graphql queries|
+|options.documentPaths| <pre>['./src/&ast;&ast;/&ast;.{ts,tsx}',<br/>'./.cache/fragments/&ast;.js', <br/>'./node_modules/gatsby-&ast;/&ast;&ast;/&ast;.js']</pre> | The paths to files containing graphql queries. <br/><small>⚠️ The default paths will be overwritten by the `documentPaths` you pass in, so please make sure to include *all* necessary paths ⚠️</small>
+|options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
+|options.codegenDelay| `200` | amount of delay from file change to codegen|
 
-An example with all available settings:
+An example setup:
 
 ```js
 // gatsby-config.js

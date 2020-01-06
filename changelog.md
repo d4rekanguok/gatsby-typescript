@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.0
+- Allow users to modify document paths (#26)
+- `gatsby-plugin-ts` now use `gatsby-plugin-graphql-codegen` under the hood instead of duplicating code
+
 ## 2.0.0
 - typecheck: allow user to pass in options for [`fork-ts-checker-webpack-plugin`](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options)
 - typecheck: #22: remove `alwaysCheck`, allow user to simply set `typeCheck` to enable / disable type checking completely. Previous behavior can be preserved by setting the following options in `gatsby-config.js`:

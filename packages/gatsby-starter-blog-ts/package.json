@@ -57,7 +57,7 @@
     "url": "git+https://github.com/d4rekanguok/gatsby-starter-blog-ts.git"
   },
   "scripts": {
-    "build": "gatsby build",
+    "build-site": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
