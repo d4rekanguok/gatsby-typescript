@@ -28,7 +28,7 @@ module.exports = {
 |options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
 
-An example with all available settings:
+An example setup:
 
 ```js
 // gatsby-config.js
@@ -36,8 +36,11 @@ An example with all available settings:
   resolve: `gatsby-plugin-graphql-codegen`,
   options: {
     fileName: `types/graphql-types.ts`,
-    codegen: true,
-    codegenDelay: 250,
+    documentPaths: [
+      './src/**/*.{ts,tsx}',
+      './node_modules/gatsby-*/**/*.js',
+    ],
+    codegenDelay: 200,
   }
 },
 ```
