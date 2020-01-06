@@ -19,17 +19,9 @@
   "author": "Derek Nguyen <derek@penandpillow.com>",
   "license": "MIT",
   "dependencies": {
-    "@graphql-codegen/core": "^1.4.0",
-    "@graphql-codegen/typescript": "^1.4.0",
-    "@graphql-codegen/typescript-operations": "^1.4.0",
     "fork-ts-checker-webpack-plugin": "^1.4.3",
     "fs-extra": "^7.0.1",
     "gatsby-plugin-graphql-codegen": "^2.0.1",
-    "graphql": "^14.1.1",
-    "graphql-tag-pluck": "^0.8.3",
-    "graphql-toolkit": "^0.5.0",
-    "lerna": "^3.16.4",
-    "lodash.debounce": "^4.0.8",
     "ts-loader": "^6.0.4"
   },
   "peerDependencies": {
