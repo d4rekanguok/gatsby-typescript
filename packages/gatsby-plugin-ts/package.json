@@ -24,6 +24,7 @@
     "@graphql-codegen/typescript-operations": "^1.4.0",
     "fork-ts-checker-webpack-plugin": "^1.4.3",
     "fs-extra": "^7.0.1",
+    "gatsby-plugin-graphql-codegen": "^2.0.1",
     "graphql": "^14.1.1",
     "graphql-tag-pluck": "^0.8.3",
     "graphql-toolkit": "^0.5.0",
