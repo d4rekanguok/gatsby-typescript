@@ -3,19 +3,25 @@ import { generateWithConfig } from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
 
 export interface TsOptions extends PluginOptions {
+  documentPaths?: string[];
   fileName?: string;
   codegen?: boolean;
   codegenDelay?: number;
 }
 
-const defaultOptions: TsOptions = {
+const defaultOptions: Required<TsOptions> = {
   plugins: [],
+  documentPaths: [
+    './src/**/*.{ts,tsx}',
+    './.cache/fragments/*.js',
+    './node_modules/gatsby-*/**/*.js',
+  ],
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
 }
 
-type GetOptions = (options: TsOptions) => TsOptions
+type GetOptions = (options: TsOptions) => Required<TsOptions>
 const getOptions: GetOptions = (pluginOptions) => ({
   ...defaultOptions,
   ...pluginOptions,
@@ -27,13 +33,12 @@ export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
 
-  const fileName = options.fileName as string
-  const codegenDelay = options.codegenDelay
+  const { documentPaths, fileName, codegenDelay } = options
 
   const { schema, program } = store.getState()
   const { directory } = program
   const generateFromSchema = await generateWithConfig({
-    directory, fileName, reporter
+    documentPaths, directory, fileName, reporter
   })
 
   const build = async (schema: any) => {
