@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-typescript",
+  "name": "gatsby-plugin-ts",
   "version": "2.1.2",
   "description": "Typescript support via ts-loader & fork-ts-checker-webpack-plugin + automate codegen",
   "main": "index.js",
