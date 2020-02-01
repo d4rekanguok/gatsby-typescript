@@ -1,11 +1,17 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import { Reporter } from 'gatsby'
-import { loadDocuments, DocumentFile } from 'graphql-toolkit'
+import { Source } from '@graphql-toolkit/common'
+import { loadDocuments } from '@graphql-toolkit/core'
+import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
 import { codegen } from '@graphql-codegen/core'
 import { printSchema, parse } from 'gatsby/graphql'
 import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
 import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operations'
+
+function isSource(result: void | Source[]): result is Source[] {
+ return typeof result !== 'undefined'
+}
 
 interface IInitialConfig {
   documentPaths: string[];
@@ -31,15 +37,14 @@ const createConfig: CreateConfig = async ({
     // documents
     const docPromises = documentPaths.map(async docGlob => {
       const _docGlob = path.join(directory, docGlob)
-      return loadDocuments(_docGlob).catch(err => {
+      return loadDocuments(_docGlob, {
+        loaders: [new GraphQLFileLoader()]
+      }).catch(err => {
         reporter.warn('[gatsby-plugin-graphql-codegen] ' + err.message)
       })
     })
     const results = await Promise.all(docPromises)
-    const documents = results.reduce((acc, cur) => {
-      if (!cur) return acc
-      return (acc as DocumentFile[]).concat(cur)
-    }, [])
+    const documents = results.filter(isSource)
 
     return {
       filename: pathToFile,
