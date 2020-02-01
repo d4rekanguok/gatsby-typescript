@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.0
+- typecheck: Upgrade fork-ts-checker & ts-loader (#35)
+
+## 2.1.4
+- codegen: Upgrade graphql-toolkit, fix a bug caused by version mismatched (#34)
+
+## 2.1.2
+- codegen: Fix a graphql conflict error that happens in certain projects — use gatsby/graphql instead (#33)
+
 ## 2.1.0
 - Allow users to modify document paths (#26)
 - `gatsby-plugin-ts` now use `gatsby-plugin-graphql-codegen` under the hood instead of duplicating code
