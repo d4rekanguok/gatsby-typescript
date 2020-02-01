@@ -3,7 +3,7 @@ import * as path from 'path'
 import { Reporter } from 'gatsby'
 import { Source } from '@graphql-toolkit/common'
 import { loadDocuments } from '@graphql-toolkit/core'
-import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
+import { CodeFileLoader } from '@graphql-toolkit/code-file-loader'
 import { codegen } from '@graphql-codegen/core'
 import { printSchema, parse } from 'gatsby/graphql'
 import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
@@ -38,13 +38,13 @@ const createConfig: CreateConfig = async ({
     const docPromises = documentPaths.map(async docGlob => {
       const _docGlob = path.join(directory, docGlob)
       return loadDocuments(_docGlob, {
-        loaders: [new GraphQLFileLoader()]
+        loaders: [new CodeFileLoader()]
       }).catch(err => {
         reporter.warn('[gatsby-plugin-graphql-codegen] ' + err.message)
       })
     })
     const results = await Promise.all(docPromises)
-    const documents = results.filter(isSource)
+    const documents = results.filter(isSource).flat()
 
     return {
       filename: pathToFile,
