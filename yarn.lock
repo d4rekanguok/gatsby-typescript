@@ -6719,6 +6719,16 @@ gatsby-plugin-sharp@^2.1.5:
     sharp "^0.23.0"
     svgo "^1.3.0"
 
+gatsby-plugin-ts@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-ts/-/gatsby-plugin-ts-2.1.1.tgz#6aab9f0aea94d8736cb4d8a960caf2c5199172e2"
+  integrity sha512-GzglWqtD7UhTv+y4+u/xYW3oeuEDEshC0ecoRSMwoP5jDARs0MugCmpsUqKSgfr3R01g1LI7H9ptIunPxZG5Sg==
+  dependencies:
+    fork-ts-checker-webpack-plugin "^1.4.3"
+    fs-extra "^7.0.1"
+    gatsby-plugin-graphql-codegen "^2.1.1"
+    ts-loader "^6.0.4"
+
 gatsby-plugin-typescript@^2.1.5:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-typescript/-/gatsby-plugin-typescript-2.1.5.tgz#35a5e87df7d025a2d2d0f8a78b429a52a1ffe3e5"
@@ -7475,7 +7485,7 @@ graphql-type-json@^0.2.4:
   resolved "https://registry.yarnpkg.com/graphql-type-json/-/graphql-type-json-0.2.4.tgz#545af27903e40c061edd30840a272ea0a49992f9"
   integrity sha512-/tq02ayMQjrG4oDFDRLLrPk0KvJXue0nVXoItBe7uAdbNXjQUu+HYCBdAmPLQoseVzUKKMzrhq2P/sfI76ON6w==
 
-graphql@*, graphql@^14.1.1, graphql@^14.5.3:
+graphql@*, graphql@^14.5.3:
   version "14.5.4"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.5.4.tgz#b33fe957854e90c10d4c07c7d26b6c8e9f159a13"
   integrity sha512-dPLvHoxy5m9FrkqWczPPRnH0X80CyvRE6e7Fa5AWEqEAzg9LpxHvKh24po/482E6VWHigOkAmb4xCp6P9yT9gw==

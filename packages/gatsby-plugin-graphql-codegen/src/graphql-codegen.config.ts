@@ -3,7 +3,7 @@ import * as path from 'path'
 import { Reporter } from 'gatsby'
 import { loadDocuments, DocumentFile } from 'graphql-toolkit'
 import { codegen } from '@graphql-codegen/core'
-import { printSchema, parse, GraphQLSchema } from 'graphql'
+import { printSchema, parse } from 'gatsby/graphql'
 import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
 import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operations'
 
@@ -14,7 +14,7 @@ interface IInitialConfig {
   reporter: Reporter;
 }
 
-type CreateConfigFromSchema = (schema: GraphQLSchema) => Promise<any>
+type CreateConfigFromSchema = (schema: any) => Promise<any>
 type CreateConfig = (args: IInitialConfig) => Promise<CreateConfigFromSchema>
 const createConfig: CreateConfig = async ({
   documentPaths,
@@ -67,7 +67,7 @@ const createConfig: CreateConfig = async ({
   }
 }
 
-type GenerateFromSchema = (schema: GraphQLSchema) => Promise<void>
+type GenerateFromSchema = (schema: any) => Promise<void>
 type GenerateWithConfig = (initalOptions: IInitialConfig) => Promise<GenerateFromSchema>
 export const generateWithConfig: GenerateWithConfig = async (initalOptions) => {
   const createConfigFromSchema = await createConfig(initalOptions)
