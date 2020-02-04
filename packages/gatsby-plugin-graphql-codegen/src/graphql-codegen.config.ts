@@ -44,7 +44,9 @@ const createConfig: CreateConfig = async ({
       })
     })
     const results = await Promise.all(docPromises)
-    const documents = results.filter(isSource).flat()
+    const documents = results
+      .filter(isSource)
+      .reduce((acc, cur) => acc.concat(cur), [])
 
     return {
       filename: pathToFile,
