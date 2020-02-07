@@ -8,13 +8,20 @@
   "license": "MIT",
   "scripts": {
     "bootstrap": "lerna bootstrap --use-workspaces",
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "test": "jest"
   },
   "private": true,
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^3.16.4"
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/jest": "^25.1.2",
+    "jest": "^25.1.0",
+    "lerna": "^3.16.4",
+    "prettier": "^1.19.1"
   }
 }
