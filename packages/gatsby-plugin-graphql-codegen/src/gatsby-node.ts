@@ -27,7 +27,7 @@ const getOptions: GetOptions = (pluginOptions) => ({
   ...pluginOptions,
 })
 
-export const onPostBootstrap: GatsbyNode["onPostBootstrap"] = async (
+export const onPostBootstrap: NonNullable<GatsbyNode["onPostBootstrap"]> = async (
   { store, reporter }, pluginOptions: TsOptions
 ) => {
   const options = getOptions(pluginOptions)

@@ -3,6 +3,7 @@ import * as webpack from 'webpack'
 import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { onPostBootstrap as onPostBootstrapCodegen } from 'gatsby-plugin-graphql-codegen/gatsby-node'
+import requireResolve from './require-resolve';
 
 export interface TsOptions extends PluginOptions {
   tsLoader?: Partial<tsloader.Options>;
@@ -65,7 +66,7 @@ const createRule: CreateRule = (jsLoader, { tsLoader }) => ({
   test: /\.tsx?$/,
   exclude: /node_modules/,
   use: [jsLoader, {
-    loader: require.resolve('ts-loader'),
+    loader: requireResolve('ts-loader'),
     options: {
       ...tsLoader,
       // use ForkTsCheckerWebpackPlugin for typecheck
