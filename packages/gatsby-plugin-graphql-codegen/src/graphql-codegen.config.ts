@@ -75,9 +75,9 @@ const createConfig: CreateConfig = async ({
 }
 
 type GenerateFromSchema = (schema: any) => Promise<void>
-type GenerateWithConfig = (initalOptions: IInitialConfig) => Promise<GenerateFromSchema>
-export const generateWithConfig: GenerateWithConfig = async (initalOptions) => {
-  const createConfigFromSchema = await createConfig(initalOptions)
+type GenerateWithConfig = (initialOptions: IInitialConfig) => Promise<GenerateFromSchema>
+export const generateWithConfig: GenerateWithConfig = async (initialOptions) => {
+  const createConfigFromSchema = await createConfig(initialOptions)
   return async (schema) => {
     const config = await createConfigFromSchema(schema)
     const output = await codegen(config)
