@@ -1,7 +1,3 @@
 node_modules/
-gatsby-node.js
-gatsby-node.d.ts
-graphql-codegen.config.js
-graphql-codegen.config.d.ts
 coverage
 .DS_Store

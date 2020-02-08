@@ -1,2 +1,4 @@
+# Publish built files
 **
 !gatsby-node.js
+!require-resolve.js

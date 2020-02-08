@@ -1,0 +1,5 @@
+# Ignore built files
+gatsby-node.js
+gatsby-node.d.ts
+graphql-codegen.config.js
+graphql-codegen.config.d.ts

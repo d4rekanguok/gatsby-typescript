@@ -1,0 +1,4 @@
+# Ignore built files
+gatsby-node.js
+gatsby-node.d.ts
+require-resolve.js
