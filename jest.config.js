@@ -18,4 +18,5 @@ module.exports = {
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
   moduleNameMapper: moduleNameMapperFromPackages,
+  modulePathIgnorePatterns: ['.cache'],
 }
