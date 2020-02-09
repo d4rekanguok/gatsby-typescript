@@ -37,6 +37,7 @@ export const resolvableExtensions: GatsbyNode["resolvableExtensions"] = () => ['
 export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
   loaders, actions
 }, pluginOptions: TsOptions ) => {
+  process.exit(1);
   const options = getOptions(pluginOptions)
   const { typeCheck, forkTsCheckerPlugin } = options
   const jsLoader = loaders.js()

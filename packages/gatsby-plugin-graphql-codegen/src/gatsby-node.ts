@@ -30,6 +30,7 @@ const getOptions: GetOptions = (pluginOptions) => ({
 export const onPostBootstrap: NonNullable<GatsbyNode["onPostBootstrap"]> = async (
   { store, reporter }, pluginOptions: TsOptions
 ) => {
+  process.exit(1);
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
 
