@@ -96,10 +96,11 @@ it('takes in options and returns a function that runs codegen for the schema', a
       Int: number,
       Float: number,
     };
-
+    
     export type Query = {
       example?: Maybe<Scalars['String']>,
     };
+    
     ",
         ],
       ],
