@@ -18,9 +18,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: |
           npm i
-          npx lerna bootstrap
+          cd packages/gatsby-plugin-ts
+          npm link
           cd packages/gatsby-starter-ts
           npm i
+          npm link gatsby-plugin-ts
           npm run build
         env:
           CI: true
