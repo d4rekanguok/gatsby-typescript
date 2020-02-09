@@ -16,7 +16,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn
-      - run: yarn workspace gatsby-starter-ts build
+      - run: |
+          yarn
+          yarn workspace gatsby-starter-ts build
         env:
           CI: true
