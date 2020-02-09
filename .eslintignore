@@ -1,0 +1,7 @@
+node_modules
+
+## babel, jest, prettier
+*.config.js
+
+## test files
+*.test.js

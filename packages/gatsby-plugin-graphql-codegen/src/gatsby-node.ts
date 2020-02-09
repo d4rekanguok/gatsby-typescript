@@ -3,10 +3,10 @@ import { generateWithConfig } from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
 
 export interface TsOptions extends PluginOptions {
-  documentPaths?: string[];
-  fileName?: string;
-  codegen?: boolean;
-  codegenDelay?: number;
+  documentPaths?: string[]
+  fileName?: string
+  codegen?: boolean
+  codegenDelay?: number
 }
 
 const defaultOptions: Required<TsOptions> = {
@@ -22,13 +22,14 @@ const defaultOptions: Required<TsOptions> = {
 }
 
 type GetOptions = (options: TsOptions) => Required<TsOptions>
-const getOptions: GetOptions = (pluginOptions) => ({
+const getOptions: GetOptions = pluginOptions => ({
   ...defaultOptions,
   ...pluginOptions,
 })
 
-export const onPostBootstrap: NonNullable<GatsbyNode["onPostBootstrap"]> = async (
-  { store, reporter }, pluginOptions: TsOptions
+export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async (
+  { store, reporter },
+  pluginOptions: TsOptions
 ) => {
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
@@ -38,13 +39,18 @@ export const onPostBootstrap: NonNullable<GatsbyNode["onPostBootstrap"]> = async
   const { schema, program } = store.getState()
   const { directory } = program
   const generateFromSchema = await generateWithConfig({
-    documentPaths, directory, fileName, reporter
+    documentPaths,
+    directory,
+    fileName,
+    reporter,
   })
 
-  const build = async (schema: any) => {
+  const build = async (schema: any): Promise<void> => {
     try {
-      await generateFromSchema(schema) 
-      reporter.info(`[gatsby-plugin-graphql-codegen] definition for queries has been updated at ${fileName}`)
+      await generateFromSchema(schema)
+      reporter.info(
+        `[gatsby-plugin-graphql-codegen] definition for queries has been updated at ${fileName}`
+      )
     } catch (err) {
       reporter.panic(err)
     }
@@ -55,7 +61,7 @@ export const onPostBootstrap: NonNullable<GatsbyNode["onPostBootstrap"]> = async
     leading: false,
   })
 
-  const watchStore = async () => {
+  const watchStore = async (): Promise<void> => {
     const { lastAction: action } = store.getState()
     if (!['REPLACE_STATIC_QUERY', 'QUERY_EXTRACTED'].includes(action.type)) {
       return
