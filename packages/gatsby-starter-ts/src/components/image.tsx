@@ -2,7 +2,7 @@ import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 import ensureKeys from "../helpers/ensure-keys"
-import { ImageQuery } from "../../graphql-types"
+import { ImageChangedQuery } from "../../graphql-types"
 
 /*
  * This component is built using `gatsby-image` to automatically serve optimized
@@ -17,7 +17,7 @@ import { ImageQuery } from "../../graphql-types"
 
 const Image = () => {
   // expect this to break in the build
-  const data = useStaticQuery<ImageQuery>(graphql`
+  const data = useStaticQuery<ImageChangedQuery>(graphql`
     query ImageCHANGED {
       placeholderImage: file(relativePath: { eq: "gatsby-astronaut.png" }) {
         childImageSharp {
