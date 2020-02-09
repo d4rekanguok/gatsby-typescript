@@ -10,35 +10,35 @@ import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
 import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operations'
 
 function isSource(result: void | Source[]): result is Source[] {
- return typeof result !== 'undefined'
+  return typeof result !== 'undefined'
 }
 
 interface IInitialConfig {
-  documentPaths: string[];
-  directory: string;
-  fileName: string;
-  reporter: Reporter;
+  documentPaths: string[]
+  directory: string
+  fileName: string
+  reporter: Reporter
 }
 
 type CreateConfigFromSchema = (schema: any) => Promise<any>
 type CreateConfig = (args: IInitialConfig) => Promise<CreateConfigFromSchema>
 const createConfig: CreateConfig = async ({
   documentPaths,
-  directory, 
-  fileName, 
-  reporter
+  directory,
+  fileName,
+  reporter,
 }) => {
   // file name & location
   const pathToFile = path.join(directory, fileName)
   const { dir } = path.parse(pathToFile)
   await fs.ensureDir(dir)
 
-  return async (schema) => {
+  return async (schema): Promise<any> => {
     // documents
     const docPromises = documentPaths.map(async docGlob => {
       const _docGlob = path.join(directory, docGlob)
       return loadDocuments(_docGlob, {
-        loaders: [new CodeFileLoader()]
+        loaders: [new CodeFileLoader()],
       }).catch(err => {
         reporter.warn('[gatsby-plugin-graphql-codegen] ' + err.message)
       })
@@ -51,34 +51,39 @@ const createConfig: CreateConfig = async ({
     return {
       filename: pathToFile,
       schema: parse(printSchema(schema)),
-      plugins: [{
-        typescript: {
-          skipTypename: true,
-          enumsAsTypes: true,
+      plugins: [
+        {
+          typescript: {
+            skipTypename: true,
+            enumsAsTypes: true,
+          },
         },
-      }, {
-        typescriptOperation: {
-          skipTypename: true,
+        {
+          typescriptOperation: {
+            skipTypename: true,
+          },
         },
-      }],
+      ],
       documents,
       pluginMap: {
         typescript: {
-          plugin: typescriptPlugin
+          plugin: typescriptPlugin,
         },
         typescriptOperation: {
-          plugin: operationsPlugin
-        }
-      }
+          plugin: operationsPlugin,
+        },
+      },
     }
   }
 }
 
 type GenerateFromSchema = (schema: any) => Promise<void>
-type GenerateWithConfig = (initialOptions: IInitialConfig) => Promise<GenerateFromSchema>
-export const generateWithConfig: GenerateWithConfig = async (initialOptions) => {
+type GenerateWithConfig = (
+  initialOptions: IInitialConfig
+) => Promise<GenerateFromSchema>
+export const generateWithConfig: GenerateWithConfig = async initialOptions => {
   const createConfigFromSchema = await createConfig(initialOptions)
-  return async (schema) => {
+  return async (schema): Promise<void> => {
     const config = await createConfigFromSchema(schema)
     const output = await codegen(config)
     return fs.writeFile(config.filename, output)
