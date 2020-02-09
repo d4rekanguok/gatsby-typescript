@@ -20,6 +20,6 @@ jobs:
           yarn
           yarn bootstrap
           yarn workspaces info
-          yarn workspace gatsby-starter-ts build
+          cd packages/gatsby-starter-ts && && npm i && npm run build
         env:
           CI: true
