@@ -16,8 +16,9 @@ import { ImageQuery } from "../../graphql-types"
  */
 
 const Image = () => {
+  // expect this to break in the build
   const data = useStaticQuery<ImageQuery>(graphql`
-    query Image {
+    query ImageCHANGED {
       placeholderImage: file(relativePath: { eq: "gatsby-astronaut.png" }) {
         childImageSharp {
           fluid(maxWidth: 300) {
