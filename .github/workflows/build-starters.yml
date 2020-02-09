@@ -18,11 +18,22 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: |
           npm i
+
           cd packages/gatsby-plugin-ts
+          npm i
           npm link
-          cd ../../packages/gatsby-starter-ts
+          cd ../../
+
+          cd packages/gatsby-plugin-graphql-codegen
+          npm i
+          npm link
+          cd ../../
+
+          cd packages/gatsby-starter-ts
           npm i
           npm link gatsby-plugin-ts
+          npm link gatsby-plugin-graphql-codegen
+
           npm run build
         env:
           CI: true
