@@ -20,6 +20,7 @@ jobs:
           npm i
           npx lerna bootstrap
           cd packages/gatsby-starter-ts
+          npm i
           npm run build
         env:
           CI: true
