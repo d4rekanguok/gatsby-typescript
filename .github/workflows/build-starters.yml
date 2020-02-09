@@ -17,24 +17,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: |
-          npm i
-
-          cd packages/gatsby-plugin-graphql-codegen
-          npm i
-          npm link
-          cd ../../
-
-          cd packages/gatsby-plugin-ts
-          npm i
-          npm link
-          npm link gatsby-plugin-graphql-codegen
-          cd ../../
-
-          cd packages/gatsby-starter-ts
-          npm i
-          npm link gatsby-plugin-ts
-          npm link gatsby-plugin-graphql-codegen
-
-          npm run build
+          yarn
+          yarn workspace gatsby-starter-ts build
         env:
           CI: true
+          GATSBY_TELEMETRY_DISABLED: 1

@@ -28,7 +28,7 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-ts`,
+      resolve: require.resolve(`../gatsby-plugin-ts`),
       options: {
         typeCheck: true,
         codegen: true,

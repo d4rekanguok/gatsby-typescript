@@ -2,7 +2,7 @@ import { GatsbyNode, PluginOptions } from 'gatsby'
 import * as webpack from 'webpack'
 import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import { onPostBootstrap as onPostBootstrapCodegen } from 'gatsby-plugin-graphql-codegen/gatsby-node'
+import { onPostBootstrap as onPostBootstrapCodegen } from '../gatsby-plugin-graphql-codegen/gatsby-node'
 import requireResolve from './require-resolve';
 
 export interface TsOptions extends PluginOptions {
@@ -42,6 +42,8 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
   const jsLoader = loaders.js()
   if (!jsLoader) return
   const tsRule = createRule(jsLoader, options)
+
+  console.log('THIS IS RUN')
 
   const plugins: webpack.Plugin[] = []
   if (typeCheck) {
