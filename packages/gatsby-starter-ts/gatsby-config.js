@@ -27,12 +27,7 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
-    {
-      resolve: `gatsby-plugin-ts`,
-      options: {
-        typeCheck: process.env.NODE_ENV === 'development'
-      }
-    }
+    `gatsby-plugin-ts`,
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
