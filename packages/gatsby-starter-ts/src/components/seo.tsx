@@ -6,14 +6,24 @@
  */
 
 import React from "react"
-import PropTypes from "prop-types"
 import Helmet from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
+import ensureKeys from "../helpers/ensure-keys"
+import { SeoQuery } from "../../graphql-types"
 
-function SEO({ description, lang, meta, title }) {
-  const { site } = useStaticQuery(
+type MetaProps = JSX.IntrinsicElements["meta"]
+
+interface Props {
+  title: string
+  description?: string
+  lang?: string
+  meta?: MetaProps[]
+}
+
+function SEO({ title, description = ``, lang = `en`, meta = [] }: Props) {
+  const { site } = useStaticQuery<SeoQuery>(
     graphql`
-      query {
+      query Seo {
         site {
           siteMetadata {
             title
@@ -25,7 +35,12 @@ function SEO({ description, lang, meta, title }) {
     `
   )
 
-  const metaDescription = description || site.siteMetadata.description
+  const {
+    author,
+    description: siteDescription,
+  } = ensureKeys(site?.siteMetadata, [`author`, `description`])
+
+  const metaDescription = description ?? siteDescription
 
   return (
     <Helmet
@@ -33,7 +48,7 @@ function SEO({ description, lang, meta, title }) {
         lang,
       }}
       title={title}
-      titleTemplate={`%s | ${site.siteMetadata.title}`}
+      titleTemplate={`%s | ${site?.siteMetadata?.title}`}
       meta={[
         {
           name: `description`,
@@ -57,7 +72,7 @@ function SEO({ description, lang, meta, title }) {
         },
         {
           name: `twitter:creator`,
-          content: site.siteMetadata.author,
+          content: author,
         },
         {
           name: `twitter:title`,
@@ -67,22 +82,10 @@ function SEO({ description, lang, meta, title }) {
           name: `twitter:description`,
           content: metaDescription,
         },
-      ].concat(meta)}
+        ...meta,
+      ]}
     />
   )
-}
-
-SEO.defaultProps = {
-  lang: `en`,
-  meta: [],
-  description: ``,
-}
-
-SEO.propTypes = {
-  description: PropTypes.string,
-  lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
 }
 
 export default SEO
