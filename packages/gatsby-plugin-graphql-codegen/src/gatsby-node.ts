@@ -33,7 +33,7 @@ export const onPostBootstrap: NonNullable<GatsbyNode["onPostBootstrap"]> = async
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
 
-  reporter.info('TESTING ONE TWO THREE')
+  console.log('TESTING ONE TWO THREE')
 
   const { documentPaths, fileName, codegenDelay } = options
 
