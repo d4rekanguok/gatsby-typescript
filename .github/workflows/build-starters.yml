@@ -20,7 +20,8 @@ jobs:
           npm i
           cd packages/gatsby-plugin-ts
           npm link
-          cd ../packages/gatsby-starter-ts
+          cd ..
+          cd packages/gatsby-starter-ts
           npm i
           npm link gatsby-plugin-ts
           npm run build
