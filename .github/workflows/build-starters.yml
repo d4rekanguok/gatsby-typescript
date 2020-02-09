@@ -20,4 +20,3 @@ jobs:
       - run: yarn workspace gatsby-starter-ts build
         env:
           CI: true
-          GATSBY_TELEMETRY_DISABLED: 1
