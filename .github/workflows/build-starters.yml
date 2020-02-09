@@ -17,11 +17,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: |
-          yarn
-          yarn bootstrap
-          yarn workspaces info
-          cd packages/gatsby-starter-ts
           npm i
+          npm run bootstrap
+          cd packages/gatsby-starter-ts
           npm run build
         env:
           CI: true
