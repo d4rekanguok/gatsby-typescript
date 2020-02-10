@@ -1,15 +1,15 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
+import React from 'react'
+import { Link, graphql } from 'gatsby'
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import { rhythm, scale } from "../utils/typography"
+import Bio from '../components/bio'
+import Layout from '../components/layout'
+import SEO from '../components/seo'
+import { rhythm, scale } from '../utils/typography'
 
 interface IPostTemplateProps {
-  location: Location;
-  pageContext: any;
-  data: any;
+  location: Location
+  pageContext: any
+  data: any
 }
 
 class BlogPostTemplate extends React.Component<IPostTemplateProps> {
