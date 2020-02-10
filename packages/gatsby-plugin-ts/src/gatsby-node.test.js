@@ -11,7 +11,7 @@ jest.mock(
       constructor(options) {
         this.options = options
       }
-    },
+    }
 )
 
 jest.mock('./require-resolve', () => () => 'mock-resolved.ts')

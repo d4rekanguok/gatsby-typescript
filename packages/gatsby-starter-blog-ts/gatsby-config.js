@@ -52,7 +52,7 @@ module.exports = {
       options: {
         typeCheck: process.env.NODE_ENV !== 'production',
         fileName: `gen/graphql-types.ts`,
-      }
+      },
     },
     // `gatsby-plugin-typescript`,
     // `gatsby-plugin-graphql-codegen`,

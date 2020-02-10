@@ -1,30 +1,31 @@
-import * as React from "react"
-import { Link, graphql } from "gatsby"
+import * as React from 'react'
+import { Link, graphql } from 'gatsby'
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import { rhythm } from "../utils/typography"
+import Bio from '../components/bio'
+import Layout from '../components/layout'
+import SEO from '../components/seo'
+import { rhythm } from '../utils/typography'
 
 import { BlogIndexQuery } from '../../gen/graphql-types'
 
 interface IBlogIndexProps {
   // uncomment this when type is generated
-  data: BlogIndexQuery;
+  data: BlogIndexQuery
   // data: any;
-  location: Location;
+  location: Location
 }
 
 class BlogIndex extends React.Component<IBlogIndexProps> {
   render() {
     const { data, location } = this.props
     if (
-      !data || 
-      !data.site || 
+      !data ||
+      !data.site ||
       !data.site.siteMetadata ||
-      !data.site.siteMetadata.title || 
+      !data.site.siteMetadata.title ||
       !data.allMarkdownRemark
-    ) throw new Error('no data')
+    )
+      throw new Error('no data')
     const siteTitle = data.site.siteMetadata.title
     const posts = data.allMarkdownRemark.edges
 
@@ -38,7 +39,8 @@ class BlogIndex extends React.Component<IBlogIndexProps> {
             !node.excerpt ||
             !node.fields ||
             !node.fields.slug
-          ) throw new Error('missing data')
+          )
+            throw new Error('missing data')
 
           const title = node.frontmatter.title || node.fields.slug
           return (

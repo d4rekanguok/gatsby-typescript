@@ -1,11 +1,11 @@
-import React from "react"
-import { Link } from "gatsby"
+import React from 'react'
+import { Link } from 'gatsby'
 
-import { rhythm, scale } from "../utils/typography"
+import { rhythm, scale } from '../utils/typography'
 
 interface ILayoutProps {
-  location: Location;
-  title: string;
+  location: Location
+  title: string
 }
 
 class Layout extends React.Component<ILayoutProps> {
