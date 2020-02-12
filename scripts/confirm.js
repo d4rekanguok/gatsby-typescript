@@ -5,7 +5,7 @@ function confirm() {
   const projectDir = path.join(process.cwd(), 'packages', 'gatsby-starter-ts')
   const generatedFile = path.join(projectDir, 'graphql-types.ts')
 
-  const doesExist = fs.stat(generatedFile, (err, stat) => {
+  fs.stat(generatedFile, err => {
     if (err) {
       console.error(`${generatedFile} doesn't exist.`)
       throw new Error(err)

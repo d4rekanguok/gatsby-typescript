@@ -10,7 +10,8 @@
     "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",
     "test": "jest",
-    "confirm": "node scripts/confirm"
+    "confirm": "node scripts/confirm",
+    "lint": "eslint ."
   },
   "private": true,
   "workspaces": {

@@ -27,7 +27,7 @@ module.exports = {
 
     // gatsby config files
     {
-      files: ["gatsby-node.js", "gatsby-config.js"],
+      files: ["gatsby-node.js", "gatsby-config.js", "./scripts/**"],
       env: {
         "node": true,
       }
