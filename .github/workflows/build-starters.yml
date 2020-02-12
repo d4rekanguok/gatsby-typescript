@@ -28,12 +28,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - uses: actions/cache@v1
+      - name: Cache Gatsby .cache
+        uses: actions/cache@v1
         with:
           path: packages/gatsby-starter-ts/.cache
           key: ${{ runner.os }}-gatsby-cache-${{ hashFiles('packages/gatsby-starter-ts/gatsby-config.js') }}
           restore-keys: |
-            ${{ runner.os }}-gatsby-cache-
+            ${{ runner.os }}-gatsby-cache-cache
+
+      - name: Cache Gatsby public
+        uses: actions/cache@v1
+        with:
+          path: packages/gatsby-starter-ts/public
+          key: ${{ runner.os }}-gatsby-cache-${{ hashFiles('packages/gatsby-starter-ts/gatsby-config.js') }}
+          restore-keys: |
+            ${{ runner.os }}-gatsby-cache-public
             
       - run: yarn install
       - run: yarn bootstrap
