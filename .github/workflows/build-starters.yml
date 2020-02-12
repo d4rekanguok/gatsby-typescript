@@ -18,4 +18,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
       - run: yarn bootstrap
-      - run: GATSBY_TELEMETRY_DISABLED=1 CI=true yarn workspace gatsby-starter-ts build
+      - run: yarn workspace gatsby-starter-ts build
+        env:
+          GATSBY_TELEMETRY_DISABLED: 1
