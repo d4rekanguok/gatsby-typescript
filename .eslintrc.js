@@ -14,18 +14,20 @@ module.exports = {
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
+        'plugin:react/recommended',
       ],
       rules: {
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/member-delimiter-style': 0,
         '@typescript-eslint/interface-name-prefix': 0,
         '@typescript-eslint/no-use-before-define': 0,
+        'react/prop-types': 0,
       },
     },
 
     // gatsby config files
     {
-      files: ["gatsby-node.js", "gatsby-config.js"],
+      files: ["gatsby-node.js", "gatsby-config.js", "./scripts/**"],
       env: {
         "node": true,
       }
@@ -42,11 +44,16 @@ module.exports = {
       },
       extends: [
         "plugin:jest/recommended"
-      ]
+      ],
       parserOptions: {
         ecmaVersion: 2019,
         sourceType: "module",
       }
     }
   ],
+  settings: {
+    react: {
+      version: "detect",
+    }
+  }
 }

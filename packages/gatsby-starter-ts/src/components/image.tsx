@@ -1,8 +1,8 @@
-import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
-import Img from "gatsby-image"
-import ensureKeys from "../helpers/ensure-keys"
-import { ImageQuery } from "../../graphql-types"
+import * as React from 'react'
+import { useStaticQuery, graphql } from 'gatsby'
+import Img from 'gatsby-image'
+import ensureKeys from '../helpers/ensure-keys'
+import { ImageQuery } from '../../graphql-types'
 
 /*
  * This component is built using `gatsby-image` to automatically serve optimized
@@ -15,7 +15,7 @@ import { ImageQuery } from "../../graphql-types"
  * - `useStaticQuery`: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-const Image = () => {
+const Image: React.FC<{}> = () => {
   const data = useStaticQuery<ImageQuery>(graphql`
     query Image {
       placeholderImage: file(relativePath: { eq: "gatsby-astronaut.png" }) {
@@ -29,7 +29,7 @@ const Image = () => {
   `)
 
   const { fluid } = ensureKeys(data.placeholderImage?.childImageSharp, [
-    "fluid",
+    'fluid',
   ])
 
   return (

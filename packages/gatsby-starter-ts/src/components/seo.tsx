@@ -5,13 +5,13 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
-import Helmet from "react-helmet"
-import { useStaticQuery, graphql } from "gatsby"
-import ensureKeys from "../helpers/ensure-keys"
-import { SeoQuery } from "../../graphql-types"
+import * as React from 'react'
+import Helmet from 'react-helmet'
+import { useStaticQuery, graphql } from 'gatsby'
+import ensureKeys from '../helpers/ensure-keys'
+import { SeoQuery } from '../../graphql-types'
 
-type MetaProps = JSX.IntrinsicElements["meta"]
+type MetaProps = JSX.IntrinsicElements['meta']
 
 interface Props {
   title: string
@@ -20,7 +20,12 @@ interface Props {
   meta?: MetaProps[]
 }
 
-function SEO({ title, description = ``, lang = `en`, meta = [] }: Props) {
+const SEO: React.FC<Props> = ({
+  title,
+  description = ``,
+  lang = `en`,
+  meta = [],
+}) => {
   const { site } = useStaticQuery<SeoQuery>(
     graphql`
       query Seo {

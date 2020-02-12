@@ -5,19 +5,19 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
-import ensureKeys from "../helpers/ensure-keys"
-import { SiteTitleQuery } from "../../graphql-types"
+import * as React from 'react'
+import { useStaticQuery, graphql } from 'gatsby'
+import ensureKeys from '../helpers/ensure-keys'
+import { SiteTitleQuery } from '../../graphql-types'
 
-import Header from "./header"
-import "./layout.css"
+import Header from './header'
+import './layout.css'
 
 interface Props {
   children: React.ReactNode
 }
 
-const Layout = ({ children }: Props) => {
+const Layout: React.FC<Props> = ({ children }) => {
   const data = useStaticQuery<SiteTitleQuery>(graphql`
     query SiteTitle {
       site {
@@ -28,7 +28,7 @@ const Layout = ({ children }: Props) => {
     }
   `)
 
-  const { title } = ensureKeys(data.site?.siteMetadata, ["title"])
+  const { title } = ensureKeys(data.site?.siteMetadata, ['title'])
 
   return (
     <>

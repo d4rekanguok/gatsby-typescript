@@ -1,4 +1,13 @@
 node_modules
+.cache
+public
+
+packages/gatsby-plugin-graphql-codegen/gatsby-node.js
+packages/gatsby-plugin-graphql-codegen/index.js
+
+packages/gatsby-plugin-ts/gatsby-node.js
+packages/gatsby-plugin-ts/require-resolve.js
+packages/gatsby-plugin-ts/index.js
 
 ## babel, jest, prettier
 *.config.js

@@ -1,4 +1,4 @@
-import assertAll from "./assert-all"
+import assertAll from './assert-all'
 
 type ExcludeNullable<T, K extends keyof NonNullable<T>> = NonNullable<T> &
   {
