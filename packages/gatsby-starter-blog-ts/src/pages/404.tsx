@@ -1,12 +1,12 @@
-import * as React from "react"
-import { graphql } from "gatsby"
+import * as React from 'react'
+import { graphql } from 'gatsby'
 
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Layout from '../components/layout'
+import SEO from '../components/seo'
 
 interface INotFoundPage {
-  data: any;
-  location: Location;
+  data: any
+  location: Location
 }
 
 class NotFoundPage extends React.Component<INotFoundPage> {
