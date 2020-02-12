@@ -42,7 +42,7 @@ module.exports = {
       },
       extends: [
         "plugin:jest/recommended"
-      ]
+      ],
       parserOptions: {
         ecmaVersion: 2019,
         sourceType: "module",
