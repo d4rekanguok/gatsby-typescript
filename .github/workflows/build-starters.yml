@@ -1,0 +1,27 @@
+name: Build Starters
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install
+      - run: yarn bootstrap
+      - run: yarn workspace gatsby-plugin-graphql-codegen build
+      - run: yarn workspace gatsby-plugin-ts build
+      - run: yarn workspace gatsby-starter-ts build
+        env:
+          GATSBY_TELEMETRY_DISABLED: 1
+          CI: "true"
+      - run: yarn confirm

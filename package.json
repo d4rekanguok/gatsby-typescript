@@ -9,12 +9,17 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",
-    "test": "jest"
+    "test": "jest",
+    "confirm": "node scripts/confirm"
   },
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": [
+      "**/gatsby-transformer-sharp",
+      "**/gatsby-transformer-remark/**"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
