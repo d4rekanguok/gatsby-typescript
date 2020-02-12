@@ -9,7 +9,8 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",
-    "test": "jest"
+    "test": "jest",
+    "confirm": "node scripts/confirm"
   },
   "private": true,
   "workspaces": [

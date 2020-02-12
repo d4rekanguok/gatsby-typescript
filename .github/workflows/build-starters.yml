@@ -21,3 +21,4 @@ jobs:
       - run: yarn workspace gatsby-starter-ts build
         env:
           GATSBY_TELEMETRY_DISABLED: 1
+      - run: yarn confirm
