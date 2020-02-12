@@ -32,7 +32,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: packages/gatsby-starter-ts/.cache
-          key: ${{ runner.os }}-gatsby-cache-${{ hashFiles('packages/gatsby-starter-ts/gatsby-config.js') }}
+          key: ${{ runner.os }}-gatsby-cache-2-${{ hashFiles('packages/gatsby-starter-ts/gatsby-config.js') }}
           restore-keys: |
             ${{ runner.os }}-gatsby-cache-cache
 
@@ -40,7 +40,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: packages/gatsby-starter-ts/public
-          key: ${{ runner.os }}-gatsby-cache-${{ hashFiles('packages/gatsby-starter-ts/gatsby-config.js') }}
+          key: ${{ runner.os }}-gatsby-cache-2-${{ hashFiles('packages/gatsby-starter-ts/gatsby-config.js') }}
           restore-keys: |
             ${{ runner.os }}-gatsby-cache-public
             
