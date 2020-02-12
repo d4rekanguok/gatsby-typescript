@@ -15,7 +15,10 @@
   "private": true,
   "workspaces": {
     "packages": ["packages/*"],
-    "nohoist": ["**/gatsby-transformer-sharp"]
+    "nohoist": [
+      "**/gatsby-transformer-sharp",
+      "**/gatsby-transformer-remark/**"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
