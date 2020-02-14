@@ -32,7 +32,7 @@ In order for this plugin to work right, you'd need to set your compile options l
 
 ```js
   "compilerOptions": {
-    "target": "ESNext",    /* or at least ES2015 */
+    "target": "ES2018",    /* or at least ES2015 */
     "module": "ESNext",    /* or at least ES2015 */
     "lib": ["dom"],             /* <-- required! */
     "jsx": "preserve",          /* <-- required! */
@@ -77,7 +77,7 @@ An example setup:
     fileName: `types/graphql-types.ts`,
     codegen: true,
     codegenDelay: 250,
-    alwaysCheck: false,
+    typeCheck: false,
   }
 },
 ```
