@@ -61,6 +61,7 @@ const createConfig: CreateConfig = async ({
         {
           typescriptOperation: {
             skipTypename: true,
+            exportFragmentSpreadSubTypes: true,
           },
         },
       ],
