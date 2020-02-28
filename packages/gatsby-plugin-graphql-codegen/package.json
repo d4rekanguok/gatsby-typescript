@@ -36,11 +36,6 @@
     "typescript": "^3.7.5",
     "graphql": "^14.6.0"
   },
-  "peerDependenciesMeta": {
-    "graphql": {
-      "optional": true
-    }
-  },
   "devDependencies": {
     "@types/fs-extra": "^7.0.0",
     "@types/lodash.debounce": "^4.0.6",
