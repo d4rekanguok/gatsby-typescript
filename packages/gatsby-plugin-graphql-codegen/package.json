@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-graphql-codegen",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Automate codegen for Gatsby via graphql-codegen",
   "main": "index.js",
   "scripts": {
@@ -33,8 +33,8 @@
   },
   "peerDependencies": {
     "gatsby": "^2.9.2",
-    "typescript": "^3.7.5",
-    "graphql": "^14.6.0"
+    "graphql": "^14.6.0",
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@types/fs-extra": "^7.0.0",
