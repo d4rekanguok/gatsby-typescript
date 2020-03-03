@@ -47,7 +47,7 @@ An example setup:
 
 ## Code generation
 
-By default, this plugin will build typing for your queries automatically to `graphql-types.d.ts` on every edit. Please note that the definition file **should not** be placed inside `src` since this triggers a never ending loop during development.
+By default, this plugin will build typing for your queries automatically to `graphql-types.ts` on every edit. Please note that the definition file **should not** be placed inside `src` since this triggers a never ending loop during development.
 
 In order to take advantage of the generated code, user needs to name their query:
 
