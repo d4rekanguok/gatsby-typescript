@@ -4,6 +4,7 @@ import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { onPostBootstrap as onPostBootstrapCodegen } from 'gatsby-plugin-graphql-codegen/gatsby-node'
 import requireResolve from './require-resolve'
+import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
 
 export interface TsOptions extends PluginOptions {
   tsLoader?: Partial<tsloader.Options>
@@ -12,7 +13,8 @@ export interface TsOptions extends PluginOptions {
   forkTsCheckerPlugin?: Partial<FTCWebpackPlugin.Options>
   fileName?: string
   codegen?: boolean
-  codegenDelay?: number
+  codegenDelay?: number,
+  pluckConfig?: GraphQLTagPluckOptions
 }
 
 const defaultOptions: TsOptions = {
@@ -24,6 +26,15 @@ const defaultOptions: TsOptions = {
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
+  pluckConfig: {
+    globalGqlIdentifierName: 'graphql',
+    modules: [
+      {
+        name: 'gatsby',
+        identifier: 'graphql',
+      },
+    ],
+  },
 }
 
 type GetOptions = (options: TsOptions) => TsOptions

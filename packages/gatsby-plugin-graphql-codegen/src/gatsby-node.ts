@@ -1,12 +1,14 @@
 import { GatsbyNode, PluginOptions } from 'gatsby'
 import { generateWithConfig } from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
+import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
 
 export interface TsOptions extends PluginOptions {
   documentPaths?: string[]
   fileName?: string
   codegen?: boolean
   codegenDelay?: number
+  pluckConfig?: GraphQLTagPluckOptions
 }
 
 const defaultOptions: Required<TsOptions> = {
@@ -19,6 +21,15 @@ const defaultOptions: Required<TsOptions> = {
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
+  pluckConfig: {
+    globalGqlIdentifierName: 'graphql',
+    modules: [
+      {
+        name: 'gatsby',
+        identifier: 'graphql',
+      },
+    ],
+  },
 }
 
 type GetOptions = (options: TsOptions) => Required<TsOptions>
@@ -43,6 +54,7 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     directory,
     fileName,
     reporter,
+    pluginOptions: options,
   })
 
   const build = async (schema: any): Promise<void> => {
