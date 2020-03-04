@@ -13,7 +13,7 @@ export interface TsOptions extends PluginOptions {
   forkTsCheckerPlugin?: Partial<FTCWebpackPlugin.Options>
   fileName?: string
   codegen?: boolean
-  codegenDelay?: number,
+  codegenDelay?: number
   pluckConfig?: GraphQLTagPluckOptions
 }
 
@@ -80,7 +80,14 @@ export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = (
 
   const plugins: webpack.Plugin[] = []
   if (typeCheck) {
-    plugins.push(new FTCWebpackPlugin(forkTsCheckerPlugin))
+    plugins.push(
+      new FTCWebpackPlugin({
+        async: false,
+        silent: true,
+        formatter: 'codeframe',
+        ...forkTsCheckerPlugin,
+      })
+    )
   }
 
   const config: webpack.Configuration = {
