@@ -115,10 +115,10 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     },
     ...additionalSchemas.map(({ schema, ...rest }) => {
       return {
+        fileName: `graphql-types-${rest.key}.ts`,
         documentPaths,
         directory,
         reporter,
-        fileName: `graphql-types-${rest.key}.ts`,
         ...rest,
       }
     }),
