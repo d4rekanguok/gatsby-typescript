@@ -18,7 +18,7 @@ interface IInitialConfig {
   documentPaths: string[]
   directory: string
   fileName: string
-  reporter: Reporter,
+  reporter: Reporter
   pluckConfig: GraphQLTagPluckOptions
 }
 
