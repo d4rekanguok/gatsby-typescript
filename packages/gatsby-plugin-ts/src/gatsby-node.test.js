@@ -83,7 +83,11 @@ describe('onCreateWebpack', () => {
         },
         "plugins": Array [
           MockFTCWebpackPlugin {
-            "options": Object {},
+            "options": Object {
+              "async": false,
+              "formatter": "codeframe",
+              "silent": true,
+            },
           },
         ],
       }
