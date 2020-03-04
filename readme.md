@@ -13,6 +13,46 @@ This monorepo houses 2 packages:
 
 ---
 
+Quick links: [Acknowledgement](https://github.com/d4rekanguok/gatsby-typescript#acknowledgment) • [General Q&A](https://github.com/d4rekanguok/gatsby-typescript#general-qa) • [Contribute](https://github.com/d4rekanguok/gatsby-typescript#contribute-to-this-repo)
+
+---
+
+## Acknowledgment
+
+Special thanks to the contributors, who have improved this project with code, bug reports & suggestions:
+
+[@ricokahler](https://github.com/ricokahler), 
+[@Js-Brecht](https://github.com/Js-Brecht), 
+[@Kerumen](https://github.com/Kerumen), 
+[@kije](https://github.com/kije), 
+
+[@frantic1048](https://github.com/frantic1048), 
+[@cometkim](https://github.com/cometkim), 
+[@FrobtheBuilder](https://github.com/FrobtheBuilder), 
+[@aswinckr](https://github.com/aswinckr), 
+[@mshick](https://github.com/mshick), 
+[@joewood](https://github.com/joewood)
+
+<small>
+
+Do you want to send a PR? [see this section](https://github.com/d4rekanguok/gatsby-typescript#contribute-to-this-repo)
+
+</small>
+
+This project is built upon these awesome projects:
+
+- TypeStrong projects: 
+  - [TS Loader](https://github.com/TypeStrong/ts-loader)
+  - [Fork TS Checker Webpack Plugin](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin)
+
+- [The Guild](https://the-guild.dev/)'s projects:
+  - [Graphql Code Generator](https://github.com/dotansimha/graphql-code-generator)
+  - [Graphql Toolkit](https://github.com/ardatan/graphql-toolkit)
+
+And of course, [Gatsbyjs](https://github.com/gatsbyjs/gatsby) and [Typescript](https://github.com/microsoft/typescript)
+
+---
+
 ## General Q&A
 
 Here's a list of common questions I've seen since releasing this project. If you have a question that's not here, please don't hesitate to open an issue!
@@ -208,7 +248,7 @@ Gatsby recently moved plugins' fragments from `.cache` to `node_modules`. We cur
 
 </details>
 
-# Contribute to this repo
+## Contribute to this repo
 
 All PRs / issues are welcomed.
 
