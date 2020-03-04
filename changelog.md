@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.0
+- codegen: Only extracts graphql queries for Gatsby, allow users to pass in `pluckConfig` ([#62 by @kije](https://github.com/d4rekanguok/gatsby-typescript/pull/62))
+
 ## 2.2.0
 - typecheck: Upgrade fork-ts-checker & ts-loader (#35)
 
