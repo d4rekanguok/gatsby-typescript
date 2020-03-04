@@ -42,6 +42,13 @@ An example setup:
       './node_modules/gatsby-*/**/*.js',
     ],
     codegenDelay: 200,
+    pluckConfig: {
+      // this is the default config
+      globalGqlIdentifierName: 'graphql',
+      modules: [
+        { name: 'gatsby', identifier: 'graphql' },
+      ],
+    },
   }
 },
 ```

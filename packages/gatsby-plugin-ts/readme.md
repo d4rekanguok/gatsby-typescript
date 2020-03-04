@@ -80,7 +80,11 @@ An example setup:
     codegenDelay: 250,
     typeCheck: false,
     pluckConfig: {
-        
+      // this is the default config
+      globalGqlIdentifierName: 'graphql',
+      modules: [
+        { name: 'gatsby', identifier: 'graphql' },
+      ],
     },
   }
 },
