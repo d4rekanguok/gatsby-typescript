@@ -13,11 +13,7 @@ export interface TsCodegenOptions extends PluginOptions {
 
 const defaultOptions: Required<TsCodegenOptions> = {
   plugins: [],
-  documentPaths: [
-    './src/**/*.{ts,tsx}',
-    './.cache/fragments/*.js',
-    './node_modules/gatsby-*/**/*.js',
-  ],
+  documentPaths: ['./src/**/*.{ts,tsx}', './node_modules/gatsby-*/**/*.js'],
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
