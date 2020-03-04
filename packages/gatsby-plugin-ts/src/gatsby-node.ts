@@ -2,19 +2,17 @@ import { GatsbyNode, PluginOptions } from 'gatsby'
 import * as webpack from 'webpack'
 import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import { onPostBootstrap as onPostBootstrapCodegen } from 'gatsby-plugin-graphql-codegen/gatsby-node'
+import {
+  onPostBootstrap as onPostBootstrapCodegen,
+  TsCodegenOptions,
+} from 'gatsby-plugin-graphql-codegen/gatsby-node'
 import requireResolve from './require-resolve'
-import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
 
-export interface TsOptions extends PluginOptions {
+export interface TsOptions extends PluginOptions, TsCodegenOptions {
   tsLoader?: Partial<tsloader.Options>
   typeCheck?: boolean
   alwaysCheck?: boolean
   forkTsCheckerPlugin?: Partial<FTCWebpackPlugin.Options>
-  fileName?: string
-  codegen?: boolean
-  codegenDelay?: number
-  pluckConfig?: GraphQLTagPluckOptions
 }
 
 const defaultOptions: TsOptions = {
@@ -22,25 +20,22 @@ const defaultOptions: TsOptions = {
   tsLoader: {},
   typeCheck: true,
   alwaysCheck: false,
-  forkTsCheckerPlugin: {},
-  fileName: 'graphql-types.ts',
-  codegen: true,
-  codegenDelay: 200,
-  pluckConfig: {
-    globalGqlIdentifierName: 'graphql',
-    modules: [
-      {
-        name: 'gatsby',
-        identifier: 'graphql',
-      },
-    ],
+  forkTsCheckerPlugin: {
+    async: false,
+    silent: true,
+    formatter: 'codeframe',
   },
 }
 
+// TODO: use something like lodash defaultDeep here when options get more complex
 type GetOptions = (options: TsOptions) => TsOptions
 const getOptions: GetOptions = pluginOptions => ({
   ...defaultOptions,
   ...pluginOptions,
+  forkTsCheckerPlugin: {
+    ...defaultOptions.forkTsCheckerPlugin,
+    ...pluginOptions.forkTsCheckerPlugin,
+  },
 })
 
 type CreateRule = (
@@ -80,14 +75,7 @@ export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = (
 
   const plugins: webpack.Plugin[] = []
   if (typeCheck) {
-    plugins.push(
-      new FTCWebpackPlugin({
-        async: false,
-        silent: true,
-        formatter: 'codeframe',
-        ...forkTsCheckerPlugin,
-      })
-    )
+    plugins.push(new FTCWebpackPlugin(forkTsCheckerPlugin))
   }
 
   const config: webpack.Configuration = {

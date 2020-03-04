@@ -3,7 +3,7 @@ import { generateWithConfig } from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
 import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
 
-export interface TsOptions extends PluginOptions {
+export interface TsCodegenOptions extends PluginOptions {
   documentPaths?: string[]
   fileName?: string
   codegen?: boolean
@@ -11,7 +11,7 @@ export interface TsOptions extends PluginOptions {
   pluckConfig?: GraphQLTagPluckOptions
 }
 
-const defaultOptions: Required<TsOptions> = {
+const defaultOptions: Required<TsCodegenOptions> = {
   plugins: [],
   documentPaths: [
     './src/**/*.{ts,tsx}',
@@ -32,7 +32,7 @@ const defaultOptions: Required<TsOptions> = {
   },
 }
 
-type GetOptions = (options: TsOptions) => Required<TsOptions>
+type GetOptions = (options: TsCodegenOptions) => Required<TsCodegenOptions>
 const getOptions: GetOptions = pluginOptions => ({
   ...defaultOptions,
   ...pluginOptions,
@@ -40,7 +40,7 @@ const getOptions: GetOptions = pluginOptions => ({
 
 export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async (
   { store, reporter },
-  pluginOptions: TsOptions
+  pluginOptions: TsCodegenOptions
 ) => {
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
