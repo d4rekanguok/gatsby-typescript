@@ -27,6 +27,9 @@
     "@graphql-toolkit/code-file-loader": "^0.9.7",
     "@graphql-toolkit/common": "^0.9.7",
     "@graphql-toolkit/core": "^0.9.7",
+    "@graphql-toolkit/graphql-file-loader": "^0.9.7",
+    "@graphql-toolkit/json-file-loader": "^0.9.7",
+    "@graphql-toolkit/url-loader": "^0.9.7",
     "fs-extra": "^7.0.1",
     "graphql-tag-pluck": "^0.8.7",
     "lodash.debounce": "^4.0.8"
