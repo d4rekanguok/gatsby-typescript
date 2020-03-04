@@ -15,7 +15,7 @@ export interface SchemaConfig {
   fileName: string
   schema: UnnormalizedTypeDefPointer
   documentPaths?: string[]
-  pluckConfig?: GraphQLTagPluckOptions
+  pluckConfig: GraphQLTagPluckOptions
 }
 
 export interface TsOptions extends PluginOptions {
@@ -54,6 +54,7 @@ const getOptions: GetOptions = pluginOptions => ({
   ...defaultOptions,
   ...pluginOptions,
 })
+
 type LoadAdditionalSchema = (
   schema: UnnormalizedTypeDefPointer
 ) => Promise<GraphQLSchema>
@@ -115,9 +116,9 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     ...additionalSchemas.map(({ schema, ...rest }) => {
       return {
         documentPaths,
-        pluckConfig,
         directory,
         reporter,
+        fileName: `graphql-types-${rest.key}.ts`,
         ...rest,
       }
     }),
@@ -131,7 +132,6 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
   )
 
   const build = async (schemas: PreparedSchemas): Promise<void> => {
-    console.dir(schemas)
     try {
       for (const { key, generateFromSchema } of formSchemaGenerators) {
         const schema = schemas[key]

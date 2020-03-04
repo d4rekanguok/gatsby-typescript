@@ -2,7 +2,7 @@ import { GatsbyNode, PluginOptions } from 'gatsby'
 import * as webpack from 'webpack'
 import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import { onPostBootstrap as onPostBootstrapCodegen } from 'gatsby-plugin-graphql-codegen/gatsby-node'
+import { onPostBootstrap as onPostBootstrapCodegen, SchemaConfig } from 'gatsby-plugin-graphql-codegen/gatsby-node'
 import requireResolve from './require-resolve'
 import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
 
@@ -15,6 +15,7 @@ export interface TsOptions extends PluginOptions {
   codegen?: boolean
   codegenDelay?: number,
   pluckConfig?: GraphQLTagPluckOptions
+  additionalSchemas?: SchemaConfig[]
 }
 
 const defaultOptions: TsOptions = {
