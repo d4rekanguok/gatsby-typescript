@@ -205,7 +205,10 @@ Gatsby recently moved plugins' fragments from `.cache` to `node_modules`. We cur
   },
   ```
 
-  We will remove the `.cache/fragments` path and bump gatsby peer dependency version in a later release.
+  ~~We will remove the `.cache/fragments` path and bump gatsby peer dependency version in a later release.~~
+
+  **Update**: Since 2.4.0, we've removed `.cache/fragments` & bump up gatsby peer dep.
+  
 </details>
 
 <details>
