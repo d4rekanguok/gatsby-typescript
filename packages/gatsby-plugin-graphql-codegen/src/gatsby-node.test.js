@@ -58,23 +58,14 @@ it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
           "./example-document-paths",
         ],
         "fileName": "./example-filename.ts",
-        "pluginOptions": Object {
-          "codegen": true,
-          "codegenDelay": 200,
-          "documentPaths": Array [
-            "./example-document-paths",
+        "pluckConfig": Object {
+          "globalGqlIdentifierName": "graphql",
+          "modules": Array [
+            Object {
+              "identifier": "graphql",
+              "name": "gatsby",
+            },
           ],
-          "fileName": "./example-filename.ts",
-          "pluckConfig": Object {
-            "globalGqlIdentifierName": "graphql",
-            "modules": Array [
-              Object {
-                "identifier": "graphql",
-                "name": "gatsby",
-              },
-            ],
-          },
-          "plugins": Array [],
         },
         "reporter": Object {
           "info": [MockFunction] {

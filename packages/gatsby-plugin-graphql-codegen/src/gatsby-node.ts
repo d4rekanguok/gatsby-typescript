@@ -45,7 +45,7 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
 
-  const { documentPaths, fileName, codegenDelay } = options
+  const { documentPaths, fileName, codegenDelay, pluckConfig } = options
 
   const { schema, program } = store.getState()
   const { directory } = program
@@ -54,7 +54,7 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     directory,
     fileName,
     reporter,
-    pluginOptions: options,
+    pluckConfig,
   })
 
   const build = async (schema: any): Promise<void> => {

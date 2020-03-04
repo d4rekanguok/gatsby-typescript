@@ -8,7 +8,7 @@ import { codegen } from '@graphql-codegen/core'
 import { printSchema, parse } from 'gatsby/graphql'
 import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
 import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operations'
-import { TsOptions } from './gatsby-node'
+import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
 
 function isSource(result: void | Source[]): result is Source[] {
   return typeof result !== 'undefined'
@@ -19,7 +19,7 @@ interface IInitialConfig {
   directory: string
   fileName: string
   reporter: Reporter,
-  pluginOptions: TsOptions
+  pluckConfig: GraphQLTagPluckOptions
 }
 
 type CreateConfigFromSchema = (schema: any) => Promise<any>
@@ -29,7 +29,7 @@ const createConfig: CreateConfig = async ({
   directory,
   fileName,
   reporter,
-  pluginOptions,
+  pluckConfig,
 }) => {
   // file name & location
   const pathToFile = path.join(directory, fileName)
@@ -41,7 +41,7 @@ const createConfig: CreateConfig = async ({
     const docPromises = documentPaths.map(async docGlob => {
       const _docGlob = path.join(directory, docGlob)
       return loadDocuments(_docGlob, {
-        pluckConfig: pluginOptions.pluckConfig,
+        pluckConfig,
         loaders: [new CodeFileLoader()],
       }).catch(err => {
         reporter.warn('[gatsby-plugin-graphql-codegen] ' + err.message)
