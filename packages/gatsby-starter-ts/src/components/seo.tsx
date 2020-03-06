@@ -10,6 +10,7 @@ import Helmet from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 import ensureKeys from '../helpers/ensure-keys'
 import { SeoQuery } from '../../graphql-types'
+import gql from 'graphql-tag'
 
 type MetaProps = JSX.IntrinsicElements['meta']
 
@@ -92,5 +93,38 @@ const SEO: React.FC<Props> = ({
     />
   )
 }
+
+export const someTestQuery = gql`
+  query Pikachu {
+    pokemon(name: "Pikachu") {
+      id
+      number
+      name
+      attacks {
+        special {
+          name
+          type
+          damage
+        }
+      }
+      evolutions {
+        id
+        number
+        name
+        weight {
+          minimum
+          maximum
+        }
+        attacks {
+          fast {
+            name
+            type
+            damage
+          }
+        }
+      }
+    }
+  }
+`
 
 export default SEO
