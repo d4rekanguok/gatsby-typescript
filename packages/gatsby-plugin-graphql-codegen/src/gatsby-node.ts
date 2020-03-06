@@ -18,7 +18,7 @@ export interface SchemaConfig {
   pluckConfig: GraphQLTagPluckOptions
 }
 
-export interface TsOptions extends PluginOptions {
+export interface TsCodegenOptions extends PluginOptions {
   documentPaths?: string[]
   fileName?: string
   codegen?: boolean
@@ -27,13 +27,9 @@ export interface TsOptions extends PluginOptions {
   additionalSchemas?: SchemaConfig[]
 }
 
-const defaultOptions: Required<TsOptions> = {
+const defaultOptions: Required<TsCodegenOptions> = {
   plugins: [],
-  documentPaths: [
-    './src/**/*.{ts,tsx}',
-    './.cache/fragments/*.js',
-    './node_modules/gatsby-*/**/*.js',
-  ],
+  documentPaths: ['./src/**/*.{ts,tsx}', './node_modules/gatsby-*/**/*.js'],
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
@@ -49,7 +45,7 @@ const defaultOptions: Required<TsOptions> = {
   additionalSchemas: [],
 }
 
-type GetOptions = (options: TsOptions) => Required<TsOptions>
+type GetOptions = (options: TsCodegenOptions) => Required<TsCodegenOptions>
 const getOptions: GetOptions = pluginOptions => ({
   ...defaultOptions,
   ...pluginOptions,
@@ -85,7 +81,7 @@ const prepareSchemas: PrepareSchemas = async (
 
 export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async (
   { store, reporter },
-  pluginOptions: TsOptions
+  pluginOptions: TsCodegenOptions
 ) => {
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
