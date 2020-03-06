@@ -79,6 +79,13 @@ const prepareSchemas: PrepareSchemas = async (
   }
 }
 
+type AsyncMap = <T, TResult>(
+  collection: T[],
+  callback: (item: T, index: number, collection: T[]) => Promise<TResult>
+) => Promise<TResult[]>
+const asyncMap: AsyncMap = (collection, callback) =>
+  Promise.all(collection.map(callback))
+
 export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async (
   { store, reporter },
   pluginOptions: TsCodegenOptions
@@ -109,33 +116,29 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
       directory,
       reporter,
     },
-    ...additionalSchemas.map(({ schema, ...rest }) => {
+    ...additionalSchemas.map(({ schema, ...config }) => {
       return {
-        fileName: `graphql-types-${rest.key}.ts`,
+        fileName: `graphql-types-${config.key}.ts`,
         documentPaths,
         directory,
         reporter,
-        ...rest,
+        ...config,
       }
     }),
   ]
 
-  const formSchemaGenerators = await Promise.all(
-    codegenConfigs.map(async ({ key, ...initialConfig }) => ({
+  const [preparedSchemas, formSchemaGenerators] = await Promise.all([
+    prepareSchemas(schema, additionalSchemas),
+    asyncMap(codegenConfigs, async ({ key, ...initialConfig }) => ({
       key,
       generateFromSchema: await generateWithConfig(initialConfig),
-    }))
-  )
+    })),
+  ])
 
   const build = async (schemas: PreparedSchemas): Promise<void> => {
     try {
       for (const { key, generateFromSchema } of formSchemaGenerators) {
         const schema = schemas[key]
-        if (!schema) {
-          reporter.panic(
-            `[gatsby-plugin-graphql-codegen] schema ${key} does not exist!`
-          )
-        }
 
         await generateFromSchema(schema)
         reporter.info(
@@ -158,10 +161,11 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
       return
     }
     const { schema } = store.getState()
-    await buildDebounce(await prepareSchemas(schema, additionalSchemas))
+    preparedSchemas[DEFAULT_SCHEMA_KEY] = schema
+    await buildDebounce(preparedSchemas)
   }
 
   // HACKY: might break when gatsby updates
   store.subscribe(watchStore)
-  await build(await prepareSchemas(schema, additionalSchemas))
+  await build(preparedSchemas)
 }
