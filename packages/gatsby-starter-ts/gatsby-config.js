@@ -33,8 +33,7 @@ module.exports = {
         additionalSchemas: [
           {
             // demo api https://github.com/lucasbento/graphql-pokemon
-            key: 'graphql-pokemon',
-            fileName: 'graphql-types-pokemon.ts',
+            key: 'pokemon',
             schema: 'https://graphql-pokemon.now.sh/',
             pluckConfig: {
               globalGqlIdentifierName: 'gql',
