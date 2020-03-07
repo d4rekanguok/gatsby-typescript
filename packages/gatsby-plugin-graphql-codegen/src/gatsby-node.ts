@@ -131,20 +131,24 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     prepareSchemas(schema, additionalSchemas),
     asyncMap(codegenConfigs, async ({ key, ...initialConfig }) => ({
       key,
+      fileName: initialConfig.fileName,
       generateFromSchema: await generateWithConfig(initialConfig),
     })),
   ])
 
   const build = async (schemas: PreparedSchemas): Promise<void> => {
     try {
-      for (const { key, generateFromSchema } of formSchemaGenerators) {
-        const schema = schemas[key]
+      await asyncMap(
+        formSchemaGenerators,
+        async ({ key, generateFromSchema, fileName }) => {
+          const schema = schemas[key]
 
-        await generateFromSchema(schema)
-        reporter.info(
-          `[gatsby-plugin-graphql-codegen] definition for queries of schema ${key} has been updated at ${fileName}`
-        )
-      }
+          await generateFromSchema(schema)
+          reporter.info(
+            `[gatsby-plugin-graphql-codegen] definition for queries of schema ${key} has been updated at ${fileName}`
+          )
+        }
+      )
     } catch (err) {
       reporter.panic(err)
     }
