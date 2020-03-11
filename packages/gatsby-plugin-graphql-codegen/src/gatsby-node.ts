@@ -60,7 +60,7 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
         `[gatsby-plugin-graphql-codegen] definition for queries has been updated at ${fileName}`
       )
     } catch (err) {
-      reporter.panic(err)
+      reporter.warn(err)
     }
   }
 
