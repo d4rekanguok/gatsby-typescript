@@ -9,6 +9,7 @@ export interface TsCodegenOptions extends PluginOptions {
   codegen?: boolean
   codegenDelay?: number
   pluckConfig?: GraphQLTagPluckOptions
+  failOnError?: boolean
 }
 
 const defaultOptions: Required<TsCodegenOptions> = {
@@ -17,6 +18,7 @@ const defaultOptions: Required<TsCodegenOptions> = {
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
+  failOnError: process.env.NODE_ENV === 'production',
   pluckConfig: {
     globalGqlIdentifierName: 'graphql',
     modules: [
@@ -41,7 +43,13 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
   const options = getOptions(pluginOptions)
   if (!options.codegen) return
 
-  const { documentPaths, fileName, codegenDelay, pluckConfig } = options
+  const {
+    documentPaths,
+    fileName,
+    codegenDelay,
+    pluckConfig,
+    failOnError,
+  } = options
 
   const { schema, program } = store.getState()
   const { directory } = program
@@ -60,7 +68,11 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
         `[gatsby-plugin-graphql-codegen] definition for queries has been updated at ${fileName}`
       )
     } catch (err) {
-      reporter.warn(err)
+      if (failOnError) {
+        reporter.panic(err)
+      } else {
+        reporter.warn(err)
+      }
     }
   }
 

@@ -2,7 +2,7 @@
 
 Automatic type generation for your graphql queries via [`graphql-code-generator`](https://github.com/dotansimha/graphql-code-generator)
 
----
+
 ## Installation
 
 ```
@@ -28,6 +28,7 @@ module.exports = {
 |options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
 |options.pluckConfig| <pre>{ globalGqlIdentifierName: "graphql", modules: [ { name: 'gatsby', identifier: 'graphql' } ] }</pre> | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
+|options.failOnError (2.5.0)| `process.env.NODE_ENV === 'production'` | Throw error if the codegen fails. By default only apply to production builds.
 
 An example setup:
 
