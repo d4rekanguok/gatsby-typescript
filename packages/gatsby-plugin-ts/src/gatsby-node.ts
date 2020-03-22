@@ -4,7 +4,6 @@ import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import {
   onPostBootstrap as onPostBootstrapCodegen,
-  SchemaConfig,
   TsCodegenOptions,
 } from 'gatsby-plugin-graphql-codegen/gatsby-node'
 import requireResolve from './require-resolve'

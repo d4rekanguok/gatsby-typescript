@@ -139,12 +139,12 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     })),
   ])
 
-  const build = async (schemas: PreparedSchemas): Promise<void> => {
+  const build = async (): Promise<void> => {
     try {
       await asyncMap(
         formSchemaGenerators,
         async ({ key, generateFromSchema, fileName }) => {
-          const schema = schemas[key]
+          const schema = preparedSchemas[key]
 
           await generateFromSchema(schema)
           reporter.info(
@@ -173,10 +173,10 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     }
     const { schema } = store.getState()
     preparedSchemas[DEFAULT_SCHEMA_KEY] = schema
-    await buildDebounce(preparedSchemas)
+    await buildDebounce()
   }
 
   // HACKY: might break when gatsby updates
   store.subscribe(watchStore)
-  await build(preparedSchemas)
+  await build()
 }
