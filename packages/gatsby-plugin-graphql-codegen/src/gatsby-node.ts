@@ -53,34 +53,6 @@ const getOptions: GetOptions = pluginOptions => ({
   ...pluginOptions,
 })
 
-type LoadAdditionalSchema = (
-  schema: UnnormalizedTypeDefPointer
-) => Promise<GraphQLSchema>
-const loadAdditionalSchema: LoadAdditionalSchema = schema =>
-  loadSchema(schema, {
-    loaders: [new UrlLoader(), new JsonFileLoader(), new GraphQLFileLoader()],
-  })
-
-type PreparedSchemas = { [key: string]: GraphQLSchema }
-type PrepareSchemas = (
-  defaultSchema: GraphQLSchema,
-  additionalSchemaConfigs: SchemaConfig[]
-) => Promise<PreparedSchemas>
-const prepareSchemas: PrepareSchemas = async (
-  defaultSchema,
-  additionalSchemaConfigs
-) => {
-  const additionalSchemas: PreparedSchemas = {}
-  for (const config of additionalSchemaConfigs) {
-    additionalSchemas[config.key] = await loadAdditionalSchema(config.schema)
-  }
-
-  return {
-    [DEFAULT_SCHEMA_KEY]: defaultSchema,
-    ...additionalSchemas,
-  }
-}
-
 type AsyncMap = <T, TResult>(
   collection: T[],
   callback: (item: T, index: number, collection: T[]) => Promise<TResult>
@@ -110,42 +82,48 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
   }: { schema: GraphQLSchema; program: any } = store.getState()
   const { directory } = program
 
-  const codegenConfigs = [
+  const defaultConfig = {
+    key: DEFAULT_SCHEMA_KEY,
+    fileName,
+    documentPaths,
+    pluckConfig,
+    directory,
+    schema,
+    reporter,
+  }
+
+  const configs = [
     {
-      key: DEFAULT_SCHEMA_KEY,
-      fileName,
-      documentPaths,
-      pluckConfig,
-      directory,
-      reporter,
+      ...defaultConfig,
+      generateFromSchema: await generateWithConfig(defaultConfig),
     },
-    ...additionalSchemas.map(({ schema, ...config }) => {
-      return {
+    ...(await asyncMap(additionalSchemas, async ({ schema, ...config }) => {
+      const codegenConfig = {
         fileName: `graphql-types-${config.key}.ts`,
         documentPaths,
         directory,
+        schema: await loadSchema(schema, {
+          loaders: [
+            new UrlLoader(),
+            new JsonFileLoader(),
+            new GraphQLFileLoader(),
+          ],
+        }),
         reporter,
         ...config,
       }
-    }),
-  ]
-
-  const [preparedSchemas, formSchemaGenerators] = await Promise.all([
-    prepareSchemas(schema, additionalSchemas),
-    asyncMap(codegenConfigs, async ({ key, ...initialConfig }) => ({
-      key,
-      fileName: initialConfig.fileName,
-      generateFromSchema: await generateWithConfig(initialConfig),
+      return {
+        ...codegenConfig,
+        generateFromSchema: await generateWithConfig(codegenConfig),
+      }
     })),
-  ])
+  ]
 
   const build = async (): Promise<void> => {
     try {
       await asyncMap(
-        formSchemaGenerators,
-        async ({ key, generateFromSchema, fileName }) => {
-          const schema = preparedSchemas[key]
-
+        configs,
+        async ({ key, generateFromSchema, schema, fileName }) => {
           await generateFromSchema(schema)
           reporter.info(
             `[gatsby-plugin-graphql-codegen] definition for queries of schema ${key} has been updated at ${fileName}`
@@ -172,7 +150,10 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
       return
     }
     const { schema } = store.getState()
-    preparedSchemas[DEFAULT_SCHEMA_KEY] = schema
+    const defaultConfig = configs.find(({ key }) => key === DEFAULT_SCHEMA_KEY)
+    if (defaultConfig) {
+      defaultConfig.schema = schema
+    }
     await buildDebounce()
   }
 
