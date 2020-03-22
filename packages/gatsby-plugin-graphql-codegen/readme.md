@@ -2,7 +2,7 @@
 
 Automatic type generation for your graphql queries via [`graphql-code-generator`](https://github.com/dotansimha/graphql-code-generator)
 
----
+
 ## Installation
 
 ```
@@ -28,6 +28,7 @@ module.exports = {
 |options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
 |options.pluckConfig| <pre>{ globalGqlIdentifierName: "graphql", modules: [ { name: 'gatsby', identifier: 'graphql' } ] }</pre> | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
+|options.failOnError (2.5.0)| `process.env.NODE_ENV === 'production'` | Throw error if the codegen fails. By default only apply to production builds.
 |options.additionalSchemas| <pre>[]</pre> | array of additional schemas (other than the schema used by gatsby queries) for which types should be generated for. This is useful when you use client-side queries (e.g. with apollo-client) where you are querying another schema/endpoint |
 
 #### Additional Schema Options (for `options.additionalSchemas`)

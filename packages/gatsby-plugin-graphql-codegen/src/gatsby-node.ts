@@ -24,6 +24,7 @@ export interface TsCodegenOptions extends PluginOptions {
   codegen?: boolean
   codegenDelay?: number
   pluckConfig?: GraphQLTagPluckOptions
+  failOnError?: boolean
   additionalSchemas?: SchemaConfig[]
 }
 
@@ -33,6 +34,7 @@ const defaultOptions: Required<TsCodegenOptions> = {
   fileName: 'graphql-types.ts',
   codegen: true,
   codegenDelay: 200,
+  failOnError: process.env.NODE_ENV === 'production',
   pluckConfig: {
     globalGqlIdentifierName: 'graphql',
     modules: [
@@ -99,6 +101,7 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     codegenDelay,
     pluckConfig,
     additionalSchemas,
+    failOnError,
   } = options
 
   const {
@@ -150,7 +153,11 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
         }
       )
     } catch (err) {
-      reporter.panic(err)
+      if (failOnError) {
+        reporter.panic(err)
+      } else {
+        reporter.warn(err)
+      }
     }
   }
 

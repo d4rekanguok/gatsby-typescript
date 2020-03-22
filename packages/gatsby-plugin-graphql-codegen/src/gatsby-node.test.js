@@ -103,7 +103,7 @@ it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
     `)
 })
 
-it('calls `reporter.panic` if `generateWithConfig` throws', async () => {
+it('calls `reporter.warn` if `generateWithConfig` throws', async () => {
   const mockGatsbyArgs = {
     store: {
       getState: () => ({
@@ -114,7 +114,7 @@ it('calls `reporter.panic` if `generateWithConfig` throws', async () => {
     },
     reporter: {
       info: jest.fn(),
-      panic: jest.fn(),
+      warn: jest.fn(),
     },
   }
 
@@ -131,7 +131,7 @@ it('calls `reporter.panic` if `generateWithConfig` throws', async () => {
 
   await onPostBootstrap(mockGatsbyArgs, pluginOptions)
 
-  expect(mockGatsbyArgs.reporter.panic).toMatchInlineSnapshot(`
+  expect(mockGatsbyArgs.reporter.warn).toMatchInlineSnapshot(`
       [MockFunction] {
         "calls": Array [
           Array [
@@ -171,7 +171,7 @@ it('subscribes to the store and debounces the `build` function', async () => {
     },
     reporter: {
       info: jest.fn(),
-      panic: jest.fn(),
+      warn: jest.fn(),
     },
   }
 
@@ -200,7 +200,7 @@ it('subscribes to the store and debounces the `build` function', async () => {
   expect(mockGenerateFromSchema).toHaveBeenCalledTimes(2)
 
   expect(mockGatsbyArgs.reporter.info).toHaveBeenCalled()
-  expect(mockGatsbyArgs.reporter.panic).not.toHaveBeenCalled()
+  expect(mockGatsbyArgs.reporter.warn).not.toHaveBeenCalled()
 })
 
 it("doesn't call build if the `lastAction.type` isn't 'REPLACE_STATIC_QUERY' or 'QUERY_EXTRACTED'", async () => {

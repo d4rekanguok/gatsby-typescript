@@ -24,7 +24,8 @@ Special thanks to the contributors, who have improved this project with code, bu
 [@ricokahler](https://github.com/ricokahler), 
 [@Js-Brecht](https://github.com/Js-Brecht), 
 [@Kerumen](https://github.com/Kerumen), 
-[@kije](https://github.com/kije), 
+[@kije](https://github.com/kije),
+[@olee](https://github.com/olee)
 
 [@frantic1048](https://github.com/frantic1048), 
 [@cometkim](https://github.com/cometkim), 
