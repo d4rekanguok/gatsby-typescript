@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-ts",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Typescript support via ts-loader & fork-ts-checker-webpack-plugin + automate codegen",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "dependencies": {
     "fork-ts-checker-webpack-plugin": "^4.0.3",
     "fs-extra": "^7.0.1",
-    "gatsby-plugin-graphql-codegen": "^2.5.0",
+    "gatsby-plugin-graphql-codegen": "^2.6.0",
     "ts-loader": "^6.2.1"
   },
   "peerDependencies": {
