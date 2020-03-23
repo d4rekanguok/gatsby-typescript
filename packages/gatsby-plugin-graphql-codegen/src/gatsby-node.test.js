@@ -58,6 +58,7 @@ it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
           "./example-document-paths",
         ],
         "fileName": "./example-filename.ts",
+        "key": "default-gatsby-schema",
         "pluckConfig": Object {
           "globalGqlIdentifierName": "graphql",
           "modules": Array [
@@ -71,7 +72,7 @@ it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
           "info": [MockFunction] {
             "calls": Array [
               Array [
-                "[gatsby-plugin-graphql-codegen] definition for queries has been updated at ./example-filename.ts",
+                "[gatsby-plugin-graphql-codegen] definition for queries of schema default-gatsby-schema has been updated at ./example-filename.ts",
               ],
             ],
             "results": Array [
@@ -83,6 +84,7 @@ it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
           },
           "panic": [MockFunction],
         },
+        "schema": "mock-schema",
       }
     `)
 

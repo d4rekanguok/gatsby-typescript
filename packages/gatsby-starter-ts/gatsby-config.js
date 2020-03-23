@@ -29,6 +29,24 @@ module.exports = {
     },
     {
       resolve: `gatsby-plugin-ts`,
+      options: {
+        additionalSchemas: [
+          {
+            // demo api https://github.com/lucasbento/graphql-pokemon
+            key: 'pokemon',
+            schema: 'https://graphql-pokemon.now.sh/',
+            pluckConfig: {
+              globalGqlIdentifierName: 'gql',
+              modules: [
+                {
+                  name: 'graphql-tag',
+                  identifier: 'gql',
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline

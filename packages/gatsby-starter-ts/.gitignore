@@ -70,3 +70,4 @@ yarn-error.log
 
 # Codegen
 graphql-types.ts
+graphql-types-pokemon.ts

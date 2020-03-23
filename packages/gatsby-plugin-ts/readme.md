@@ -62,6 +62,7 @@ In order for this plugin to work right, you'd need to set your compile options l
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
 |options.pluckConfig| <pre>{ globalGqlIdentifierName: "graphql", modules: [ { name: 'gatsby', identifier: 'graphql' } ] }</pre> | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
 |options.failOnError (2.5.0)| `process.env.NODE_ENV === 'production'` | Throw error if the codegen fails. By default only apply to production builds.
+|options.additionalSchemas| <pre>[]</pre> | see documentation of [gatsby-plugin-graphql-codegen](../gatsby-plugin-graphql-codegen/readme.md#additional-schema-options-for-optionsadditionalschemas) |
 
 An example setup:
 
@@ -87,8 +88,25 @@ An example setup:
         { name: 'gatsby', identifier: 'graphql' },
       ],
     },
-  }
-},
+    additionalSchemas: [
+      {
+        key: 'example',
+        fileName: 'graphql-types-example.ts',
+        schema: 'https://example.com/graphql',
+        pluckConfig: {
+          // config to ensure only queries using the `gql` tag are used for this schema
+          globalGqlIdentifierName: 'gql',
+          modules: [
+            {
+              name: 'graphql-tag',
+              identifier: 'gql',
+            },
+          ],
+        },
+      }
+    ],
+  },
+}
 ```
 
 ### Gatsby files

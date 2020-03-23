@@ -29,6 +29,16 @@ module.exports = {
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
 |options.pluckConfig| <pre>{ globalGqlIdentifierName: "graphql", modules: [ { name: 'gatsby', identifier: 'graphql' } ] }</pre> | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
 |options.failOnError (2.5.0)| `process.env.NODE_ENV === 'production'` | Throw error if the codegen fails. By default only apply to production builds.
+|options.additionalSchemas| <pre>[]</pre> | array of additional schemas (other than the schema used by gatsby queries) for which types should be generated for. This is useful when you use client-side queries (e.g. with apollo-client) where you are querying another schema/endpoint |
+
+#### Additional Schema Options (for `options.additionalSchemas`)
+|key | default | value |
+|---|---|---|
+|key| - | an unique key used internally by this plugin to identify different schemas|
+|fileName| graphql-types-${key}.ts | path to the generated file for this schema. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop |
+|documentPaths| value of `options.documentPaths` | The paths to files containing graphql queries.  See also `options.documentPaths` |
+|pluckConfig| - | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
+|schema| - | additional schema to process. Can either be an url, a path to a local schema definition (both `.json` and `.graphql` are supported) or an inline definition. See also https://github.com/ardatan/graphql-toolkit#-schema-loading |
 
 An example setup:
 
@@ -50,8 +60,25 @@ An example setup:
         { name: 'gatsby', identifier: 'graphql' },
       ],
     },
-  }
-},
+    additionalSchemas: [
+      {
+        key: 'example',
+        fileName: 'graphql-types-example.ts',
+        schema: 'https://example.com/graphql',
+        pluckConfig: {
+          // config to ensure only queries using the `gql` tag are used for this schema
+          globalGqlIdentifierName: 'gql',
+          modules: [
+            {
+              name: 'graphql-tag',
+              identifier: 'gql',
+            },
+          ],
+        },
+      }
+    ],
+  },
+}
 ```
 
 ## Code generation

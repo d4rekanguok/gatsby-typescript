@@ -2,6 +2,21 @@ import { GatsbyNode, PluginOptions } from 'gatsby'
 import { generateWithConfig } from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
 import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
+import { loadSchema, UnnormalizedTypeDefPointer } from '@graphql-toolkit/core'
+import { UrlLoader } from '@graphql-toolkit/url-loader'
+import { JsonFileLoader } from '@graphql-toolkit/json-file-loader'
+import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
+import { GraphQLSchema } from 'graphql'
+
+export const DEFAULT_SCHEMA_KEY = 'default-gatsby-schema'
+
+export interface SchemaConfig {
+  key: string
+  fileName: string
+  schema: UnnormalizedTypeDefPointer
+  documentPaths?: string[]
+  pluckConfig: GraphQLTagPluckOptions
+}
 
 export interface TsCodegenOptions extends PluginOptions {
   documentPaths?: string[]
@@ -10,6 +25,7 @@ export interface TsCodegenOptions extends PluginOptions {
   codegenDelay?: number
   pluckConfig?: GraphQLTagPluckOptions
   failOnError?: boolean
+  additionalSchemas?: SchemaConfig[]
 }
 
 const defaultOptions: Required<TsCodegenOptions> = {
@@ -28,6 +44,7 @@ const defaultOptions: Required<TsCodegenOptions> = {
       },
     ],
   },
+  additionalSchemas: [],
 }
 
 type GetOptions = (options: TsCodegenOptions) => Required<TsCodegenOptions>
@@ -35,6 +52,13 @@ const getOptions: GetOptions = pluginOptions => ({
   ...defaultOptions,
   ...pluginOptions,
 })
+
+type AsyncMap = <T, TResult>(
+  collection: T[],
+  callback: (item: T, index: number, collection: T[]) => Promise<TResult>
+) => Promise<TResult[]>
+const asyncMap: AsyncMap = (collection, callback) =>
+  Promise.all(collection.map(callback))
 
 export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async (
   { store, reporter },
@@ -48,24 +72,63 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     fileName,
     codegenDelay,
     pluckConfig,
+    additionalSchemas,
     failOnError,
   } = options
 
-  const { schema, program } = store.getState()
+  const {
+    schema,
+    program,
+  }: { schema: GraphQLSchema; program: any } = store.getState()
   const { directory } = program
-  const generateFromSchema = await generateWithConfig({
-    documentPaths,
-    directory,
-    fileName,
-    reporter,
-    pluckConfig,
-  })
 
-  const build = async (schema: any): Promise<void> => {
+  const defaultConfig = {
+    key: DEFAULT_SCHEMA_KEY,
+    fileName,
+    documentPaths,
+    pluckConfig,
+    directory,
+    schema,
+    reporter,
+  }
+
+  const configs = [
+    {
+      ...defaultConfig,
+      generateFromSchema: await generateWithConfig(defaultConfig),
+    },
+    ...(await asyncMap(additionalSchemas, async ({ schema, ...config }) => {
+      const codegenConfig = {
+        fileName: `graphql-types-${config.key}.ts`,
+        documentPaths,
+        directory,
+        schema: await loadSchema(schema, {
+          loaders: [
+            new UrlLoader(),
+            new JsonFileLoader(),
+            new GraphQLFileLoader(),
+          ],
+        }),
+        reporter,
+        ...config,
+      }
+      return {
+        ...codegenConfig,
+        generateFromSchema: await generateWithConfig(codegenConfig),
+      }
+    })),
+  ]
+
+  const build = async (): Promise<void> => {
     try {
-      await generateFromSchema(schema)
-      reporter.info(
-        `[gatsby-plugin-graphql-codegen] definition for queries has been updated at ${fileName}`
+      await asyncMap(
+        configs,
+        async ({ key, generateFromSchema, schema, fileName }) => {
+          await generateFromSchema(schema)
+          reporter.info(
+            `[gatsby-plugin-graphql-codegen] definition for queries of schema ${key} has been updated at ${fileName}`
+          )
+        }
       )
     } catch (err) {
       if (failOnError) {
@@ -87,10 +150,14 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
       return
     }
     const { schema } = store.getState()
-    await buildDebounce(schema)
+    const defaultConfig = configs.find(({ key }) => key === DEFAULT_SCHEMA_KEY)
+    if (defaultConfig) {
+      defaultConfig.schema = schema
+    }
+    await buildDebounce()
   }
 
   // HACKY: might break when gatsby updates
   store.subscribe(watchStore)
-  await build(schema)
+  await build()
 }

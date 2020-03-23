@@ -10,6 +10,7 @@ import Helmet from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 import ensureKeys from '../helpers/ensure-keys'
 import { SeoQuery } from '../../graphql-types'
+import gql from 'graphql-tag'
 
 type MetaProps = JSX.IntrinsicElements['meta']
 
@@ -92,5 +93,44 @@ const SEO: React.FC<Props> = ({
     />
   )
 }
+
+/**
+ * `gatsby-plugin-ts`/`gatsby-plugin-graphql-codegen` supports codegen for
+ * non-gatsby schemas. This is useful if you're using a client-side GraphQL client.
+ *
+ * Read more at: https://github.com/d4rekanguok/gatsby-typescript/blob/master/packages/gatsby-plugin-graphql-codegen/readme.md#additional-schema-options-for-optionsadditionalschemas
+ */
+export const someTestQuery = gql`
+  query Pikachu {
+    pokemon(name: "Pikachu") {
+      id
+      number
+      name
+      attacks {
+        special {
+          name
+          type
+          damage
+        }
+      }
+      evolutions {
+        id
+        number
+        name
+        weight {
+          minimum
+          maximum
+        }
+        attacks {
+          fast {
+            name
+            type
+            damage
+          }
+        }
+      }
+    }
+  }
+`
 
 export default SEO
