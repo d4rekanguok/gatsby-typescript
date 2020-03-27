@@ -5,7 +5,7 @@ import { Source } from '@graphql-toolkit/common'
 import { loadDocuments } from '@graphql-toolkit/core'
 import { CodeFileLoader } from '@graphql-toolkit/code-file-loader'
 import { codegen } from '@graphql-codegen/core'
-import { printSchema, parse } from 'gatsby/graphql'
+import { printSchema, parse, GraphQLSchema } from 'gatsby/graphql'
 import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
 import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operations'
 import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
@@ -82,7 +82,7 @@ const createConfig: CreateConfig = async ({
   }
 }
 
-type GenerateFromSchema = (schema: any) => Promise<void>
+type GenerateFromSchema = (schema: GraphQLSchema) => Promise<void>
 type GenerateWithConfig = (
   initialOptions: IInitialConfig
 ) => Promise<GenerateFromSchema>

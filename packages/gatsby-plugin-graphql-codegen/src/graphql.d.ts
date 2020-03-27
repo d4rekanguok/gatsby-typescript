@@ -1,1 +1,3 @@
-declare module 'gatsby/graphql'
+declare module 'gatsby/graphql' {
+  export * from 'graphql'
+}
