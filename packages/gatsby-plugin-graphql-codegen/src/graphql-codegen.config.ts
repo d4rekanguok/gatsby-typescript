@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import { Reporter } from 'gatsby'
+import { Types } from '@graphql-codegen/plugin-helpers'
 import { Source } from '@graphql-toolkit/common'
 import { loadDocuments } from '@graphql-toolkit/core'
 import { CodeFileLoader } from '@graphql-toolkit/code-file-loader'
@@ -22,7 +23,9 @@ interface IInitialConfig {
   pluckConfig: GraphQLTagPluckOptions
 }
 
-type CreateConfigFromSchema = (schema: any) => Promise<any>
+type CreateConfigFromSchema = (
+  schema: GraphQLSchema
+) => Promise<Types.GenerateOptions>
 type CreateConfig = (args: IInitialConfig) => Promise<CreateConfigFromSchema>
 const createConfig: CreateConfig = async ({
   documentPaths,
@@ -36,7 +39,7 @@ const createConfig: CreateConfig = async ({
   const { dir } = path.parse(pathToFile)
   await fs.ensureDir(dir)
 
-  return async (schema): Promise<any> => {
+  return async (schema): Promise<Types.GenerateOptions> => {
     // documents
     const docPromises = documentPaths.map(async docGlob => {
       const _docGlob = path.join(directory, docGlob)
@@ -55,6 +58,7 @@ const createConfig: CreateConfig = async ({
     return {
       filename: pathToFile,
       schema: parse(printSchema(schema)),
+      config: {},
       plugins: [
         {
           typescript: {

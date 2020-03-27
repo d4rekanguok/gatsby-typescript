@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "@graphql-codegen/core": "^1.12.2",
+    "@graphql-codegen/plugin-helpers": "^1.13.1",
     "@graphql-codegen/typescript": "^1.12.2",
     "@graphql-codegen/typescript-operations": "^1.12.2",
     "@graphql-toolkit/code-file-loader": "^0.9.7",
