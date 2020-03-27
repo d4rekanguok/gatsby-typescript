@@ -1,7 +1,8 @@
-import { GatsbyNode, PluginOptions } from 'gatsby'
+import { GatsbyNode } from 'gatsby'
 import {
   generateWithConfig,
   GatsbyCodegenPlugins,
+  CodegenOptions,
 } from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
 import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
@@ -23,19 +24,15 @@ export interface SchemaConfig {
   codegenConfig?: Record<string, any>
 }
 
-export interface TsCodegenOptions extends PluginOptions {
-  documentPaths?: string[]
-  fileName?: string
+export interface PluginOptions extends Partial<CodegenOptions> {
+  plugins: unknown[]
   codegen?: boolean
   codegenDelay?: number
-  pluckConfig?: GraphQLTagPluckOptions
   failOnError?: boolean
   additionalSchemas?: SchemaConfig[]
-  codegenPlugins?: GatsbyCodegenPlugins[]
-  codegenConfig?: Record<string, any>
 }
 
-const defaultOptions: Required<TsCodegenOptions> = {
+const defaultOptions: Required<PluginOptions> = {
   plugins: [],
   documentPaths: ['./src/**/*.{ts,tsx}', './node_modules/gatsby-*/**/*.js'],
   fileName: 'graphql-types.ts',
@@ -56,7 +53,7 @@ const defaultOptions: Required<TsCodegenOptions> = {
   codegenConfig: {},
 }
 
-type GetOptions = (options: TsCodegenOptions) => Required<TsCodegenOptions>
+type GetOptions = (options: PluginOptions) => Required<PluginOptions>
 const getOptions: GetOptions = pluginOptions => ({
   ...defaultOptions,
   ...pluginOptions,
@@ -69,9 +66,9 @@ type AsyncMap = <T, TResult>(
 const asyncMap: AsyncMap = (collection, callback) =>
   Promise.all(collection.map(callback))
 
-export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async (
+export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
   { store, reporter },
-  pluginOptions: TsCodegenOptions
+  pluginOptions: PluginOptions = { plugins: [] }
 ) => {
   const options = getOptions(pluginOptions)
   if (!options.codegen) return

@@ -55,8 +55,13 @@ const defaultPlugins: Plugins = {
     },
   },
 }
-
-const mapCodegenPlugins = (codegenPlugins: GatsbyCodegenPlugins[]): Plugins =>
+export const mapCodegenPlugins = ({
+  codegenPlugins,
+  defaultPlugins,
+}: {
+  codegenPlugins: GatsbyCodegenPlugins[]
+  defaultPlugins: Plugins
+}): Plugins =>
   codegenPlugins.reduce((acc, plugin, i) => {
     const { resolve, options, ...otherOptions } = plugin
     // handle default plugins (typescript, operations)
@@ -84,20 +89,25 @@ const mapCodegenPlugins = (codegenPlugins: GatsbyCodegenPlugins[]): Plugins =>
     return acc
   }, defaultPlugins)
 
-interface IInitialConfig {
+export interface CodegenOptions {
   documentPaths: string[]
-  directory: string
   fileName: string
-  reporter: Reporter
   pluckConfig: GraphQLTagPluckOptions
   codegenPlugins: GatsbyCodegenPlugins[]
   codegenConfig: Record<string, any>
 }
 
+interface CreateConfigOptions extends CodegenOptions {
+  directory: string
+  reporter: Reporter
+}
+
 type CreateConfigFromSchema = (
   schema: GraphQLSchema
 ) => Promise<Types.GenerateOptions>
-type CreateConfig = (args: IInitialConfig) => Promise<CreateConfigFromSchema>
+type CreateConfig = (
+  args: CreateConfigOptions
+) => Promise<CreateConfigFromSchema>
 const createConfig: CreateConfig = async ({
   documentPaths,
   directory,
@@ -112,7 +122,10 @@ const createConfig: CreateConfig = async ({
   const { dir } = path.parse(pathToFile)
   await fs.ensureDir(dir)
 
-  const { pluginMap, plugins } = mapCodegenPlugins(codegenPlugins)
+  const { pluginMap, plugins } = mapCodegenPlugins({
+    codegenPlugins,
+    defaultPlugins,
+  })
 
   return async (schema): Promise<Types.GenerateOptions> => {
     // documents
@@ -143,7 +156,7 @@ const createConfig: CreateConfig = async ({
 
 type GenerateFromSchema = (schema: GraphQLSchema) => Promise<void>
 type GenerateWithConfig = (
-  initialOptions: IInitialConfig
+  initialOptions: CreateConfigOptions
 ) => Promise<GenerateFromSchema>
 export const generateWithConfig: GenerateWithConfig = async initialOptions => {
   const createConfigFromSchema = await createConfig(initialOptions)
