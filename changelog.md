@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.6.0
+- codegen: Multi schema supports: Now `codegen` accepts an additional schema. This means if you are using `graphql` on the client side, this plugin can now generate types for that as well. See readme for more information.
+
+## 2.5.0
+- codegen: New config options: `failOnError`. If true, throw an error & stop the build when codegen failed. By default `codegen` will only throw an error during production.
+
 ## 2.4.0
 - codegen: Remove `.cache/fragments`, bump up Gatsby's peer dependencies. New Gatsby project will no longer see the warning message.
 - typecheck: Better default fork checker config, prevent crash. Thanks [gatsby-plugin-typescript-checker](https://github.com/DaleLJefferson/gatsby-plugin-typescript-checker)!

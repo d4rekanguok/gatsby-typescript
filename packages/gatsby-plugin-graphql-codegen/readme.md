@@ -40,31 +40,63 @@ module.exports = {
 |pluckConfig| - | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
 |schema| - | additional schema to process. Can either be an url, a path to a local schema definition (both `.json` and `.graphql` are supported) or an inline definition. See also https://github.com/ardatan/graphql-toolkit#-schema-loading |
 
-An example setup:
+## Example Setups
+
+### Normal Usecase
+Set it & forget it
 
 ```js
-// gatsby-config.js
-{
-  resolve: `gatsby-plugin-graphql-codegen`,
-  options: {
-    fileName: `types/graphql-types.ts`,
-    documentPaths: [
-      './src/**/*.{ts,tsx}',
-      './node_modules/gatsby-*/**/*.js',
-    ],
-    codegenDelay: 200,
-    pluckConfig: {
-      // this is the default config
-      globalGqlIdentifierName: 'graphql',
-      modules: [
-        { name: 'gatsby', identifier: 'graphql' },
+exports.default = {
+  plugins: [
+    `gatsby-plugin-graphql-codegen`,
+  ]
+}
+```
+
+### Custom Filename & Location
+
+```js
+exports.default = {
+  plugins: [{
+    resolve: `gatsby-plugin-graphql-codegen`,
+    options: {
+      fileName: `./gatsby-graphql.ts`,
+    }
+  }]
+}
+```
+
+### Gatsby-node.ts
+You have queries in your gatsby-node? We can take care of that. The experience is not 100% right now, but that'll change soon!
+
+```js
+exports.default = {
+  plugins: [{
+    resolve: `gatsby-plugin-graphql-codegen`,
+    options: {
+      fileName: `./gatsby-graphql.ts`,
+      documentPaths: [
+        './src/**/*.{ts,tsx}',
+        './node_modules/gatsby-*/**/*.js',
+        './gatsby-node.ts',
       ],
-    },
-    additionalSchemas: [
-      {
-        key: 'example',
-        fileName: 'graphql-types-example.ts',
-        schema: 'https://example.com/graphql',
+    }
+  }]
+}
+```
+
+### Dual-Schema Setup
+If you use `graphql` on the client side, this is for you.
+
+```js
+exports.default = {
+  plugins: [{
+    resolve: `gatsby-plugin-graphql-codegen`,
+    options: {
+      additionalSchemas: [{
+        key: 'pokemon',
+        fileName: './graphql-pokemon.ts',
+        schema: 'https://graphql-pokemon.now.sh/',
         pluckConfig: {
           // config to ensure only queries using the `gql` tag are used for this schema
           globalGqlIdentifierName: 'gql',
@@ -75,9 +107,9 @@ An example setup:
             },
           ],
         },
-      }
-    ],
-  },
+      }],
+    }
+  }]
 }
 ```
 
