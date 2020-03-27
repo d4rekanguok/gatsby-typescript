@@ -53,6 +53,8 @@ it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
   expect(generateWithConfig).toHaveBeenCalledTimes(1)
   expect(generateWithConfig.mock.calls[0][0]).toMatchInlineSnapshot(`
       Object {
+        "codegenConfig": Object {},
+        "codegenPlugins": Array [],
         "directory": "mock-directory",
         "documentPaths": Array [
           "./example-document-paths",

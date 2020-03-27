@@ -24,6 +24,8 @@ it('takes in options and returns a function that runs codegen for the schema', a
     documentPaths: ['./src/**/*.{ts,tsx}'],
     fileName: 'example-types.ts',
     reporter: mockReporter,
+    codegenPlugins: [],
+    codegenConfig: {},
   })
 
   const mockSchema = buildSchema(`
@@ -128,6 +130,8 @@ it('calls `reporter.warn` when `loadDocuments` rejects', async () => {
     documentPaths: ['./src/**/*.{ts,tsx}'],
     fileName: 'example-types.ts',
     reporter: mockReporter,
+    codegenPlugins: [],
+    codegenConfig: {},
   })
 
   const mockSchema = buildSchema(`
