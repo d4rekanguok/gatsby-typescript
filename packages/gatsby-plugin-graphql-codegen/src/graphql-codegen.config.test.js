@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra'
 import { buildSchema } from 'graphql'
 import { loadDocuments } from '@graphql-toolkit/core'
-import { generateWithConfig } from './graphql-codegen.config'
+import { generateWithConfig, mapCodegenPlugins } from './graphql-codegen.config'
 
 jest.mock('fs-extra', () => ({
   ensureDir: jest.fn(),
@@ -157,4 +157,93 @@ it('calls `reporter.warn` when `loadDocuments` rejects', async () => {
   ],
 }
 `)
+})
+
+describe('mapCodegenPlugins', () => {
+  const fakePlugin = () => {}
+
+  it('add new plugin', () => {
+    const { pluginMap, plugins } = mapCodegenPlugins({
+      codegenPlugins: [
+        {
+          resolve: fakePlugin,
+          options: {
+            hey: false,
+          },
+        },
+      ],
+      defaultPlugins: {
+        pluginMap: {},
+        plugins: [],
+      },
+    })
+
+    const identifier = 'codegen-plugin-0'
+
+    expect(plugins).toHaveLength(1)
+    expect(plugins).toContainEqual({ [identifier]: { hey: false } })
+    expect(pluginMap).toHaveProperty(identifier)
+    expect(pluginMap[identifier].plugin).toBe(fakePlugin)
+  })
+
+  it('update default plugins', () => {
+    const { pluginMap, plugins } = mapCodegenPlugins({
+      codegenPlugins: [
+        {
+          resolve: 'typescript',
+          options: {
+            hey: false,
+          },
+        },
+      ],
+      defaultPlugins: {
+        pluginMap: {
+          typescript: {
+            plugin: fakePlugin,
+          },
+        },
+        plugins: [{ typescript: { hey: true } }],
+      },
+    })
+
+    const identifier = 'typescript'
+
+    expect(plugins).toHaveLength(1)
+    expect(plugins).toContainEqual({ [identifier]: { hey: false } })
+    expect(pluginMap).toHaveProperty(identifier)
+    expect(pluginMap[identifier].plugin).toBe(fakePlugin)
+  })
+
+  it('add new plugin and update default plugin', () => {
+    const { pluginMap, plugins } = mapCodegenPlugins({
+      codegenPlugins: [
+        {
+          resolve: 'typescript',
+          options: {
+            hey: false,
+          },
+        },
+        {
+          resolve: fakePlugin,
+          options: {
+            how: 1,
+          },
+        },
+      ],
+      defaultPlugins: {
+        pluginMap: {
+          typescript: {
+            plugin: fakePlugin,
+          },
+        },
+        plugins: [{ typescript: { hey: true } }],
+      },
+    })
+
+    expect(plugins).toHaveLength(2)
+    expect(plugins).toContainEqual({ typescript: { hey: false } })
+    expect(plugins).toContainEqual({ 'codegen-plugin-1': { how: 1 } })
+    expect(pluginMap).toHaveProperty('typescript')
+    expect(pluginMap).toHaveProperty('codegen-plugin-1')
+  })
 })
