@@ -1,7 +1,11 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import { Reporter } from 'gatsby'
-import { Types } from '@graphql-codegen/plugin-helpers'
+import {
+  Types,
+  CodegenPlugin,
+  PluginFunction,
+} from '@graphql-codegen/plugin-helpers'
 import { Source } from '@graphql-toolkit/common'
 import { loadDocuments } from '@graphql-toolkit/core'
 import { CodeFileLoader } from '@graphql-toolkit/code-file-loader'
@@ -15,12 +19,79 @@ function isSource(result: void | Source[]): result is Source[] {
   return typeof result !== 'undefined'
 }
 
+export type GatsbyCodegenPlugins = {
+  resolve: 'typescript' | 'operations' | PluginFunction
+  addToSchema: CodegenPlugin['addToSchema']
+  validate: CodegenPlugin['validate']
+  options: Record<string, any>
+}
+
+type Plugins = {
+  pluginMap: Record<string, CodegenPlugin>
+  plugins: Record<string, Record<string, any>>[]
+}
+
+const defaultPlugins: Plugins = {
+  plugins: [
+    {
+      typescript: {
+        skipTypename: true,
+        enumsAsTypes: true,
+      },
+    },
+    {
+      operations: {
+        skipTypename: true,
+        exportFragmentSpreadSubTypes: true,
+      },
+    },
+  ],
+  pluginMap: {
+    typescript: {
+      plugin: typescriptPlugin,
+    },
+    operations: {
+      plugin: operationsPlugin,
+    },
+  },
+}
+
+const mapCodegenPlugins = (codegenPlugins: GatsbyCodegenPlugins[]): Plugins =>
+  codegenPlugins.reduce((acc, plugin, i) => {
+    const { resolve, options, ...otherOptions } = plugin
+    // handle default plugins (typescript, operations)
+    if (typeof resolve === 'string') {
+      const added = acc.plugins.find(
+        addedPlugin => Object.keys(addedPlugin)[0] === resolve
+      )
+
+      if (!added) {
+        throw new Error(
+          `[gatsby-plugin-graphql-codegen] Invalid codegenPlugins: ${resolve}`
+        )
+      }
+
+      added[resolve] = {
+        ...added[resolve],
+        ...options,
+      }
+      // presumably new plugins
+    } else {
+      const identifier = `codegen-plugin-${i}`
+      acc.plugins.push({ [identifier]: options })
+      acc.pluginMap[identifier] = { plugin: resolve, ...otherOptions }
+    }
+    return acc
+  }, defaultPlugins)
+
 interface IInitialConfig {
   documentPaths: string[]
   directory: string
   fileName: string
   reporter: Reporter
   pluckConfig: GraphQLTagPluckOptions
+  codegenPlugins: GatsbyCodegenPlugins[]
+  codegenConfig: Record<string, any>
 }
 
 type CreateConfigFromSchema = (
@@ -33,11 +104,15 @@ const createConfig: CreateConfig = async ({
   fileName,
   reporter,
   pluckConfig,
+  codegenPlugins,
+  codegenConfig,
 }) => {
   // file name & location
   const pathToFile = path.join(directory, fileName)
   const { dir } = path.parse(pathToFile)
   await fs.ensureDir(dir)
+
+  const { pluginMap, plugins } = mapCodegenPlugins(codegenPlugins)
 
   return async (schema): Promise<Types.GenerateOptions> => {
     // documents
@@ -58,30 +133,10 @@ const createConfig: CreateConfig = async ({
     return {
       filename: pathToFile,
       schema: parse(printSchema(schema)),
-      config: {},
-      plugins: [
-        {
-          typescript: {
-            skipTypename: true,
-            enumsAsTypes: true,
-          },
-        },
-        {
-          typescriptOperation: {
-            skipTypename: true,
-            exportFragmentSpreadSubTypes: true,
-          },
-        },
-      ],
+      config: codegenConfig,
       documents,
-      pluginMap: {
-        typescript: {
-          plugin: typescriptPlugin,
-        },
-        typescriptOperation: {
-          plugin: operationsPlugin,
-        },
-      },
+      plugins,
+      pluginMap,
     }
   }
 }

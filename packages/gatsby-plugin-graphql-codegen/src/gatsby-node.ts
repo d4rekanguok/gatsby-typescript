@@ -1,5 +1,8 @@
 import { GatsbyNode, PluginOptions } from 'gatsby'
-import { generateWithConfig } from './graphql-codegen.config'
+import {
+  generateWithConfig,
+  GatsbyCodegenPlugins,
+} from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
 import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
 import { loadSchema, UnnormalizedTypeDefPointer } from '@graphql-toolkit/core'
@@ -8,16 +11,7 @@ import { JsonFileLoader } from '@graphql-toolkit/json-file-loader'
 import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
 import { GraphQLSchema } from 'graphql'
 
-import { Types, PluginFunction } from '@graphql-codegen/plugin-helpers'
-
 const DEFAULT_SCHEMA_KEY = 'default-gatsby-schema'
-
-export type DEFAULT_PLUGINS = 'typescript' | 'typescript-operations'
-
-export type CodegenPlugin = {
-  resolve: DEFAULT_PLUGINS | PluginFunction
-  options: Types.PluginConfig
-}
 
 export interface SchemaConfig {
   key: string
@@ -25,6 +19,8 @@ export interface SchemaConfig {
   schema: UnnormalizedTypeDefPointer
   documentPaths?: string[]
   pluckConfig: GraphQLTagPluckOptions
+  codegenPlugins?: GatsbyCodegenPlugins[]
+  codegenConfig?: Record<string, any>
 }
 
 export interface TsCodegenOptions extends PluginOptions {
@@ -35,7 +31,8 @@ export interface TsCodegenOptions extends PluginOptions {
   pluckConfig?: GraphQLTagPluckOptions
   failOnError?: boolean
   additionalSchemas?: SchemaConfig[]
-  codegenPlugins?: CodegenPlugin[]
+  codegenPlugins?: GatsbyCodegenPlugins[]
+  codegenConfig?: Record<string, any>
 }
 
 const defaultOptions: Required<TsCodegenOptions> = {
@@ -56,6 +53,7 @@ const defaultOptions: Required<TsCodegenOptions> = {
   },
   additionalSchemas: [],
   codegenPlugins: [],
+  codegenConfig: {},
 }
 
 type GetOptions = (options: TsCodegenOptions) => Required<TsCodegenOptions>
@@ -86,6 +84,7 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     additionalSchemas,
     failOnError,
     codegenPlugins,
+    codegenConfig,
   } = options
 
   const {
@@ -102,6 +101,8 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
     directory,
     schema,
     reporter,
+    codegenPlugins,
+    codegenConfig,
   }
 
   const configs = [
@@ -121,6 +122,8 @@ export const onPostBootstrap: NonNullable<GatsbyNode['onPostBootstrap']> = async
             new GraphQLFileLoader(),
           ],
         }),
+        codegenPlugins: [],
+        codegenConfig: {},
         reporter,
         ...config,
       }

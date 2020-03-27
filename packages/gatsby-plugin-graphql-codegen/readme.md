@@ -98,8 +98,8 @@ exports.default = {
     options: {
       codegenPlugins: [{
         // built-in plugin. 
-        // We use `@graphql-codegen/typescript` and
-        // `@graphql-codegen/typescript-operations`
+        // Use `typescript` for `@graphql-codegen/typescript`
+        // and `operations` for `@graphql-codegen/typescript-operations`
         resolve: 'typescript',
         options: {
           namingConvention: `lower-case#lowerCase`,
