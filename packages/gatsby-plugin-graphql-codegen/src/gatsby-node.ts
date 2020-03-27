@@ -8,7 +8,7 @@ import { JsonFileLoader } from '@graphql-toolkit/json-file-loader'
 import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
 import { GraphQLSchema } from 'graphql'
 
-export const DEFAULT_SCHEMA_KEY = 'default-gatsby-schema'
+const DEFAULT_SCHEMA_KEY = 'default-gatsby-schema'
 
 export interface SchemaConfig {
   key: string
