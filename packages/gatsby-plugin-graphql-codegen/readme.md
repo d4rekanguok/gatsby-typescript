@@ -85,6 +85,37 @@ exports.default = {
 }
 ```
 
+### Customize Graphql Codegen
+You want to pass additional config to `graphql-codegen`:
+
+```js
+// additional plugins
+import { plugin as resolverPlugin } from '@graphql-codegen/typescript-resolvers'
+
+exports.default = {
+  plugins: [{
+    resolve: `gatsby-plugin-graphql-codegen`,
+    options: {
+      codegenPlugins: [{
+        // built-in plugin. 
+        // We use `@graphql-codegen/typescript` and
+        // `@graphql-codegen/typescript-operations`
+        resolve: 'typescript',
+        options: {
+          namingConvention: `lower-case#lowerCase`,
+        }
+      },{
+        // additional plugin
+        resolve: resolverPlugin,
+        options: {
+          typesPrefix: 'I'
+        }
+      }]
+    }
+  }]
+}
+```
+
 ### Dual-Schema Setup
 If you use `graphql` on the client side, this is for you.
 
