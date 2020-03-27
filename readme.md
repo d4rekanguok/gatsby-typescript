@@ -4,6 +4,12 @@ An alternative to the official typescript plugin, with [`ts-loader`](https://git
 
 ---
 
+## Plugin Not Working
+
+If the plugin is not working for you, please update to the latest version r check issues. We pin new bugs even after they are resolved, so others can see.
+
+---
+
 This monorepo houses 2 packages:
 
 | npm package | Description | Docs |
@@ -21,24 +27,31 @@ Quick links: [Acknowledgement](https://github.com/d4rekanguok/gatsby-typescript#
 
 Special thanks to the contributors, who have improved this project with code, bug reports & suggestions:
 
-[@ricokahler](https://github.com/ricokahler), 
+### Code
+
+[@ricokahler (maintainer)](https://github.com/ricokahler), 
+[@kije](https://github.com/kije),
 [@Js-Brecht](https://github.com/Js-Brecht), 
 [@Kerumen](https://github.com/Kerumen), 
-[@kije](https://github.com/kije),
 [@olee](https://github.com/olee)
+
+### Bugs & Suggestions
 
 [@frantic1048](https://github.com/frantic1048), 
 [@cometkim](https://github.com/cometkim), 
 [@FrobtheBuilder](https://github.com/FrobtheBuilder), 
 [@aswinckr](https://github.com/aswinckr), 
 [@mshick](https://github.com/mshick), 
-[@joewood](https://github.com/joewood)
+[@joewood](https://github.com/joewood),
+[@Jdruwe](https://github.com/Jdruwe)
 
 <small>
 
 Do you want to send a PR? [see this section](https://github.com/d4rekanguok/gatsby-typescript#contribute-to-this-repo)
 
 </small>
+
+### Powered By
 
 This project is built upon these awesome projects:
 
