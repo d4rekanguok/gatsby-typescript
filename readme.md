@@ -4,11 +4,6 @@ An alternative to the official typescript plugin, with [`ts-loader`](https://git
 
 ---
 
-## Plugin Not Working
-
-If the plugin is not working for you, please update to the latest version r check issues. We pin new bugs even after they are resolved, so others can see.
-
----
 
 This monorepo houses 2 packages:
 
