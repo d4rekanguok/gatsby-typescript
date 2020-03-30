@@ -1,14 +1,14 @@
-import { GatsbyNode, PluginOptions } from 'gatsby'
+import { GatsbyNode } from 'gatsby'
 import * as webpack from 'webpack'
 import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import {
   onPostBootstrap as onPostBootstrapCodegen,
-  TsCodegenOptions,
+  PluginOptions,
 } from 'gatsby-plugin-graphql-codegen/gatsby-node'
 import requireResolve from './require-resolve'
 
-export interface TsOptions extends PluginOptions, TsCodegenOptions {
+export interface TsOptions extends PluginOptions {
   tsLoader?: Partial<tsloader.Options>
   typeCheck?: boolean
   alwaysCheck?: boolean
@@ -65,7 +65,7 @@ export const resolvableExtensions: GatsbyNode['resolvableExtensions'] = () => [
 
 export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = (
   { loaders, actions },
-  pluginOptions: TsOptions
+  pluginOptions: TsOptions = { plugins: [] }
 ) => {
   const options = getOptions(pluginOptions)
   const { typeCheck, forkTsCheckerPlugin } = options
@@ -92,7 +92,7 @@ export const onPostBootstrap = onPostBootstrapCodegen
 
 export const onPreInit: GatsbyNode['onPreInit'] = (
   { reporter },
-  options: TsOptions
+  options: TsOptions = { plugins: [] }
 ) => {
   const { alwaysCheck } = options
   const { typeCheck } = getOptions(options)
