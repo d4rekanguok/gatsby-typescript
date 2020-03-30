@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.7.0
+- codegen: User can now pass additional plugins & config for graphql-codegen via the new 2 options: `codegenConfig` and `codegenPlugins`. See readme for more info.
+
+## 2.6.1
+- codegen: fix a bug where Gatsby reject codegen plugin's gatsby-node.js file
+
 ## 2.6.0
 - codegen: Multi schema supports: Now `codegen` accepts an additional schema. This means if you are using `graphql` on the client side, this plugin can now generate types for that as well. See readme for more information.
 
