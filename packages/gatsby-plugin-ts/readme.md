@@ -62,9 +62,38 @@ In order for this plugin to work right, you'd need to set your compile options l
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
 |options.pluckConfig| <pre>{ globalGqlIdentifierName: "graphql", modules: [ { name: 'gatsby', identifier: 'graphql' } ] }</pre> | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
 |options.failOnError (2.5.0)| `process.env.NODE_ENV === 'production'` | Throw error if the codegen fails. By default only apply to production builds.
-|options.additionalSchemas| <pre>[]</pre> | see documentation of [gatsby-plugin-graphql-codegen](../gatsby-plugin-graphql-codegen/readme.md#additional-schema-options-for-optionsadditionalschemas) |
+|options.codegenConfig (^2.7.0)| `{}` | Add config directly to `graphql-codegen`. These key-value config will be applied to every `graphql-codegen` plugins. See [graphql-codegen docs on the config field](https://graphql-code-generator.com/docs/getting-started/config-field) |
+|options.codegenPlugins (^2.7.0)| `[]` | Add additional plugins to `graphql-codegen`. We use the same format as Gatsby's. See example usage below.
+|options.additionalSchemas (^2.6.0)| <pre>[]</pre> | array of additional schemas (other than the schema used by gatsby queries) for which types should be generated for. This is useful when you use client-side queries (e.g. with apollo-client) where you are querying another schema/endpoint |
 
-An example setup:
+## Example Setup
+
+### Basic
+
+```js
+module.exports = {
+  plugins: [
+    `gatsby-plugin-ts`,
+  ]
+}
+```
+
+### Custom Output Path
+
+```js
+module.exports = {
+  plugins: [
+    {
+      resolve: `gatsby-plugin-ts`,
+      options: {
+        fileName: `gen/graphql-types.ts`,
+      }
+    }
+  ]
+}
+```
+
+### I need to change everything
 
 ```js
 // gatsby-config.js

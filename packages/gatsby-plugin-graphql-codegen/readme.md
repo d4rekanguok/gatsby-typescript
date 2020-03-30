@@ -28,8 +28,10 @@ module.exports = {
 |options.fileName| `graphql-type.ts` | path to the generated file. By default, it's placed at the project root directory & it should not be placed into `src`, since this will create an infinite loop|
 |options.codegenDelay| `200` | amount of delay from file change to codegen|
 |options.pluckConfig| <pre>{ globalGqlIdentifierName: "graphql", modules: [ { name: 'gatsby', identifier: 'graphql' } ] }</pre> | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
-|options.failOnError (2.5.0)| `process.env.NODE_ENV === 'production'` | Throw error if the codegen fails. By default only apply to production builds.
-|options.additionalSchemas| <pre>[]</pre> | array of additional schemas (other than the schema used by gatsby queries) for which types should be generated for. This is useful when you use client-side queries (e.g. with apollo-client) where you are querying another schema/endpoint |
+|options.failOnError (^2.5.0)| `process.env.NODE_ENV === 'production'` | Throw error if the codegen fails. By default only apply to production builds.
+|options.codegenConfig (^2.7.0)| `{}` | Add config directly to `graphql-codegen`. These key-value config will be applied to every `graphql-codegen` plugins. See [graphql-codegen docs on the config field](https://graphql-code-generator.com/docs/getting-started/config-field) |
+|options.codegenPlugins (^2.7.0)| `[]` | Add additional plugins to `graphql-codegen`. We use the same format as Gatsby's. See example usage below.
+|options.additionalSchemas (^2.6.0)| <pre>[]</pre> | array of additional schemas (other than the schema used by gatsby queries) for which types should be generated for. This is useful when you use client-side queries (e.g. with apollo-client) where you are querying another schema/endpoint |
 
 #### Additional Schema Options (for `options.additionalSchemas`)
 |key | default | value |
@@ -39,6 +41,8 @@ module.exports = {
 |documentPaths| value of `options.documentPaths` | The paths to files containing graphql queries.  See also `options.documentPaths` |
 |pluckConfig| - | options passed to [graphql-tag-pluck](https://github.com/ardatan/graphql-toolkit/tree/master/packages/graphql-tag-pluck) when extracting queries and fragments from documents |
 |schema| - | additional schema to process. Can either be an url, a path to a local schema definition (both `.json` and `.graphql` are supported) or an inline definition. See also https://github.com/ardatan/graphql-toolkit#-schema-loading |
+|codegenConfig (^2.7.0)| `{}` | See `codegenConfig` above
+|codegenPlugin (^2.7.0)| `{}` | See `codegenPlugin` above
 
 ## Example Setups
 
@@ -96,6 +100,11 @@ exports.default = {
   plugins: [{
     resolve: `gatsby-plugin-graphql-codegen`,
     options: {
+      codegenConfig: {
+        // key-value configs that will be applied to every plugins.
+        // Note: The example below is completely unnecessary, just a demonstration.
+        typesPrefix: 'Hi' // -> import { HiImageQuery } from '../../graphql-types'
+      },
       codegenPlugins: [{
         // built-in plugin. 
         // Use `typescript` for `@graphql-codegen/typescript`
