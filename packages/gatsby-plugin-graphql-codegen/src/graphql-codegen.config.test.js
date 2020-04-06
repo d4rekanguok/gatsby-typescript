@@ -85,35 +85,35 @@ it('takes in options and returns a function that runs codegen for the schema', a
     }
   `)
   expect(fs.writeFile).toMatchInlineSnapshot(`
-    [MockFunction] {
-      "calls": Array [
-        Array [
-          "example-directory/example-types.ts",
-          "export type Maybe<T> = T | null;
-    /** All built-in and custom scalars, mapped to their actual values */
-    export type Scalars = {
-      ID: string,
-      String: string,
-      Boolean: boolean,
-      Int: number,
-      Float: number,
-    };
-    
-    export type Query = {
-      example?: Maybe<Scalars['String']>,
-    };
-    
-    ",
-        ],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
-  `)
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "example-directory/example-types.ts",
+      "export type Maybe<T> = T | null;
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+};
+
+export type Query = {
+  example?: Maybe<Scalars['String']>;
+};
+
+",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`)
 
   expect(mockReporter.warn).not.toHaveBeenCalled()
 })
