@@ -1,9 +1,6 @@
+import fs from 'fs-extra'
+import path from 'path'
 import { GatsbyNode } from 'gatsby'
-import {
-  generateWithConfig,
-  GatsbyCodegenPlugins,
-  CodegenOptions,
-} from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
 import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
 import { loadSchema, UnnormalizedTypeDefPointer } from '@graphql-toolkit/core'
@@ -11,6 +8,12 @@ import { UrlLoader } from '@graphql-toolkit/url-loader'
 import { JsonFileLoader } from '@graphql-toolkit/json-file-loader'
 import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
 import { GraphQLSchema } from 'graphql'
+
+import {
+  generateWithConfig,
+  GatsbyCodegenPlugins,
+  CodegenOptions,
+} from './graphql-codegen.config'
 
 const DEFAULT_SCHEMA_KEY = 'default-gatsby-schema'
 
@@ -65,6 +68,18 @@ type AsyncMap = <T, TResult>(
 ) => Promise<TResult[]>
 const asyncMap: AsyncMap = (collection, callback) =>
   Promise.all(collection.map(callback))
+
+export const onPreInit: GatsbyNode['onPreInit'] = async (
+  { store },
+  pluginOptions = { plugins: [] }
+) => {
+  const { fileName } = getOptions(pluginOptions)
+  const { directory } = store.getState().program
+  const pathToFile = path.join(directory, fileName)
+  const { dir } = path.parse(pathToFile)
+  await fs.ensureDir(dir)
+  return
+}
 
 export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
   { store, reporter },

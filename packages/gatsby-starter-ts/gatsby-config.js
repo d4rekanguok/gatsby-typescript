@@ -28,7 +28,7 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-ts`,
+      resolve: `gatsby-plugin-graphql-codegen`,
       options: {
         additionalSchemas: [
           {

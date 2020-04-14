@@ -9,7 +9,6 @@ module.exports = {
     // typescript
     {
       files: ["*.ts", "*.tsx"],
-      excludedFiles: ["*.test.js", "gatsby-node.js", "gatsby-config.js"],
       plugins: ['@typescript-eslint'],
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
@@ -35,7 +34,7 @@ module.exports = {
 
     // test files
     {
-      files: ["*.test.js"],
+      files: ["*.test.js", "./packages/gatsby-*/__mocks__/*.js"],
       plugins: ['jest'],
       env: {
         "es6": true,
@@ -48,6 +47,9 @@ module.exports = {
       parserOptions: {
         ecmaVersion: 2019,
         sourceType: "module",
+      },
+      rules: {
+        'jest/no-focused-tests': 1,
       }
     }
   ],

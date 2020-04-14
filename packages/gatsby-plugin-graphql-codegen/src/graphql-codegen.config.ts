@@ -119,8 +119,6 @@ const createConfig: CreateConfig = async ({
 }) => {
   // file name & location
   const pathToFile = path.join(directory, fileName)
-  const { dir } = path.parse(pathToFile)
-  await fs.ensureDir(dir)
 
   const { pluginMap, plugins } = mapCodegenPlugins({
     codegenPlugins,

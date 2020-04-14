@@ -1,4 +1,4 @@
-import { onPostBootstrap } from './gatsby-node'
+import { onPreInit, onPostBootstrap } from './gatsby-node'
 import { generateWithConfig } from './graphql-codegen.config'
 
 jest.mock('./graphql-codegen.config', () => ({ generateWithConfig: jest.fn() }))
@@ -22,6 +22,34 @@ it('early returns if the codegen option is false', async () => {
   await onPostBootstrap(mockGatsbyArgs, pluginOptions)
 
   expect(mockGetState).not.toHaveBeenCalled()
+})
+
+describe('ensureDir onPreInit', () => {
+  const fs = require('fs-extra')
+  const resetMockFiles = () => {
+    fs.__mockFiles = []
+  }
+  beforeEach(resetMockFiles)
+  afterEach(resetMockFiles)
+
+  it('creates directory for fileName onPreInit', async () => {
+    const mockGatsbyArgs = {
+      store: {
+        getState: () => ({
+          program: { directory: 'mock-directory' },
+        }),
+      },
+    }
+
+    const pluginOptions = {
+      fileName: 'foo/bar/baz.ts',
+      plugins: [],
+    }
+
+    await onPreInit(mockGatsbyArgs, pluginOptions)
+
+    expect(fs.__mockFiles[0]).toBe('mock-directory/foo/bar')
+  })
 })
 
 it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
