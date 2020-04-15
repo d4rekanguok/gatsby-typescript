@@ -4,8 +4,8 @@
   "description": "Automate codegen for Gatsby via graphql-codegen",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p ./",
-    "prepublishOnly": "tsc -p ./"
+    "build": "webpack",
+    "prepublishOnly": "webpack"
   },
   "keywords": [
     "gatsby",
@@ -46,7 +46,11 @@
     "@types/node": "^12.0.8",
     "gatsby": "^2.9.2",
     "graphql": "^14.6.0",
-    "typescript": "^3.7.5"
+    "ts-loader": "^7.0.0",
+    "typescript": "^3.7.5",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-node-externals": "^1.7.2"
   },
   "bugs": {
     "url": "https://github.com/d4rekanguok/gatsby-typescript/issues"

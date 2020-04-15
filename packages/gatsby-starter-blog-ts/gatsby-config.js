@@ -47,15 +47,20 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    // {
+    //   resolve: `gatsby-plugin-ts`,
+    //   options: {
+    //     typeCheck: process.env.NODE_ENV !== 'production',
+    //     fileName: `gen/graphql-types.ts`,
+    //   },
+    // },
+    `gatsby-plugin-typescript`,
     {
-      resolve: `gatsby-plugin-ts`,
+      resolve: `gatsby-plugin-graphql-codegen`,
       options: {
-        typeCheck: process.env.NODE_ENV !== 'production',
-        fileName: `gen/graphql-types.ts`,
+        useModule: true,
       },
     },
-    // `gatsby-plugin-typescript`,
-    // `gatsby-plugin-graphql-codegen`,
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {

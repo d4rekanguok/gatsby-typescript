@@ -37,10 +37,7 @@
     "eslint-plugin-react": "^7.18.3",
     "graphql": "^14.6.0",
     "jest": "^25.1.0",
-    "lerna": "^3.16.4",
+    "lerna": "^3.20.2",
     "prettier": "^1.19.1"
-  },
-  "dependencies": {
-    "rollup": "^2.6.1"
   }
 }
