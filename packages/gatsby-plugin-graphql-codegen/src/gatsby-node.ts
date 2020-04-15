@@ -89,36 +89,48 @@ export const onPreInit: GatsbyNode['onPreInit'] = async (
   if (useModule) {
     // use module
     const modulePath = path.join(directory, 'node_modules', moduleName)
-    reporter.info(`writing modulePath`)
-    reporter.info(modulePath)
-    await fs.ensureDir(modulePath)
-    await fs.writeFile(
-      path.join(modulePath, 'package.json'),
-      `
-      {
-        "name": "${moduleName}",
-        "main": "index.js"
-      }
-    `
-    )
-    await fs.writeFile(path.join(modulePath, 'index.js'), `//noop`)
     codegenFilename = path.join(modulePath, 'index.d.ts')
-    return
+
+    const modulePackageJson = path.join(modulePath, 'package.json')
+    const moduleExists = await fs.pathExists(modulePackageJson)
+
+    if (moduleExists) {
+      const packageInfo = await fs.readJson(modulePackageJson)
+      if (!packageInfo['_gatsby-plugin-graphql-codegen']) {
+        reporter.panic(
+          `${PLUGIN_NAME}: Package '${moduleName}' already exists.`
+        )
+      }
+    } else {
+      await fs.ensureDir(modulePath)
+      await fs.writeFile(
+        modulePackageJson,
+        `
+        {
+          "name": "${moduleName}",
+          "main": "index.js",
+          "_gatsby-plugin-graphql-codegen": true
+        }
+      `
+      )
+      await fs.writeFile(path.join(modulePath, 'index.js'), `//noop`)
+    }
   } else {
     // use file
     // check for src
     const srcDir = path.join(directory, 'src')
     const pathToFile = path.join(directory, fileName)
+    codegenFilename = pathToFile
+
     const { dir } = path.parse(pathToFile)
 
     if (isInSrc(srcDir, dir)) {
       reporter.panic(
         `[${PLUGIN_NAME}]: \`fileName\` cannot be placed inside of \`src\`. Please check the current fileName: ${fileName}`
       )
+    } else {
+      await fs.ensureDir(dir)
     }
-    await fs.ensureDir(dir)
-    codegenFilename = pathToFile
-    return
   }
 }
 

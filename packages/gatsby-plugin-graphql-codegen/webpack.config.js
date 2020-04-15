@@ -23,7 +23,6 @@ module.exports = {
         req.includes('@graphql-toolkit') ||
         req.includes('@graphql-codegen')
       ) {
-        console.log(req)
         return cb(null, 'commonjs ' + req);
       }
       cb()

@@ -102,15 +102,11 @@ interface CreateConfigOptions extends CodegenOptions {
   codegenFilename: string
 }
 
-type CreateConfigFromSchema = (
-  schema: GraphQLSchema
-) => Promise<Types.GenerateOptions>
 type CreateConfig = (
   args: CreateConfigOptions
-) => Promise<CreateConfigFromSchema>
-const createConfig: CreateConfig = async configOptions => async (
-  schema
-): Promise<Types.GenerateOptions> => {
+) => (schema: GraphQLSchema) => Promise<Types.GenerateOptions>
+
+const createConfig: CreateConfig = configOptions => async schema => {
   const {
     documentPaths,
     directory,
@@ -152,13 +148,13 @@ const createConfig: CreateConfig = async configOptions => async (
   }
 }
 
-type GenerateFromSchema = (schema: GraphQLSchema) => Promise<void>
 type GenerateWithConfig = (
   initialOptions: CreateConfigOptions
-) => Promise<GenerateFromSchema>
-export const generateWithConfig: GenerateWithConfig = async initialOptions => {
-  const createConfigFromSchema = await createConfig(initialOptions)
-  return async (schema): Promise<void> => {
+) => (schema: GraphQLSchema) => Promise<void>
+
+export const generateWithConfig: GenerateWithConfig = initialOptions => {
+  const createConfigFromSchema = createConfig(initialOptions)
+  return async schema => {
     const config = await createConfigFromSchema(schema)
     const output = await codegen(config)
     return fs.writeFile(config.filename, output)
