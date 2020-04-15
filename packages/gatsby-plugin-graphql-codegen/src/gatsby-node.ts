@@ -76,8 +76,13 @@ type AsyncMap = <T, TResult>(
 const asyncMap: AsyncMap = (collection, callback) =>
   Promise.all(collection.map(callback))
 
-// path to generate file, it depends on whether user use module or filename
-let codegenFilename = ''
+// return path to generate file, it depends on whether user use module or filename
+const getCodegenFileName = ({ directory, useModule, fileName, moduleName }) => {
+  const modulePath = path.join(directory, 'node_modules', moduleName)
+  return useModule
+    ? path.join(modulePath, 'index.d.ts')
+    : path.join(directory, fileName)
+}
 
 export const onPreInit: GatsbyNode['onPreInit'] = async (
   { store, reporter },
@@ -89,8 +94,6 @@ export const onPreInit: GatsbyNode['onPreInit'] = async (
   if (useModule) {
     // use module
     const modulePath = path.join(directory, 'node_modules', moduleName)
-    codegenFilename = path.join(modulePath, 'index.d.ts')
-
     const modulePackageJson = path.join(modulePath, 'package.json')
     const moduleExists = await fs.pathExists(modulePackageJson)
 
@@ -120,8 +123,6 @@ export const onPreInit: GatsbyNode['onPreInit'] = async (
     // check for src
     const srcDir = path.join(directory, 'src')
     const pathToFile = path.join(directory, fileName)
-    codegenFilename = pathToFile
-
     const { dir } = path.parse(pathToFile)
 
     if (isInSrc(srcDir, dir)) {
@@ -142,6 +143,9 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
   if (!options.codegen) return
 
   const {
+    useModule,
+    fileName,
+    moduleName,
     documentPaths,
     codegenDelay,
     pluckConfig,
@@ -156,6 +160,13 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
     program,
   }: { schema: GraphQLSchema; program: any } = store.getState()
   const { directory } = program
+
+  const codegenFilename = getCodegenFileName({
+    directory,
+    useModule,
+    fileName,
+    moduleName,
+  })
 
   const defaultConfig = {
     key: DEFAULT_SCHEMA_KEY,
@@ -176,7 +187,7 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
     },
     ...(await asyncMap(additionalSchemas, async ({ schema, ...config }) => {
       const codegenConfig = {
-        codegenFilename: `graphql-types-${config.key}.ts`,
+        codegenFilename: path.join(directory, `graphql-types-${config.key}.ts`),
         documentPaths,
         directory,
         schema: await loadSchema(schema, {
@@ -193,7 +204,7 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
       }
       return {
         ...codegenConfig,
-        generateFromSchema: await generateWithConfig(codegenConfig),
+        generateFromSchema: generateWithConfig(codegenConfig),
       }
     })),
   ]

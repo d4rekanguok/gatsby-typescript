@@ -27,20 +27,27 @@ it('early returns if the codegen option is false', async () => {
 describe('ensureDir onPreInit', () => {
   const fs = require('fs-extra')
   const resetMockFiles = () => {
-    fs.__mockFiles = []
+    fs.__mockFiles = ['mock-directory/node_modules/foo/package.json']
   }
   beforeEach(resetMockFiles)
   afterEach(resetMockFiles)
 
-  it('creates directory for fileName onPreInit', async () => {
-    const mockGatsbyArgs = {
-      store: {
-        getState: () => ({
-          program: { directory: 'mock-directory' },
-        }),
-      },
-    }
+  const mockStore = {
+    getState: () => ({
+      program: { directory: 'mock-directory' },
+    }),
+  }
+  const mockReporter = {
+    info: jest.fn(),
+    panic: jest.fn(),
+  }
 
+  const mockGatsbyArgs = {
+    store: mockStore,
+    reporter: mockReporter,
+  }
+
+  it('creates directory for fileName onPreInit', async () => {
     const pluginOptions = {
       fileName: 'foo/bar/baz.ts',
       plugins: [],
@@ -48,7 +55,42 @@ describe('ensureDir onPreInit', () => {
 
     await onPreInit(mockGatsbyArgs, pluginOptions)
 
-    expect(fs.__mockFiles[0]).toBe('mock-directory/foo/bar')
+    expect(fs.__mockFiles).toContain('mock-directory/foo/bar')
+  })
+
+  it('panic when fileName is built to src', async () => {
+    const pluginOptions = {
+      fileName: 'src/types.ts',
+      plugins: [],
+    }
+
+    await onPreInit(mockGatsbyArgs, pluginOptions)
+
+    expect(mockReporter.panic).toHaveBeenCalled()
+  })
+
+  it('build a new module when useModule is true', async () => {
+    const pluginOptions = {
+      useModule: true,
+      moduleName: 'bar',
+      plugins: [],
+    }
+
+    await onPreInit(mockGatsbyArgs, pluginOptions)
+    expect(fs.__mockFiles).toContain(
+      'mock-directory/node_modules/bar/package.json'
+    )
+  })
+
+  it('panic when module already exists', async () => {
+    const pluginOptions = {
+      useModule: true,
+      moduleName: 'foo',
+      plugins: [],
+    }
+
+    await onPreInit(mockGatsbyArgs, pluginOptions)
+    expect(mockReporter.panic).toHaveBeenCalled()
   })
 })
 
@@ -82,7 +124,7 @@ it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
   expect(generateWithConfig.mock.calls[0][0]).toMatchInlineSnapshot(`
     Object {
       "codegenConfig": Object {},
-      "codegenFilename": "mock-directory/foo/bar/baz.ts",
+      "codegenFilename": "mock-directory/example-filename.ts",
       "codegenPlugins": Array [],
       "directory": "mock-directory",
       "documentPaths": Array [
