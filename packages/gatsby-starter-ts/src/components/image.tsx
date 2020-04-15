@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image'
 import ensureKeys from '../helpers/ensure-keys'
-import { ImageQuery } from '../../graphql-types'
+import { ImageQuery } from 'gatsby-ts'
 
 /*
  * This component is built using `gatsby-image` to automatically serve optimized

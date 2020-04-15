@@ -14,8 +14,10 @@ import {
   GatsbyCodegenPlugins,
   CodegenOptions,
 } from './graphql-codegen.config'
+import { isInSrc } from './utils/is-in-src'
 
 const DEFAULT_SCHEMA_KEY = 'default-gatsby-schema'
+const PLUGIN_NAME = 'gatsby-plugin-graphql-codegen'
 
 export interface SchemaConfig {
   key: string
@@ -28,6 +30,8 @@ export interface SchemaConfig {
 }
 
 export interface PluginOptions extends Partial<CodegenOptions> {
+  useModule?: boolean
+  moduleName?: string
   plugins: unknown[]
   codegen?: boolean
   codegenDelay?: number
@@ -39,6 +43,8 @@ const defaultOptions: Required<PluginOptions> = {
   plugins: [],
   documentPaths: ['./src/**/*.{ts,tsx}', './node_modules/gatsby-*/**/*.js'],
   fileName: 'graphql-types.ts',
+  useModule: false,
+  moduleName: 'gatsby-ts',
   codegen: true,
   codegenDelay: 200,
   failOnError: process.env.NODE_ENV === 'production',
@@ -69,16 +75,48 @@ type AsyncMap = <T, TResult>(
 const asyncMap: AsyncMap = (collection, callback) =>
   Promise.all(collection.map(callback))
 
+// path to generate file, it depends on whether user use module or filename
+let codegenFile = ''
+
 export const onPreInit: GatsbyNode['onPreInit'] = async (
-  { store },
+  { store, reporter },
   pluginOptions = { plugins: [] }
 ) => {
-  const { fileName } = getOptions(pluginOptions)
+  const { fileName, moduleName, useModule } = getOptions(pluginOptions)
   const { directory } = store.getState().program
-  const pathToFile = path.join(directory, fileName)
-  const { dir } = path.parse(pathToFile)
-  await fs.ensureDir(dir)
-  return
+
+  if (useModule) {
+    // use module
+    const modulePath = path.join(directory, 'node_modules', moduleName)
+    await fs.ensureDir(modulePath)
+    await fs.writeFile(
+      path.join(modulePath, 'package.json'),
+      `
+      {
+        name: ${moduleName},
+        main: 'index.js'
+      }
+    `
+    )
+    await fs.writeFile(path.join(modulePath, 'index.js'), `//noop`)
+    codegenFile = path.join(modulePath, 'index.d.ts')
+    return
+  } else {
+    // use file
+    // check for src
+    const srcDir = path.join(directory, 'src')
+    const pathToFile = path.join(directory, fileName)
+    const { dir } = path.parse(pathToFile)
+
+    if (isInSrc(srcDir, dir)) {
+      reporter.panic(
+        `[${PLUGIN_NAME}]: \`fileName\` cannot be placed inside of \`src\`. Please check the current fileName: ${fileName}`
+      )
+    }
+    await fs.ensureDir(dir)
+    codegenFile = fileName
+    return
+  }
 }
 
 export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
@@ -90,7 +128,6 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
 
   const {
     documentPaths,
-    fileName,
     codegenDelay,
     pluckConfig,
     additionalSchemas,
@@ -107,7 +144,7 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
 
   const defaultConfig = {
     key: DEFAULT_SCHEMA_KEY,
-    fileName,
+    fileName: codegenFile,
     documentPaths,
     pluckConfig,
     directory,

@@ -8,7 +8,7 @@
 import * as React from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import ensureKeys from '../helpers/ensure-keys'
-import { SiteTitleQuery } from '../../graphql-types'
+import { SiteTitleQuery } from 'gatsby-ts'
 
 import Header from './header'
 import './layout.css'

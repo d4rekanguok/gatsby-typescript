@@ -30,6 +30,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-graphql-codegen`,
       options: {
+        fileName: 'hey.ts',
         additionalSchemas: [
           {
             // demo api https://github.com/lucasbento/graphql-pokemon
