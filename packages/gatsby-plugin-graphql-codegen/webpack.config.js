@@ -1,7 +1,6 @@
 // const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
-  mode: 'production',
   entry: './src/gatsby-node.ts',
   target: 'node',
   output: {

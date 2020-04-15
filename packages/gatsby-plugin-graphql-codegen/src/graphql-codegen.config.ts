@@ -118,7 +118,7 @@ const createConfig: CreateConfig = async ({
   codegenConfig,
 }) => {
   // file name & location
-  const pathToFile = path.join(directory, fileName)
+  reporter.info(fileName)
 
   const { pluginMap, plugins } = mapCodegenPlugins({
     codegenPlugins,
@@ -142,7 +142,7 @@ const createConfig: CreateConfig = async ({
       .reduce((acc, cur) => acc.concat(cur), [])
 
     return {
-      filename: pathToFile,
+      filename: fileName,
       schema: parse(printSchema(schema)),
       config: codegenConfig,
       documents,

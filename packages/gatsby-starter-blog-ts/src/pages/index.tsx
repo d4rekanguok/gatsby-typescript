@@ -6,7 +6,7 @@ import Layout from '../components/layout'
 import SEO from '../components/seo'
 import { rhythm } from '../utils/typography'
 
-import { BlogIndexQuery } from '../../gen/graphql-types'
+import { BlogIndexQuery } from 'gatsby-ts'
 
 interface IBlogIndexProps {
   // uncomment this when type is generated
@@ -15,57 +15,55 @@ interface IBlogIndexProps {
   location: Location
 }
 
-class BlogIndex extends React.Component<IBlogIndexProps> {
-  render() {
-    const { data, location } = this.props
-    if (
-      !data ||
-      !data.site ||
-      !data.site.siteMetadata ||
-      !data.site.siteMetadata.title ||
-      !data.allMarkdownRemark
-    )
-      throw new Error('no data')
-    const siteTitle = data.site.siteMetadata.title
-    const posts = data.allMarkdownRemark.edges
-
-    return (
-      <Layout location={location} title={siteTitle}>
-        <SEO title="All posts" />
-        <Bio />
-        {posts.map(({ node }) => {
-          if (
-            !node.frontmatter ||
-            !node.excerpt ||
-            !node.fields ||
-            !node.fields.slug
-          )
-            throw new Error('missing data')
-
-          const title = node.frontmatter.title || node.fields.slug
-          return (
-            <div key={node.fields.slug}>
-              <h3
-                style={{
-                  marginBottom: rhythm(1 / 4),
-                }}
-              >
-                <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
-                  {title}
-                </Link>
-              </h3>
-              <small>{node.frontmatter.date}</small>
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: node.frontmatter.description || node.excerpt,
-                }}
-              />
-            </div>
-          )
-        })}
-      </Layout>
-    )
+const BlogIndex: React.FC<IBlogIndexProps> = ({ data, location }) => {
+  if (
+    !data ||
+    !data.site ||
+    !data.site.siteMetadata ||
+    !data.site.siteMetadata.title ||
+    !data.allMarkdownRemark
+  ) {
+    throw new Error('no data')
   }
+  const siteTitle = data.site.siteMetadata.title
+  const posts = data.allMarkdownRemark.edges
+
+  return (
+    <Layout location={location} title={siteTitle}>
+      <SEO title="All posts" />
+      <Bio />
+      {posts.map(({ node }) => {
+        if (
+          !node.frontmatter ||
+          !node.excerpt ||
+          !node.fields ||
+          !node.fields.slug
+        )
+          throw new Error('missing data')
+
+        const title = node.frontmatter.title || node.fields.slug
+        return (
+          <div key={node.fields.slug}>
+            <h3
+              style={{
+                marginBottom: rhythm(1 / 4),
+              }}
+            >
+              <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
+                {title}
+              </Link>
+            </h3>
+            <small>{node.frontmatter.date}</small>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: node.frontmatter.description || node.excerpt,
+              }}
+            />
+          </div>
+        )
+      })}
+    </Layout>
+  )
 }
 
 export default BlogIndex

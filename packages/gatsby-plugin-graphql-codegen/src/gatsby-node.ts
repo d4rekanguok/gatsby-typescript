@@ -88,13 +88,15 @@ export const onPreInit: GatsbyNode['onPreInit'] = async (
   if (useModule) {
     // use module
     const modulePath = path.join(directory, 'node_modules', moduleName)
+    reporter.info(`writing modulePath`)
+    reporter.info(modulePath)
     await fs.ensureDir(modulePath)
     await fs.writeFile(
       path.join(modulePath, 'package.json'),
       `
       {
-        name: ${moduleName},
-        main: 'index.js'
+        "name": "${moduleName}",
+        "main": "index.js"
       }
     `
     )
@@ -114,7 +116,7 @@ export const onPreInit: GatsbyNode['onPreInit'] = async (
       )
     }
     await fs.ensureDir(dir)
-    codegenFile = fileName
+    codegenFile = pathToFile
     return
   }
 }

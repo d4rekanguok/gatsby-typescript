@@ -4,8 +4,9 @@
   "description": "Automate codegen for Gatsby via graphql-codegen",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "prepublishOnly": "webpack"
+    "dev": "webpack --mode=development -w",
+    "build": "webpack --mode=production",
+    "prepublishOnly": "webpack --mode=production"
   },
   "keywords": [
     "gatsby",
