@@ -80,43 +80,43 @@ it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
 
   expect(generateWithConfig).toHaveBeenCalledTimes(1)
   expect(generateWithConfig.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "codegenConfig": Object {},
-        "codegenPlugins": Array [],
-        "directory": "mock-directory",
-        "documentPaths": Array [
-          "./example-document-paths",
+    Object {
+      "codegenConfig": Object {},
+      "codegenFilename": "mock-directory/foo/bar/baz.ts",
+      "codegenPlugins": Array [],
+      "directory": "mock-directory",
+      "documentPaths": Array [
+        "./example-document-paths",
+      ],
+      "key": "default-gatsby-schema",
+      "pluckConfig": Object {
+        "globalGqlIdentifierName": "graphql",
+        "modules": Array [
+          Object {
+            "identifier": "graphql",
+            "name": "gatsby",
+          },
         ],
-        "fileName": "./example-filename.ts",
-        "key": "default-gatsby-schema",
-        "pluckConfig": Object {
-          "globalGqlIdentifierName": "graphql",
-          "modules": Array [
+      },
+      "reporter": Object {
+        "info": [MockFunction] {
+          "calls": Array [
+            Array [
+              "[gatsby-plugin-graphql-codegen] definition for default-gatsby-schema has been updated.",
+            ],
+          ],
+          "results": Array [
             Object {
-              "identifier": "graphql",
-              "name": "gatsby",
+              "type": "return",
+              "value": undefined,
             },
           ],
         },
-        "reporter": Object {
-          "info": [MockFunction] {
-            "calls": Array [
-              Array [
-                "[gatsby-plugin-graphql-codegen] definition for queries of schema default-gatsby-schema has been updated at ./example-filename.ts",
-              ],
-            ],
-            "results": Array [
-              Object {
-                "type": "return",
-                "value": undefined,
-              },
-            ],
-          },
-          "panic": [MockFunction],
-        },
-        "schema": "mock-schema",
-      }
-    `)
+        "panic": [MockFunction],
+      },
+      "schema": "mock-schema",
+    }
+  `)
 
   expect(mockGenerateFromSchema).toMatchInlineSnapshot(`
       [MockFunction] {

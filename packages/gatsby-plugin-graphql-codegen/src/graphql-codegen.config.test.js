@@ -4,7 +4,6 @@ import { loadDocuments } from '@graphql-toolkit/core'
 import { generateWithConfig, mapCodegenPlugins } from './graphql-codegen.config'
 
 jest.mock('fs-extra', () => ({
-  ensureDir: jest.fn(),
   writeFile: jest.fn(),
 }))
 
@@ -69,26 +68,11 @@ it('takes in options and returns a function that runs codegen for the schema', a
 
   await generateFromSchema(mockSchema)
 
-  expect(fs.ensureDir).toMatchInlineSnapshot(`
-    [MockFunction] {
-      "calls": Array [
-        Array [
-          "example-directory",
-        ],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
-  `)
   expect(fs.writeFile).toMatchInlineSnapshot(`
 [MockFunction] {
   "calls": Array [
     Array [
-      "example-directory/example-types.ts",
+      undefined,
       "export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
