@@ -91,7 +91,6 @@ export const mapCodegenPlugins = ({
 
 export interface CodegenOptions {
   documentPaths: string[]
-  fileName: string
   pluckConfig: GraphQLTagPluckOptions
   codegenPlugins: GatsbyCodegenPlugins[]
   codegenConfig: Record<string, any>
@@ -100,6 +99,7 @@ export interface CodegenOptions {
 interface CreateConfigOptions extends CodegenOptions {
   directory: string
   reporter: Reporter
+  codegenFilename: string
 }
 
 type CreateConfigFromSchema = (
@@ -108,47 +108,47 @@ type CreateConfigFromSchema = (
 type CreateConfig = (
   args: CreateConfigOptions
 ) => Promise<CreateConfigFromSchema>
-const createConfig: CreateConfig = async ({
-  documentPaths,
-  directory,
-  fileName,
-  reporter,
-  pluckConfig,
-  codegenPlugins,
-  codegenConfig,
-}) => {
-  // file name & location
-  reporter.info(fileName)
+const createConfig: CreateConfig = async configOptions => async (
+  schema
+): Promise<Types.GenerateOptions> => {
+  const {
+    documentPaths,
+    directory,
+    codegenFilename,
+    reporter,
+    pluckConfig,
+    codegenPlugins,
+    codegenConfig,
+  } = configOptions
 
+  // plugins
   const { pluginMap, plugins } = mapCodegenPlugins({
     codegenPlugins,
     defaultPlugins,
   })
 
-  return async (schema): Promise<Types.GenerateOptions> => {
-    // documents
-    const docPromises = documentPaths.map(async docGlob => {
-      const _docGlob = path.join(directory, docGlob)
-      return loadDocuments(_docGlob, {
-        pluckConfig,
-        loaders: [new CodeFileLoader()],
-      }).catch(err => {
-        reporter.warn('[gatsby-plugin-graphql-codegen] ' + err.message)
-      })
+  // documents
+  const docPromises = documentPaths.map(async docGlob => {
+    const _docGlob = path.join(directory, docGlob)
+    return loadDocuments(_docGlob, {
+      pluckConfig,
+      loaders: [new CodeFileLoader()],
+    }).catch(err => {
+      reporter.warn('[gatsby-plugin-graphql-codegen] ' + err.message)
     })
-    const results = await Promise.all(docPromises)
-    const documents = results
-      .filter(isSource)
-      .reduce((acc, cur) => acc.concat(cur), [])
+  })
+  const results = await Promise.all(docPromises)
+  const documents = results
+    .filter(isSource)
+    .reduce((acc, cur) => acc.concat(cur), [])
 
-    return {
-      filename: fileName,
-      schema: parse(printSchema(schema)),
-      config: codegenConfig,
-      documents,
-      plugins,
-      pluginMap,
-    }
+  return {
+    filename: codegenFilename,
+    schema: parse(printSchema(schema)),
+    config: codegenConfig,
+    documents,
+    plugins,
+    pluginMap,
   }
 }
 

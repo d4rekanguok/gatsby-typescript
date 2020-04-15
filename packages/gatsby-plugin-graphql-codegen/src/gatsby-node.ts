@@ -31,6 +31,7 @@ export interface SchemaConfig {
 
 export interface PluginOptions extends Partial<CodegenOptions> {
   useModule?: boolean
+  fileName?: string
   moduleName?: string
   plugins: unknown[]
   codegen?: boolean
@@ -76,7 +77,7 @@ const asyncMap: AsyncMap = (collection, callback) =>
   Promise.all(collection.map(callback))
 
 // path to generate file, it depends on whether user use module or filename
-let codegenFile = ''
+let codegenFilename = ''
 
 export const onPreInit: GatsbyNode['onPreInit'] = async (
   { store, reporter },
@@ -101,7 +102,7 @@ export const onPreInit: GatsbyNode['onPreInit'] = async (
     `
     )
     await fs.writeFile(path.join(modulePath, 'index.js'), `//noop`)
-    codegenFile = path.join(modulePath, 'index.d.ts')
+    codegenFilename = path.join(modulePath, 'index.d.ts')
     return
   } else {
     // use file
@@ -116,7 +117,7 @@ export const onPreInit: GatsbyNode['onPreInit'] = async (
       )
     }
     await fs.ensureDir(dir)
-    codegenFile = pathToFile
+    codegenFilename = pathToFile
     return
   }
 }
@@ -146,7 +147,7 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
 
   const defaultConfig = {
     key: DEFAULT_SCHEMA_KEY,
-    fileName: codegenFile,
+    codegenFilename,
     documentPaths,
     pluckConfig,
     directory,
@@ -163,7 +164,7 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
     },
     ...(await asyncMap(additionalSchemas, async ({ schema, ...config }) => {
       const codegenConfig = {
-        fileName: `graphql-types-${config.key}.ts`,
+        codegenFilename: `graphql-types-${config.key}.ts`,
         documentPaths,
         directory,
         schema: await loadSchema(schema, {
@@ -187,15 +188,12 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
 
   const build = async (): Promise<void> => {
     try {
-      await asyncMap(
-        configs,
-        async ({ key, generateFromSchema, schema, fileName }) => {
-          await generateFromSchema(schema)
-          reporter.info(
-            `[gatsby-plugin-graphql-codegen] definition for queries of schema ${key} has been updated at ${fileName}`
-          )
-        }
-      )
+      await asyncMap(configs, async ({ key, generateFromSchema, schema }) => {
+        await generateFromSchema(schema)
+        reporter.info(
+          `[gatsby-plugin-graphql-codegen] definition for ${key} has been updated.`
+        )
+      })
     } catch (err) {
       if (failOnError) {
         reporter.panic(err)
