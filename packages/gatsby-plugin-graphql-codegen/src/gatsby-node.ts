@@ -30,9 +30,7 @@ export interface SchemaConfig {
 }
 
 export interface PluginOptions extends Partial<CodegenOptions> {
-  useModule?: boolean
   fileName?: string
-  moduleName?: string
   plugins: unknown[]
   codegen?: boolean
   codegenDelay?: number
@@ -44,8 +42,6 @@ const defaultOptions: Required<PluginOptions> = {
   plugins: [],
   documentPaths: ['./src/**/*.{ts,tsx}', './node_modules/gatsby-*/**/*.js'],
   fileName: 'graphql-types.ts',
-  useModule: false,
-  moduleName: 'gatsby-ts',
   codegen: true,
   codegenDelay: 200,
   failOnError: process.env.NODE_ENV === 'production',
@@ -76,62 +72,25 @@ type AsyncMap = <T, TResult>(
 const asyncMap: AsyncMap = (collection, callback) =>
   Promise.all(collection.map(callback))
 
-// return path to generate file, it depends on whether user use module or filename
-const getCodegenFileName = ({ directory, useModule, fileName, moduleName }) => {
-  const modulePath = path.join(directory, 'node_modules', moduleName)
-  return useModule
-    ? path.join(modulePath, 'index.d.ts')
-    : path.join(directory, fileName)
-}
-
 export const onPreInit: GatsbyNode['onPreInit'] = async (
   { store, reporter },
   pluginOptions = { plugins: [] }
 ) => {
-  const { fileName, moduleName, useModule } = getOptions(pluginOptions)
+  const { fileName } = getOptions(pluginOptions)
   const { directory } = store.getState().program
 
-  if (useModule) {
-    // use module
-    const modulePath = path.join(directory, 'node_modules', moduleName)
-    const modulePackageJson = path.join(modulePath, 'package.json')
-    const moduleExists = await fs.pathExists(modulePackageJson)
+  // use file
+  // check for src
+  const srcDir = path.join(directory, 'src')
+  const pathToFile = path.join(directory, fileName)
+  const { dir } = path.parse(pathToFile)
 
-    if (moduleExists) {
-      const packageInfo = await fs.readJson(modulePackageJson)
-      if (!packageInfo['_gatsby-plugin-graphql-codegen']) {
-        reporter.panic(
-          `${PLUGIN_NAME}: Package '${moduleName}' already exists.`
-        )
-      }
-    } else {
-      await fs.ensureDir(modulePath)
-      await fs.writeFile(
-        modulePackageJson,
-        `
-        {
-          "name": "${moduleName}",
-          "main": "index.js",
-          "_gatsby-plugin-graphql-codegen": true
-        }
-      `
-      )
-      await fs.writeFile(path.join(modulePath, 'index.js'), `//noop`)
-    }
+  if (isInSrc(srcDir, dir)) {
+    reporter.panic(
+      `[${PLUGIN_NAME}]: \`fileName\` cannot be placed inside of \`src\`. Please check the current fileName: ${fileName}`
+    )
   } else {
-    // use file
-    // check for src
-    const srcDir = path.join(directory, 'src')
-    const pathToFile = path.join(directory, fileName)
-    const { dir } = path.parse(pathToFile)
-
-    if (isInSrc(srcDir, dir)) {
-      reporter.panic(
-        `[${PLUGIN_NAME}]: \`fileName\` cannot be placed inside of \`src\`. Please check the current fileName: ${fileName}`
-      )
-    } else {
-      await fs.ensureDir(dir)
-    }
+    await fs.ensureDir(dir)
   }
 }
 
@@ -143,9 +102,7 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
   if (!options.codegen) return
 
   const {
-    useModule,
     fileName,
-    moduleName,
     documentPaths,
     codegenDelay,
     pluckConfig,
@@ -161,12 +118,7 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
   }: { schema: GraphQLSchema; program: any } = store.getState()
   const { directory } = program
 
-  const codegenFilename = getCodegenFileName({
-    directory,
-    useModule,
-    fileName,
-    moduleName,
-  })
+  const codegenFilename = path.join(directory, fileName)
 
   const defaultConfig = {
     key: DEFAULT_SCHEMA_KEY,
