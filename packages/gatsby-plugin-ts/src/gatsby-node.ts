@@ -1,14 +1,15 @@
-import { GatsbyNode } from 'gatsby'
+import { GatsbyNode, PluginOptions } from 'gatsby'
 import * as webpack from 'webpack'
 import * as tsloader from 'ts-loader'
 import FTCWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import {
+  onPreInit as onPreInitCodegen,
   onPostBootstrap as onPostBootstrapCodegen,
-  PluginOptions,
+  PluginOptions as CodegenPluginOptions,
 } from 'gatsby-plugin-graphql-codegen/gatsby-node'
 import requireResolve from './require-resolve'
 
-export interface TsOptions extends PluginOptions {
+export interface TsOptions extends CodegenPluginOptions, PluginOptions {
   tsLoader?: Partial<tsloader.Options>
   typeCheck?: boolean
   alwaysCheck?: boolean
@@ -91,17 +92,22 @@ export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = (
 export const onPostBootstrap = onPostBootstrapCodegen
 
 export const onPreInit: GatsbyNode['onPreInit'] = (
-  { reporter },
+  args,
   options: TsOptions = { plugins: [] }
 ) => {
+  const { reporter } = args
   const { alwaysCheck } = options
-  const { typeCheck } = getOptions(options)
   if (typeof alwaysCheck !== 'undefined') {
     reporter.warn(
       `[gatsby-plugin-ts] \`alwaysCheck\` has been deprecated. Please set \`typeCheck\` instead.`
     )
   }
+
+  const { typeCheck } = getOptions(options)
   reporter.info(
     `[gatsby-plugin-ts] Typecheck is ${typeCheck ? 'enabled' : 'disabled'}.`
   )
+
+  if (!onPreInitCodegen) return
+  onPreInitCodegen(args, options)
 }
