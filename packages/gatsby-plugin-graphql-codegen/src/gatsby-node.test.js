@@ -68,30 +68,6 @@ describe('ensureDir onPreInit', () => {
 
     expect(mockReporter.panic).toHaveBeenCalled()
   })
-
-  it('build a new module when useModule is true', async () => {
-    const pluginOptions = {
-      useModule: true,
-      moduleName: 'bar',
-      plugins: [],
-    }
-
-    await onPreInit(mockGatsbyArgs, pluginOptions)
-    expect(fs.__mockFiles).toContain(
-      'mock-directory/node_modules/bar/package.json'
-    )
-  })
-
-  it('panic when module already exists', async () => {
-    const pluginOptions = {
-      useModule: true,
-      moduleName: 'foo',
-      plugins: [],
-    }
-
-    await onPreInit(mockGatsbyArgs, pluginOptions)
-    expect(mockReporter.panic).toHaveBeenCalled()
-  })
 })
 
 it('calls `generateWithConfig` from `graphql-codegen.config.ts`', async () => {
