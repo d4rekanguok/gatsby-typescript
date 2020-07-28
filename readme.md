@@ -4,6 +4,14 @@ An alternative to the official typescript plugin, with [`ts-loader`](https://git
 
 ---
 
+> Hi there 👋 
+> Are you just looking for a way to generate graphql types for your graphql queries?
+>
+> `gatsby-plugin-graphql-codegen` is what you want. However, other maintainers and I haven't been able to keep this repo up to shape. Please have a look at @cometkim's [graphql-plugin-typegen](https://github.com/cometkim/gatsby-plugin-typegen) which does almost the same thing & better maintained.
+> Still, ideas & PRs are all welcomed. If you'd like to help maintain this project, please feel free to reach out. Thank you, have a great day!
+
+---
+
 
 This monorepo houses 2 packages:
 
