@@ -1,4 +1,5 @@
 import * as fs from 'fs-extra'
+import * as path from 'path'
 import { buildSchema } from 'graphql'
 import { loadDocuments } from '@graphql-toolkit/core'
 import { generateWithConfig, mapCodegenPlugins } from './graphql-codegen.config'
@@ -84,12 +85,13 @@ it('takes in options and returns a function that runs codegen for the schema', a
       ],
     }
   `)
-  expect(fs.writeFile).toMatchInlineSnapshot(`
-    [MockFunction] {
-      "calls": Array [
-        Array [
-          "example-directory\\\\example-types.ts",
-          "export type Maybe<T> = T | null;
+
+  expect(fs.writeFile.mock.calls[0]).toBeDefined()
+  expect(fs.writeFile.mock.calls[0][0]).toBe(
+    path.join('example-directory', 'example-types.ts')
+  )
+  expect(fs.writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
+    "export type Maybe<T> = T | null;
     export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
     /** All built-in and custom scalars, mapped to their actual values */
     export type Scalars = {
@@ -104,16 +106,7 @@ it('takes in options and returns a function that runs codegen for the schema', a
       example?: Maybe<Scalars['String']>;
     };
 
-    ",
-        ],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
+    "
   `)
 
   expect(mockReporter.warn).not.toHaveBeenCalled()
