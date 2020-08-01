@@ -1,4 +1,4 @@
-name: Build Starters
+name: Lint, Build, Test
 
 on: [pull_request]
 
@@ -15,19 +15,19 @@ jobs:
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn bootstrap
-      - run: yarn workspace gatsby-plugin-graphql-codegen build
-      - run: yarn workspace gatsby-plugin-ts build
-      - run: yarn workspace gatsby-starter-ts build
+      - run: yarn lint
+      - run: yarn build
         env:
           GATSBY_TELEMETRY_DISABLED: 1
           CI: true
+      - run: yarn test
       - run: yarn confirm
