@@ -32,7 +32,7 @@
     "@graphql-toolkit/graphql-tag-pluck": "0.10.7",
     "@graphql-toolkit/json-file-loader": "0.10.7",
     "@graphql-toolkit/url-loader": "0.10.7",
-    "fs-extra": "7.0.1",
+    "fs-extra": "9.0.1",
     "lodash.debounce": "4.0.8"
   },
   "peerDependencies": {
@@ -41,7 +41,7 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
-    "@types/fs-extra": "^7.0.0",
+    "@types/fs-extra": "9.0.1",
     "@types/lodash.debounce": "^4.0.6",
     "@types/node": "^12.0.8",
     "gatsby": "^2.9.2",

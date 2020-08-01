@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "fork-ts-checker-webpack-plugin": "4.1.6",
-    "fs-extra": "7.0.1",
+    "fs-extra": "9.0.1",
     "gatsby-plugin-graphql-codegen": "^2.7.1",
     "ts-loader": "6.2.2"
   },
@@ -35,7 +35,7 @@
     }
   },
   "devDependencies": {
-    "@types/fs-extra": "^7.0.0",
+    "@types/fs-extra": "9.0.1",
     "@types/node": "^12.0.8",
     "@types/webpack": "^4.4.32",
     "gatsby": "^2.9.2",
