@@ -12,7 +12,7 @@
     "@types/react": "16.8.20",
     "@types/react-dom": "16.8.4",
     "@types/typography": "0.16.3",
-    "gatsby": "2.9.4",
+    "gatsby": "2.24.23",
     "gatsby-image": "2.1.4",
     "gatsby-plugin-feed": "2.2.3",
     "gatsby-plugin-google-analytics": "2.0.21",
