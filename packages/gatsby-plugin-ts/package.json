@@ -19,10 +19,10 @@
   "author": "Derek Nguyen <derek@penandpillow.com>",
   "license": "MIT",
   "dependencies": {
-    "fork-ts-checker-webpack-plugin": "^4.0.3",
-    "fs-extra": "^7.0.1",
+    "fork-ts-checker-webpack-plugin": "4.1.6",
+    "fs-extra": "7.0.1",
     "gatsby-plugin-graphql-codegen": "^2.7.1",
-    "ts-loader": "^6.2.1"
+    "ts-loader": "6.2.2"
   },
   "peerDependencies": {
     "gatsby": "^2.12.1",
