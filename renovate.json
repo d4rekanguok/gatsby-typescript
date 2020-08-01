@@ -1,0 +1,17 @@
+{
+  "packageRules": [
+    {
+      "packageNames": ["graphql"],
+      "allowedVersions": "<=14"
+    },
+    {
+      "depTypeList": ["dependencies"],
+      "rangeStrategy": "pin"
+    },
+    {
+      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "automergeType": "pr"
+    }
+  ]
+}
