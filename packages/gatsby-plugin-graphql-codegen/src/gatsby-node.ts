@@ -16,7 +16,7 @@ const DEFAULT_SCHEMA_KEY = 'default-gatsby-schema'
 
 export interface SchemaConfig {
   key: string
-  fileName: string
+  fileName?: string
   schema: UnnormalizedTypeDefPointer
   documentPaths?: string[]
   pluckConfig: GraphQLTagPluckOptions
