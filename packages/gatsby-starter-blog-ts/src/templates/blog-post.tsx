@@ -13,7 +13,7 @@ interface IPostTemplateProps {
 }
 
 class BlogPostTemplate extends React.Component<IPostTemplateProps> {
-  render() {
+  render(): JSX.Element {
     const { location } = this.props
     const post = this.props.data.markdownRemark
     const siteTitle = this.props.data.site.siteMetadata.title

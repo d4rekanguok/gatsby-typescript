@@ -16,7 +16,7 @@ interface IBlogIndexProps {
 }
 
 class BlogIndex extends React.Component<IBlogIndexProps> {
-  render() {
+  render(): JSX.Element {
     const { data, location } = this.props
     if (
       !data ||

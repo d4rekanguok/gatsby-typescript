@@ -15,7 +15,7 @@ import { ImageQuery } from '../../graphql-types'
  * - `useStaticQuery`: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-const Image: React.FC<{}> = () => {
+const Image: React.FC = () => {
   const data = useStaticQuery<ImageQuery>(graphql`
     query Image {
       placeholderImage: file(relativePath: { eq: "gatsby-astronaut.png" }) {

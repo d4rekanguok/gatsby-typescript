@@ -10,7 +10,7 @@ interface INotFoundPage {
 }
 
 class NotFoundPage extends React.Component<INotFoundPage> {
-  render() {
+  render(): JSX.Element {
     const { data, location } = this.props
     const siteTitle = data.site.siteMetadata.title
 
