@@ -44,7 +44,7 @@
     "typography-theme-wordpress-2016": "0.16.19"
   },
   "devDependencies": {
-    "prettier": "1.19.1"
+    "prettier": "2.0.5"
   },
   "homepage": "https://github.com/d4rekanguok/gatsby-starter-blog-ts#readme",
   "keywords": [
