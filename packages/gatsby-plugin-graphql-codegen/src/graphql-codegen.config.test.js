@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import { buildSchema } from 'graphql'
-import { loadDocuments } from '@graphql-toolkit/core'
+import { loadDocuments } from '@graphql-tools/load'
 import { generateWithConfig, mapCodegenPlugins } from './graphql-codegen.config'
 
 jest.mock('fs-extra', () => ({
@@ -9,7 +9,7 @@ jest.mock('fs-extra', () => ({
   writeFile: jest.fn(),
 }))
 
-jest.mock('@graphql-toolkit/core', () => ({
+jest.mock('@graphql-tools/load', () => ({
   loadDocuments: jest.fn(),
 }))
 

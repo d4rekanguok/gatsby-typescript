@@ -5,11 +5,11 @@ import {
   CodegenOptions,
 } from './graphql-codegen.config'
 import debounce from 'lodash.debounce'
-import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
-import { loadSchema, UnnormalizedTypeDefPointer } from '@graphql-toolkit/core'
-import { UrlLoader } from '@graphql-toolkit/url-loader'
-import { JsonFileLoader } from '@graphql-toolkit/json-file-loader'
-import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
+import { GraphQLTagPluckOptions } from '@graphql-tools/graphql-tag-pluck'
+import { loadSchema, UnnormalizedTypeDefPointer } from '@graphql-tools/load'
+import { UrlLoader } from '@graphql-tools/url-loader'
+import { JsonFileLoader } from '@graphql-tools/json-file-loader'
+import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { GraphQLSchema } from 'graphql'
 
 const DEFAULT_SCHEMA_KEY = 'default-gatsby-schema'

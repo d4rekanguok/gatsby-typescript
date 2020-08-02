@@ -6,14 +6,14 @@ import {
   CodegenPlugin,
   PluginFunction,
 } from '@graphql-codegen/plugin-helpers'
-import { Source } from '@graphql-toolkit/common'
-import { loadDocuments } from '@graphql-toolkit/core'
-import { CodeFileLoader } from '@graphql-toolkit/code-file-loader'
+import { Source } from '@graphql-tools/utils'
+import { loadDocuments } from '@graphql-tools/load'
+import { CodeFileLoader } from '@graphql-tools/code-file-loader'
 import { codegen } from '@graphql-codegen/core'
 import { printSchema, parse, GraphQLSchema } from 'gatsby/graphql'
 import { plugin as typescriptPlugin } from '@graphql-codegen/typescript'
 import { plugin as operationsPlugin } from '@graphql-codegen/typescript-operations'
-import { GraphQLTagPluckOptions } from '@graphql-toolkit/graphql-tag-pluck'
+import { GraphQLTagPluckOptions } from '@graphql-tools/graphql-tag-pluck'
 
 function isSource(result: void | Source[]): result is Source[] {
   return typeof result !== 'undefined'
