@@ -29,7 +29,7 @@ const defaultOptions: TsOptions = {
 
 // TODO: use something like lodash defaultDeep here when options get more complex
 type GetOptions = (options: TsOptions) => TsOptions
-const getOptions: GetOptions = pluginOptions => ({
+const getOptions: GetOptions = (pluginOptions) => ({
   ...defaultOptions,
   ...pluginOptions,
   forkTsCheckerPlugin: {

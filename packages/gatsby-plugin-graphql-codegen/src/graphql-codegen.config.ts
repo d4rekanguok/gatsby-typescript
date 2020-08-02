@@ -67,7 +67,7 @@ export const mapCodegenPlugins = ({
     // handle default plugins (typescript, operations)
     if (typeof resolve === 'string') {
       const added = acc.plugins.find(
-        addedPlugin => Object.keys(addedPlugin)[0] === resolve
+        (addedPlugin) => Object.keys(addedPlugin)[0] === resolve
       )
 
       if (!added) {
@@ -129,12 +129,12 @@ const createConfig: CreateConfig = async ({
 
   return async (schema): Promise<Types.GenerateOptions> => {
     // documents
-    const docPromises = documentPaths.map(async docGlob => {
+    const docPromises = documentPaths.map(async (docGlob) => {
       const _docGlob = path.join(directory, docGlob)
       return loadDocuments(_docGlob, {
         pluckConfig,
         loaders: [new CodeFileLoader()],
-      }).catch(err => {
+      }).catch((err) => {
         reporter.warn('[gatsby-plugin-graphql-codegen] ' + err.message)
       })
     })
@@ -158,7 +158,9 @@ type GenerateFromSchema = (schema: GraphQLSchema) => Promise<void>
 type GenerateWithConfig = (
   initialOptions: CreateConfigOptions
 ) => Promise<GenerateFromSchema>
-export const generateWithConfig: GenerateWithConfig = async initialOptions => {
+export const generateWithConfig: GenerateWithConfig = async (
+  initialOptions
+) => {
   const createConfigFromSchema = await createConfig(initialOptions)
   return async (schema): Promise<void> => {
     const config = await createConfigFromSchema(schema)

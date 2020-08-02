@@ -54,7 +54,7 @@ const defaultOptions: Required<PluginOptions> = {
 }
 
 type GetOptions = (options: PluginOptions) => Required<PluginOptions>
-const getOptions: GetOptions = pluginOptions => ({
+const getOptions: GetOptions = (pluginOptions) => ({
   ...defaultOptions,
   ...pluginOptions,
 })

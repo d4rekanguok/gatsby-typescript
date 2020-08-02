@@ -14,7 +14,7 @@ import { rhythm } from '../utils/typography'
 const Bio: React.FC = () => (
   <StaticQuery
     query={bioQuery}
-    render={data => {
+    render={(data) => {
       const { author, social } = data.site.siteMetadata
       return (
         <div

@@ -3,8 +3,8 @@ import { generateWithConfig } from './graphql-codegen.config'
 
 jest.mock('./graphql-codegen.config', () => ({ generateWithConfig: jest.fn() }))
 
-const delay = milliseconds =>
-  new Promise(resolve => setTimeout(resolve, milliseconds))
+const delay = (milliseconds) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds))
 
 it('early returns if the codegen option is false', async () => {
   const mockGetState = jest.fn()
@@ -169,7 +169,7 @@ it('subscribes to the store and debounces the `build` function', async () => {
   const mockGatsbyArgs = {
     store: {
       getState: () => mockState,
-      subscribe: listener => {
+      subscribe: (listener) => {
         notify = listener
       },
     },
@@ -223,7 +223,7 @@ it("doesn't call build if the `lastAction.type` isn't 'REPLACE_STATIC_QUERY' or 
   const mockGatsbyArgs = {
     store: {
       getState: () => mockState,
-      subscribe: listener => {
+      subscribe: (listener) => {
         notify = listener
       },
     },

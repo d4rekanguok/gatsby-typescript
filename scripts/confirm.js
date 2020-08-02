@@ -10,7 +10,7 @@ function confirm() {
   )
 
   for (const file of [generatedFile, generatedAdditionalFile]) {
-    fs.stat(file, err => {
+    fs.stat(file, (err) => {
       if (err) {
         console.error(`${file} doesn't exist.`)
         throw new Error(err)
