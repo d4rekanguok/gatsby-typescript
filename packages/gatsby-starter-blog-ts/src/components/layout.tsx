@@ -9,7 +9,7 @@ interface ILayoutProps {
 }
 
 class Layout extends React.Component<ILayoutProps> {
-  render() {
+  render(): JSX.Element {
     const { location, title, children } = this.props
     const rootPath = `${__PATH_PREFIX__}/`
     let header

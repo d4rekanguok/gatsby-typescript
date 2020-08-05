@@ -86,7 +86,10 @@ describe('onCreateWebpack', () => {
             "options": Object {
               "async": false,
               "formatter": "codeframe",
-              "silent": true,
+              "logger": Object {
+                "infrastructure": "silent",
+                "issues": "console",
+              },
             },
           },
         ],

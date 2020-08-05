@@ -7,12 +7,13 @@ import {
   PluginOptions,
 } from 'gatsby-plugin-graphql-codegen/gatsby-node'
 import requireResolve from './require-resolve'
+import { ForkTsCheckerWebpackPluginOptions } from 'fork-ts-checker-webpack-plugin/lib/ForkTsCheckerWebpackPluginOptions'
 
 export interface TsOptions extends PluginOptions {
   tsLoader?: Partial<tsloader.Options>
   typeCheck?: boolean
   alwaysCheck?: boolean
-  forkTsCheckerPlugin?: Partial<FTCWebpackPlugin.Options>
+  forkTsCheckerPlugin?: Partial<ForkTsCheckerWebpackPluginOptions>
 }
 
 const defaultOptions: TsOptions = {
@@ -22,14 +23,17 @@ const defaultOptions: TsOptions = {
   alwaysCheck: false,
   forkTsCheckerPlugin: {
     async: false,
-    silent: true,
     formatter: 'codeframe',
+    logger: {
+      infrastructure: 'silent',
+      issues: 'console',
+    },
   },
 }
 
 // TODO: use something like lodash defaultDeep here when options get more complex
 type GetOptions = (options: TsOptions) => TsOptions
-const getOptions: GetOptions = pluginOptions => ({
+const getOptions: GetOptions = (pluginOptions) => ({
   ...defaultOptions,
   ...pluginOptions,
   forkTsCheckerPlugin: {

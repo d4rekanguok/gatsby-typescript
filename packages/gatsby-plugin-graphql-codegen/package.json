@@ -21,19 +21,19 @@
   "author": "Derek Nguyen <derek@penandpillow.com>",
   "license": "MIT",
   "dependencies": {
-    "@graphql-codegen/core": "^1.13.1",
-    "@graphql-codegen/plugin-helpers": "^1.13.1",
-    "@graphql-codegen/typescript": "^1.13.1",
-    "@graphql-codegen/typescript-operations": "^1.13.1",
-    "@graphql-toolkit/code-file-loader": "^0.10.2",
-    "@graphql-toolkit/common": "^0.10.2",
-    "@graphql-toolkit/core": "^0.10.2",
-    "@graphql-toolkit/graphql-file-loader": "^0.10.2",
-    "@graphql-toolkit/graphql-tag-pluck": "^0.10.2",
-    "@graphql-toolkit/json-file-loader": "^0.10.2",
-    "@graphql-toolkit/url-loader": "^0.10.2",
-    "fs-extra": "^7.0.1",
-    "lodash.debounce": "^4.0.8"
+    "@graphql-codegen/core": "1.17.7",
+    "@graphql-codegen/plugin-helpers": "1.17.7",
+    "@graphql-codegen/typescript": "1.17.7",
+    "@graphql-codegen/typescript-operations": "1.17.7",
+    "@graphql-tools/code-file-loader": "6.0.15",
+    "@graphql-tools/graphql-file-loader": "6.0.15",
+    "@graphql-tools/graphql-tag-pluck": "6.0.15",
+    "@graphql-tools/json-file-loader": "6.0.15",
+    "@graphql-tools/load": "6.0.15",
+    "@graphql-tools/url-loader": "6.0.15",
+    "@graphql-tools/utils": "6.0.15",
+    "fs-extra": "9.0.1",
+    "lodash.debounce": "4.0.8"
   },
   "peerDependencies": {
     "gatsby": "^2.12.1",
@@ -41,12 +41,12 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
-    "@types/fs-extra": "^7.0.0",
-    "@types/lodash.debounce": "^4.0.6",
-    "@types/node": "^12.0.8",
-    "gatsby": "^2.9.2",
-    "graphql": "^14.6.0",
-    "typescript": "^3.7.5"
+    "@types/fs-extra": "9.0.1",
+    "@types/lodash.debounce": "4.0.6",
+    "@types/node": "14.0.27",
+    "gatsby": "2.24.27",
+    "graphql": "14.7.0",
+    "typescript": "3.9.7"
   },
   "bugs": {
     "url": "https://github.com/d4rekanguok/gatsby-typescript/issues"

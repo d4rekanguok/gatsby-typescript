@@ -1,15 +1,12 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  extends: [
-    'eslint:recommended',
-    'plugin:prettier/recommended',
-  ],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   overrides: [
     // typescript
     {
-      files: ["*.ts", "*.tsx"],
-      excludedFiles: ["*.test.js", "gatsby-node.js", "gatsby-config.js"],
+      files: ['*.ts', '*.tsx'],
+      excludedFiles: ['*.test.js', 'gatsby-node.js', 'gatsby-config.js'],
       plugins: ['@typescript-eslint'],
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
@@ -25,35 +22,38 @@ module.exports = {
       },
     },
 
-    // gatsby config files
+    // gatsby and eslint config files
     {
-      files: ["gatsby-node.js", "gatsby-config.js", "./scripts/**"],
+      files: [
+        '.eslintrc.js',
+        'gatsby-node.js',
+        'gatsby-config.js',
+        './scripts/**',
+      ],
       env: {
-        "node": true,
-      }
+        node: true,
+      },
     },
 
     // test files
     {
-      files: ["*.test.js"],
+      files: ['*.test.js'],
       plugins: ['jest'],
       env: {
-        "es6": true,
-        "node": true,
-        "jest/globals": true,
+        es6: true,
+        node: true,
+        'jest/globals': true,
       },
-      extends: [
-        "plugin:jest/recommended"
-      ],
+      extends: ['plugin:jest/recommended'],
       parserOptions: {
         ecmaVersion: 2019,
-        sourceType: "module",
-      }
-    }
+        sourceType: 'module',
+      },
+    },
   ],
   settings: {
     react: {
-      version: "detect",
-    }
-  }
+      version: 'detect',
+    },
+  },
 }

@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra'
+import * as path from 'path'
 import { buildSchema } from 'graphql'
-import { loadDocuments } from '@graphql-toolkit/core'
+import { loadDocuments } from '@graphql-tools/load'
 import { generateWithConfig, mapCodegenPlugins } from './graphql-codegen.config'
 
 jest.mock('fs-extra', () => ({
@@ -8,7 +9,7 @@ jest.mock('fs-extra', () => ({
   writeFile: jest.fn(),
 }))
 
-jest.mock('@graphql-toolkit/core', () => ({
+jest.mock('@graphql-tools/load', () => ({
   loadDocuments: jest.fn(),
 }))
 
@@ -84,36 +85,29 @@ it('takes in options and returns a function that runs codegen for the schema', a
       ],
     }
   `)
-  expect(fs.writeFile).toMatchInlineSnapshot(`
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "example-directory/example-types.ts",
-      "export type Maybe<T> = T | null;
-/** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-};
 
-export type Query = {
-  example?: Maybe<Scalars['String']>;
-};
+  expect(fs.writeFile.mock.calls[0]).toBeDefined()
+  expect(fs.writeFile.mock.calls[0][0]).toBe(
+    path.join('example-directory', 'example-types.ts')
+  )
+  expect(fs.writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
+    "export type Maybe<T> = T | null;
+    export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+    /** All built-in and custom scalars, mapped to their actual values */
+    export type Scalars = {
+      ID: string;
+      String: string;
+      Boolean: boolean;
+      Int: number;
+      Float: number;
+    };
 
-",
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
-    },
-  ],
-}
-`)
+    export type Query = {
+      example?: Maybe<Scalars['String']>;
+    };
+
+    "
+  `)
 
   expect(mockReporter.warn).not.toHaveBeenCalled()
 })
@@ -143,20 +137,20 @@ it('calls `reporter.warn` when `loadDocuments` rejects', async () => {
   await generateFromSchema(mockSchema)
 
   expect(mockReporter.warn).toMatchInlineSnapshot(`
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "[gatsby-plugin-graphql-codegen] test error",
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
-    },
-  ],
-}
-`)
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          "[gatsby-plugin-graphql-codegen] test error",
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  `)
 })
 
 describe('mapCodegenPlugins', () => {
