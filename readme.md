@@ -32,20 +32,32 @@ Special thanks to the contributors, who have improved this project with code, bu
 
 ### Code
 
-[@ricokahler (maintainer)](https://github.com/ricokahler), 
+[@ricokahler (maintainer)](https://github.com/ricokahler),
+
 [@kije](https://github.com/kije),
+
 [@Js-Brecht](https://github.com/Js-Brecht), 
+
 [@Kerumen](https://github.com/Kerumen), 
-[@olee](https://github.com/olee)
+
+[@olee](https://github.com/olee),
+
+[@Tielem](https://github.com/Tielem)
 
 ### Bugs & Suggestions
 
 [@frantic1048](https://github.com/frantic1048), 
+
 [@cometkim](https://github.com/cometkim), 
+
 [@FrobtheBuilder](https://github.com/FrobtheBuilder), 
+
 [@aswinckr](https://github.com/aswinckr), 
+
 [@mshick](https://github.com/mshick), 
+
 [@joewood](https://github.com/joewood),
+
 [@Jdruwe](https://github.com/Jdruwe)
 
 <small>
