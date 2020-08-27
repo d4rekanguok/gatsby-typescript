@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-graphql-codegen",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description": "Automate codegen for Gatsby via graphql-codegen",
   "main": "index.js",
   "scripts": {
