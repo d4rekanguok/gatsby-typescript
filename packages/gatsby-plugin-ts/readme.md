@@ -39,7 +39,7 @@ In order for this plugin to work right, you'd need to set your compile options l
     "moduleResolution": "node", /* <-- required! */
 
     /* for mixed ts/js codebase */
-    "allowJS": true,
+    "allowJs": true,
     "outDir": "./build"    /* this won't be used by ts-loader */
     /* other options... */
   }
