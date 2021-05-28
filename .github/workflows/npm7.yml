@@ -1,0 +1,17 @@
+name: NPM7
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14, 16]
+    steps:
+      - uses: actions/checkout@v2
+      - name: use node ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm install
