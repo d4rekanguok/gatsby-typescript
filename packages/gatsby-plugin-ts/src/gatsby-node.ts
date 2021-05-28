@@ -43,7 +43,7 @@ const getOptions: GetOptions = (pluginOptions) => ({
 })
 
 type CreateRule = (
-  jsLoader: webpack.RuleSetLoader,
+  jsLoader: webpack.RuleSetUseItem,
   options: TsOptions
 ) => webpack.RuleSetRule
 const createRule: CreateRule = (jsLoader, { tsLoader }) => ({
@@ -77,7 +77,7 @@ export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = (
   if (!jsLoader) return
   const tsRule = createRule(jsLoader, options)
 
-  const plugins: webpack.Plugin[] = []
+  const plugins: NonNullable<webpack.Configuration['plugins']> = []
   if (typeCheck) {
     plugins.push(new FTCWebpackPlugin(forkTsCheckerPlugin))
   }
