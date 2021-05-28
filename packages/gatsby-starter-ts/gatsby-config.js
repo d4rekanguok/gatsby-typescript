@@ -34,7 +34,7 @@ module.exports = {
           {
             // demo api https://github.com/lucasbento/graphql-pokemon
             key: 'pokemon',
-            schema: 'https://graphql-pokemon.now.sh/',
+            schema: 'https://graphql-pokemon2.vercel.app',
             pluckConfig: {
               globalGqlIdentifierName: 'gql',
               modules: [
