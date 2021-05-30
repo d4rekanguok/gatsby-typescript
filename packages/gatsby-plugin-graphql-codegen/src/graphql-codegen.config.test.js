@@ -92,7 +92,7 @@ it('takes in options and returns a function that runs codegen for the schema', a
   )
   expect(fs.writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
     "export type Maybe<T> = T | null;
-    export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+    export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
     /** All built-in and custom scalars, mapped to their actual values */
     export type Scalars = {
       ID: string;
