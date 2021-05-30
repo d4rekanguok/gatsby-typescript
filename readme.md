@@ -174,7 +174,7 @@ Here's a list of common questions I've seen since releasing this project. If you
   You'd have to update your `tsconfig` with the below options:
 
   ```json
-    "allowJS": true,
+    "allowJs": true,
     "outDir": "./build"
   ```
 
