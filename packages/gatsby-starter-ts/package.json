@@ -2,7 +2,7 @@
   "name": "gatsby-starter-ts",
   "private": true,
   "description": "A simple starter to get up and developing quickly with Gatsby",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
     "@types/react": "16.9.44",
@@ -14,7 +14,7 @@
     "gatsby-plugin-offline": "3.2.21",
     "gatsby-plugin-react-helmet": "3.3.10",
     "gatsby-plugin-sharp": "2.6.24",
-    "gatsby-plugin-ts": "^2.7.2",
+    "gatsby-plugin-ts": "^2.7.3",
     "gatsby-source-filesystem": "2.3.23",
     "gatsby-transformer-sharp": "2.5.12",
     "graphql-tag": "2.11.0",
