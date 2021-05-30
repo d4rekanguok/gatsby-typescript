@@ -41,10 +41,10 @@ const SEO: React.FC<Props> = ({
     `
   )
 
-  const {
-    author,
-    description: siteDescription,
-  } = ensureKeys(site?.siteMetadata, [`author`, `description`])
+  const { author, description: siteDescription } = ensureKeys(
+    site?.siteMetadata,
+    [`author`, `description`]
+  )
 
   const metaDescription = description ?? siteDescription
 

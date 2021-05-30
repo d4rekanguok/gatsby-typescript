@@ -84,10 +84,8 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
     codegenConfig,
   } = options
 
-  const {
-    schema,
-    program,
-  }: { schema: GraphQLSchema; program: any } = store.getState()
+  const { schema, program }: { schema: GraphQLSchema; program: any } =
+    store.getState()
   const { directory } = program
 
   const defaultConfig = {

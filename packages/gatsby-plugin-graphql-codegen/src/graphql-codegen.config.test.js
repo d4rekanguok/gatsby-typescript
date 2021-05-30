@@ -37,17 +37,17 @@ it('takes in options and returns a function that runs codegen for the schema', a
 
   expect(mockSchema).toMatchInlineSnapshot(`
     GraphQLSchema {
-      "__allowedLegacyNames": Array [],
       "__validationErrors": undefined,
       "_directives": Array [
-        "@skip",
         "@include",
+        "@skip",
         "@deprecated",
+        "@specifiedBy",
       ],
-      "_implementations": Object {},
+      "_implementationsMap": Object {},
       "_mutationType": undefined,
-      "_possibleTypeMap": Object {},
       "_queryType": "Query",
+      "_subTypeMap": Object {},
       "_subscriptionType": undefined,
       "_typeMap": Object {
         "Boolean": "Boolean",
@@ -63,7 +63,8 @@ it('takes in options and returns a function that runs codegen for the schema', a
         "__TypeKind": "__TypeKind",
       },
       "astNode": undefined,
-      "extensionASTNodes": undefined,
+      "description": undefined,
+      "extensionASTNodes": Array [],
       "extensions": undefined,
     }
   `)
@@ -92,7 +93,9 @@ it('takes in options and returns a function that runs codegen for the schema', a
   )
   expect(fs.writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
     "export type Maybe<T> = T | null;
-    export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+    export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+    export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
     /** All built-in and custom scalars, mapped to their actual values */
     export type Scalars = {
       ID: string;
@@ -105,7 +108,6 @@ it('takes in options and returns a function that runs codegen for the schema', a
     export type Query = {
       example?: Maybe<Scalars['String']>;
     };
-
     "
   `)
 
