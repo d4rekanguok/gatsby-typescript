@@ -178,14 +178,10 @@ In order to take advantage of the generated code, user needs to name their query
 ```js
 // src/pages/index.tsx
 
+import { PageProps } from "gatsby";
 import { BlogIndexQuery } from '../graphqlTypes'
 
-interface IBlogIndexProps {
-  data: BlogIndexQuery;
-  location: Location;
-}
-
-const BlogIndex: React.FC<IBlogIndexProps> = ({ data, location }) => {
+const BlogIndex: React.FC<PageProps<BlogIndexQuery>> = ({ data, location }) => {
   ...
 }
 ```
