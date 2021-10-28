@@ -141,10 +141,11 @@ export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async (
         }
       )
     } catch (err) {
+      // NOTE assume err is an ErrorMeta
       if (failOnError) {
-        reporter.panic(err)
+        reporter.panic(err as any)
       } else {
-        reporter.warn(err)
+        reporter.warn(err as any)
       }
     }
   }
