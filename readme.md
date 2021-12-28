@@ -273,7 +273,7 @@ Gatsby recently moved plugins' fragments from `.cache` to `node_modules`. We cur
   "workspaces": {
     "packages": ["packages/*"],
     "nohoist": [
-      "**/gatsby-transformer-sharp",
+      "**/gatsby-transformer-sharp"
     ]
   }
   ```
