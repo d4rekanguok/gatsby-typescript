@@ -30,7 +30,7 @@
     "@graphql-tools/graphql-tag-pluck": "^7.0.0",
     "@graphql-tools/json-file-loader": "^7.0.0",
     "@graphql-tools/load": "^7.0.0",
-    "@graphql-tools/url-loader": "^7.0.0",
+    "@graphql-tools/url-loader": "7.0.0 - 7.4.2",
     "@graphql-tools/utils": "^8.0.0",
     "fs-extra": "^10.0.0",
     "lodash.debounce": "4.0.8"
